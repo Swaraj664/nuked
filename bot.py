@@ -307,7 +307,6 @@ async def help(ctx):
     embed.add_field(name='**allservers**', value='displays every server you\'re in inside of the console.', inline=False)
     embed.add_field(name='**embed**', value='sends a user specified embed.', inline=False)
     embed.add_field(name='**id**', value='shows a user\'s id.', inline=False)
-    embed.add_field(name='**hidden**', value='sends your message, but hidden.', inline=False)
     embed.add_field(name='**bold**', value='sends your message, but bold.', inline=False)
     embed.add_field(name='**italics**', value='sends your message, but italicized.', inline=False)
     embed.add_field(name='**hidden**', value='sends your message, but hidden.', inline=False)
