@@ -18,7 +18,16 @@ from colorama import init, Fore, Style, Back
 import numpy
 from itertools import cycle
 import datetime
+from bs4 import BeautifulSoup as bs4
 import proxyscrape
+
+
+# strap is a fag
+# i do not condone usage of this, just made it cuz i was bored.
+# if you get banned it isn't my fault lol
+# this is violating tos but idc, i dont condone usage of it so im ok right?
+# hopefully
+# ily ;)
 
 with open('config.json') as f:
     config = json.load(f)
@@ -42,9 +51,6 @@ def clear():
 
 pn = '0123456789'
 colorama.init()
-
-gayass = "https://i.imgur.com/QHq1tiY.png"
-
 
 def Init():
     if config.get('token') == "token here":
@@ -131,7 +137,7 @@ else:
     prefix = '.'
     pass
 
-client = commands.Bot(description="self bot for auto bumping servers", command_prefix=prefix, self_bot=True)
+client = commands.Bot(description="irdk anymore mane :(", command_prefix=prefix, self_bot=True)
 
 client.remove_command('help')
 
@@ -179,7 +185,7 @@ def splash():
     			   ██║ ╚███║    ╚██████╔╝    ██║ ╚██╗    ███████╗    ██████╔╝
     			   ╚═╝  ╚══╝     ╚═════╝     ╚═╝  ╚═╝    ╚══════╝    ╚═════╝
 
-                                            {Fore.RESET}{Fore.LIGHTGREEN_EX}Welcome to {Fore.RED}Nuked v2 {Fore.RESET}                               
+                                            {Fore.RESET}{Fore.LIGHTGREEN_EX}Welcome to {Fore.RED}Nuked v2 {Fore.RESET}
 
                                                 {Fore.CYAN}Selfbot Info{Fore.RESET}
 
@@ -294,15 +300,25 @@ async def help(ctx):
     embed.add_field(name="**cat**", value="shows a cat.", inline=False)
     embed.add_field(name="**boobs**", value="shows boobs.", inline=False)
     embed.add_field(name="**query**", value="queries your message into google.", inline=False)
-    embed.add_field(name='**joke**', value='random joke from an API', inline=False)
+    embed.add_field(name='**joke**', value='random joke from an API.', inline=False)
     embed.add_field(name='**scrape**', value='proxy scraper.', inline=False)
     embed.add_field(name='**dox**', value='fake doxes a user.', inline=False)
     embed.add_field(name='**setname**', value='sets your username to whatever is specified.', inline=False)
     embed.add_field(name='**allservers**', value='displays every server you\'re in inside of the console.', inline=False)
     embed.add_field(name='**embed**', value='sends a user specified embed.', inline=False)
+    embed.add_field(name='**id**', value='shows a user\'s id.', inline=False)
+    embed.add_field(name='**hidden**', value='sends your message, but hidden.', inline=False)
+    embed.add_field(name='**bold**', value='sends your message, but bold.', inline=False)
+    embed.add_field(name='**italics**', value='sends your message, but italicized.', inline=False)
+    embed.add_field(name='**hidden**', value='sends your message, but hidden.', inline=False)
+    embed.add_field(name='**strike**', value='sends your message, but striked through.', inline=False)
+    embed.add_field(name='**hspam**', value='spams the chat with a huge blank message.', inline=False)
+    embed.add_field(name='**underline**', value='sends your message, but underlined.', inline=False)
+    embed.add_field(name="**wyr**", value='sends a would you rather question.', inline=False)
+    embed.add_field(name="**id**", value='sends the ID of the mentioned user.', inline=False)
     embed.add_field(name="**logout**", value='logs out of selfbot and closes window.', inline=False)
     embed.set_footer(text=f"Prefix is \"{prefix}\"")
-    await ctx.send(embed=embed, delete_after=10)
+    await ctx.send(embed=embed, delete_after=25)
 
 
 @client.command()
@@ -356,14 +372,6 @@ async def logout(ctx):
 async def nigger(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title="**Strap**", color=0xfd53d0, description="**is** \n **a** \n **nigger**")
-    await ctx.send(embed=embed, delete_after=10)
-
-
-@client.command(aliases=['lgbtq'])
-async def gays(ctx):
-    await ctx.message.delete()
-    embed = discord.Embed(title="Gays fucking suck", color=0xfd53d0,
-                          description="gays \n are \n **fucking** \n **dogshit** \n **TRUMP 2020!**")
     await ctx.send(embed=embed, delete_after=10)
 
 
@@ -509,7 +517,7 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         return
     elif isinstance(error, commands.CheckFailure):
-        print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}You're missing permission to execute this command" + Fore.RESET)
+        print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}It seems you cannot run this command due to missing permissions." + Fore.RESET)
     elif isinstance(error, commands.MissingRequiredArgument):
         print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}Missing arguments: {error}" + Fore.RESET)
     elif isinstance(error, numpy.AxisError):
@@ -682,13 +690,13 @@ async def nitrosnipe(message):
         start = datetime.datetime.now()
         code = re.search("discord.gift/(.*)", message.content).group(1)
         token = config.get('token')
-                
+
         headers = {'Authorization': token}
         r = requests.post(
-            f'https://discordapp.com/api/v6/entitlements/gift-codes/{code}/redeem', 
+            f'https://discordapp.com/api/v6/entitlements/gift-codes/{code}/redeem',
             headers=headers,
         ).text
-        
+
 
         if 'This gift has been redeemed already.' in r:
             print("══════════════════════════════════════════════════")
@@ -733,7 +741,7 @@ async def hug(ctx, member : discord.Member=None):
     embed = discord.Embed(description=f"<@{client.user.id}> hugs <@{member.id}>", color=0xfd53d0)
     embed.set_image(url=r.json()['url'])
     await ctx.send(embed=embed, delete_after=10)
-    
+
 @client.command()
 async def boobs(ctx, member : discord.Member=None):
     await ctx.message.delete()
@@ -759,7 +767,7 @@ async def userdox(ctx, member : discord.Member=None):
     embed.add_field(name='**Address**', value=f"{random.choice(addresses)}", inline=False)
     embed.add_field(name='**Phone Number**', value=f"+1{''.join(random.choices(pn, k=10))}")
     await ctx.send(embed=embed, delete_after=10)
-    
+
 @client.command()
 async def query(ctx, *, message):
     await ctx.message.delete()
@@ -778,7 +786,7 @@ async def joke(ctx):
 async def setname(ctx, *, message):
     await ctx.message.delete()
     await client.user.edit(username=message, password=password)
-    
+
 @client.command(aliases=['allguilds'])
 async def allservers(ctx):
     await ctx.message.delete()
@@ -803,61 +811,115 @@ async def embed(ctx, *, message):
     embed.set_author(name=str(client.user.display_name + "#" + client.user.discriminator), icon_url=client.user.avatar_url)
     await ctx.send(embed=embed, delete_after=10)
 
+@client.command()
+async def bold(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.send('**' + message + '**')
+
+@client.command()
+async def italics(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.send('*' + message + '*')
+
+@client.command(aliases=['st'])
+async def strike(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.send('~~' + message + '~~')
+
+@client.command(aliases=['uline'])
+async def underline(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.send('__' + message + '__')
+
+@client.command(aliases=['hide'])
+async def hidden(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.send('||' + message + '||')
+
+@client.command(aliases=['hspam'])
+async def hiddenspam(ctx):
+    await ctx.message.delete()
+    await ctx.send("||" + '\n'*400 + '||')
+
+@client.command()
+async def wyr(ctx):
+    await ctx.message.delete()
+    r = requests.get('https://www.conversationstarters.com/wyrqlist.php').text
+    soup = bs4(r, 'html.parser')
+    qa = soup.find(id='qa').text
+    qor = soup.find(id='qor').text
+    qb = soup.find(id='qb').text
+    embed = discord.Embed(color=0xfd53d0, description=f'{qa}\n{qor}\n{qb}')
+    await ctx.send(embed=embed, delete_after=25)
+
+@client.command()
+async def id(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    if not member:
+        pass
+    try:
+        embed = discord.Embed(title=f"**{member}'s ID**",color=0xfd53d0, description=f"{member.id}")
+        await ctx.send(embed=embed, delete_after=15)
+    except:
+        await ctx.send(f"{member}'s ID" + '\n' + str(member.id), delete_after=20)
+
+
+
 
 Init()
 
 
 """
-                                                                                                                                                                               
-                                                                                                                                                                               
+
+
 kkkkkkkk                                   lllllll   iiii                                                  1111111    333333333333333    333333333333333   77777777777777777777
 k::::::k                                   l:::::l  i::::i                          ######    ######      1::::::1   3:::::::::::::::33 3:::::::::::::::33 7::::::::::::::::::7
 k::::::k                                   l:::::l   iiii                           #::::#    #::::#     1:::::::1   3::::::33333::::::33::::::33333::::::37::::::::::::::::::7
 k::::::k                                   l:::::l                                  #::::#    #::::#     111:::::1   3333333     3:::::33333333     3:::::3777777777777:::::::7
- k:::::k    kkkkkkkyyyyyyy           yyyyyyyl::::l iiiiiii     eeeeeeeeeeee    ######::::######::::######   1::::1               3:::::3            3:::::3           7::::::7 
- k:::::k   k:::::k  y:::::y         y:::::y l::::l i:::::i   ee::::::::::::ee  #::::::::::::::::::::::::#   1::::1               3:::::3            3:::::3          7::::::7  
- k:::::k  k:::::k    y:::::y       y:::::y  l::::l  i::::i  e::::::eeeee:::::ee######::::######::::######   1::::1       33333333:::::3     33333333:::::3          7::::::7   
- k:::::k k:::::k      y:::::y     y:::::y   l::::l  i::::i e::::::e     e:::::e     #::::#    #::::#        1::::l       3:::::::::::3      3:::::::::::3          7::::::7    
- k::::::k:::::k        y:::::y   y:::::y    l::::l  i::::i e:::::::eeeee::::::e     #::::#    #::::#        1::::l       33333333:::::3     33333333:::::3        7::::::7     
- k:::::::::::k          y:::::y y:::::y     l::::l  i::::i e:::::::::::::::::e ######::::######::::######   1::::l               3:::::3            3:::::3      7::::::7      
- k:::::::::::k           y:::::y:::::y      l::::l  i::::i e::::::eeeeeeeeeee  #::::::::::::::::::::::::#   1::::l               3:::::3            3:::::3     7::::::7       
- k::::::k:::::k           y:::::::::y       l::::l  i::::i e:::::::e           ######::::######::::######   1::::l               3:::::3            3:::::3    7::::::7        
-k::::::k k:::::k           y:::::::y       l::::::li::::::ie::::::::e               #::::#    #::::#     111::::::1113333333     3:::::33333333     3:::::3   7::::::7         
-k::::::k  k:::::k           y:::::y        l::::::li::::::i e::::::::eeeeeeee       #::::#    #::::#     1::::::::::13::::::33333::::::33::::::33333::::::3  7::::::7          
-k::::::k   k:::::k         y:::::y         l::::::li::::::i  ee:::::::::::::e       ######    ######     1::::::::::13:::::::::::::::33 3:::::::::::::::33  7::::::7           
-kkkkkkkk    kkkkkkk       y:::::y          lllllllliiiiiiii    eeeeeeeeeeeeee                            111111111111 333333333333333    333333333333333   77777777            
-                         y:::::y                                                                                                                                               
-                        y:::::y                                                                                                                                                
-                       y:::::y                                                                                                                                                 
-                      y:::::y                                                                                                                                                  
-                     yyyyyyy                                                                                                                                                   
+ k:::::k    kkkkkkkyyyyyyy           yyyyyyyl::::l iiiiiii     eeeeeeeeeeee    ######::::######::::######   1::::1               3:::::3            3:::::3           7::::::7
+ k:::::k   k:::::k  y:::::y         y:::::y l::::l i:::::i   ee::::::::::::ee  #::::::::::::::::::::::::#   1::::1               3:::::3            3:::::3          7::::::7
+ k:::::k  k:::::k    y:::::y       y:::::y  l::::l  i::::i  e::::::eeeee:::::ee######::::######::::######   1::::1       33333333:::::3     33333333:::::3          7::::::7
+ k:::::k k:::::k      y:::::y     y:::::y   l::::l  i::::i e::::::e     e:::::e     #::::#    #::::#        1::::l       3:::::::::::3      3:::::::::::3          7::::::7
+ k::::::k:::::k        y:::::y   y:::::y    l::::l  i::::i e:::::::eeeee::::::e     #::::#    #::::#        1::::l       33333333:::::3     33333333:::::3        7::::::7
+ k:::::::::::k          y:::::y y:::::y     l::::l  i::::i e:::::::::::::::::e ######::::######::::######   1::::l               3:::::3            3:::::3      7::::::7
+ k:::::::::::k           y:::::y:::::y      l::::l  i::::i e::::::eeeeeeeeeee  #::::::::::::::::::::::::#   1::::l               3:::::3            3:::::3     7::::::7
+ k::::::k:::::k           y:::::::::y       l::::l  i::::i e:::::::e           ######::::######::::######   1::::l               3:::::3            3:::::3    7::::::7
+k::::::k k:::::k           y:::::::y       l::::::li::::::ie::::::::e               #::::#    #::::#     111::::::1113333333     3:::::33333333     3:::::3   7::::::7
+k::::::k  k:::::k           y:::::y        l::::::li::::::i e::::::::eeeeeeee       #::::#    #::::#     1::::::::::13::::::33333::::::33::::::33333::::::3  7::::::7
+k::::::k   k:::::k         y:::::y         l::::::li::::::i  ee:::::::::::::e       ######    ######     1::::::::::13:::::::::::::::33 3:::::::::::::::33  7::::::7
+kkkkkkkk    kkkkkkk       y:::::y          lllllllliiiiiiii    eeeeeeeeeeeeee                            111111111111 333333333333333    333333333333333   77777777
+                         y:::::y
+                        y:::::y
+                       y:::::y
+                      y:::::y
+                     yyyyyyy
 
 
-                                                                                                                                                                                           
-                                                                                                                                                                                           
-   SSSSSSSSSSSSSSS      tttt                                                                                               000000000          000000000          000000000       1111111   
- SS:::::::::::::::S  ttt:::t                                                                     ######    ######        00:::::::::00      00:::::::::00      00:::::::::00    1::::::1   
-S:::::SSSSSS::::::S  t:::::t                                                                     #::::#    #::::#      00:::::::::::::00  00:::::::::::::00  00:::::::::::::00 1:::::::1   
-S:::::S     SSSSSSS  t:::::t                                                                     #::::#    #::::#     0:::::::000:::::::00:::::::000:::::::00:::::::000:::::::0111:::::1   
-S:::::S        ttttttt:::::ttttttt   rrrrr   rrrrrrrrr   aaaaaaaaaaaaa  ppppp   ppppppppp   ######::::######::::######0::::::0   0::::::00::::::0   0::::::00::::::0   0::::::0   1::::1   
-S:::::S        t:::::::::::::::::t   r::::rrr:::::::::r  a::::::::::::a p::::ppp:::::::::p  #::::::::::::::::::::::::#0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::1   
- S::::SSSS     t:::::::::::::::::t   r:::::::::::::::::r aaaaaaaaa:::::ap:::::::::::::::::p ######::::######::::######0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::1   
-  SS::::::SSSSStttttt:::::::tttttt   rr::::::rrrrr::::::r         a::::app::::::ppppp::::::p     #::::#    #::::#     0:::::0 000 0:::::00:::::0 000 0:::::00:::::0 000 0:::::0   1::::l   
-    SSS::::::::SS    t:::::t          r:::::r     r:::::r  aaaaaaa:::::a p:::::p     p:::::p     #::::#    #::::#     0:::::0 000 0:::::00:::::0 000 0:::::00:::::0 000 0:::::0   1::::l   
-       SSSSSS::::S   t:::::t          r:::::r     rrrrrrraa::::::::::::a p:::::p     p:::::p######::::######::::######0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::l   
-            S:::::S  t:::::t          r:::::r           a::::aaaa::::::a p:::::p     p:::::p#::::::::::::::::::::::::#0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::l   
-            S:::::S  t:::::t    ttttttr:::::r          a::::a    a:::::a p:::::p    p::::::p######::::######::::######0::::::0   0::::::00::::::0   0::::::00::::::0   0::::::0   1::::l   
+
+
+   SSSSSSSSSSSSSSS      tttt                                                                                               000000000          000000000          000000000       1111111
+ SS:::::::::::::::S  ttt:::t                                                                     ######    ######        00:::::::::00      00:::::::::00      00:::::::::00    1::::::1
+S:::::SSSSSS::::::S  t:::::t                                                                     #::::#    #::::#      00:::::::::::::00  00:::::::::::::00  00:::::::::::::00 1:::::::1
+S:::::S     SSSSSSS  t:::::t                                                                     #::::#    #::::#     0:::::::000:::::::00:::::::000:::::::00:::::::000:::::::0111:::::1
+S:::::S        ttttttt:::::ttttttt   rrrrr   rrrrrrrrr   aaaaaaaaaaaaa  ppppp   ppppppppp   ######::::######::::######0::::::0   0::::::00::::::0   0::::::00::::::0   0::::::0   1::::1
+S:::::S        t:::::::::::::::::t   r::::rrr:::::::::r  a::::::::::::a p::::ppp:::::::::p  #::::::::::::::::::::::::#0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::1
+ S::::SSSS     t:::::::::::::::::t   r:::::::::::::::::r aaaaaaaaa:::::ap:::::::::::::::::p ######::::######::::######0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::1
+  SS::::::SSSSStttttt:::::::tttttt   rr::::::rrrrr::::::r         a::::app::::::ppppp::::::p     #::::#    #::::#     0:::::0 000 0:::::00:::::0 000 0:::::00:::::0 000 0:::::0   1::::l
+    SSS::::::::SS    t:::::t          r:::::r     r:::::r  aaaaaaa:::::a p:::::p     p:::::p     #::::#    #::::#     0:::::0 000 0:::::00:::::0 000 0:::::00:::::0 000 0:::::0   1::::l
+       SSSSSS::::S   t:::::t          r:::::r     rrrrrrraa::::::::::::a p:::::p     p:::::p######::::######::::######0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::l
+            S:::::S  t:::::t          r:::::r           a::::aaaa::::::a p:::::p     p:::::p#::::::::::::::::::::::::#0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::l
+            S:::::S  t:::::t    ttttttr:::::r          a::::a    a:::::a p:::::p    p::::::p######::::######::::######0::::::0   0::::::00::::::0   0::::::00::::::0   0::::::0   1::::l
 SSSSSSS     S:::::S  t::::::tttt:::::tr:::::r          a::::a    a:::::a p:::::ppppp:::::::p     #::::#    #::::#     0:::::::000:::::::00:::::::000:::::::00:::::::000:::::::0111::::::111
 S::::::SSSSSS:::::S  tt::::::::::::::tr:::::r          a:::::aaaa::::::a p::::::::::::::::p      #::::#    #::::#      00:::::::::::::00  00:::::::::::::00  00:::::::::::::00 1::::::::::1
 S:::::::::::::::SS     tt:::::::::::ttr:::::r           a::::::::::aa:::ap::::::::::::::pp       ######    ######        00:::::::::00      00:::::::::00      00::    :::::::00   1::::::::::1
  SSSSSSSSSSSSSSS         ttttttttttt  rrrrrrr            aaaaaaaaaa  aaaap::::::pppppppp                                   000000000          000000000          000000000     111111111111
-                                                                         p:::::p                                                                                                           
-                                                                         p:::::p                                                                                                           
-                                                                        p:::::::p                                                                                                          
-                                                                        p:::::::p                                                                                                          
-                                                                        p:::::::p                                                                                                          
-                                                                        ppppppppp                                                                                                          
-                                                                                                                                                                                                                                                                                                                            
+                                                                         p:::::p
+                                                                         p:::::p
+                                                                        p:::::::p
+                                                                        p:::::::p
+                                                                        p:::::::p
+                                                                        ppppppppp
+
 """
 
 
