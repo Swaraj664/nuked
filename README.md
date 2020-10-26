@@ -13,3 +13,7 @@ you will need python version >= 3.5 and you will need it added to path, if you d
 
 kylie#1337 was banned, add my new account kylie#3138
 
+
+# Important
+if there are any issues, dm me on Discord (kylie#3138) and I will get them sorted out.
+
