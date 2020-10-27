@@ -296,11 +296,17 @@ async def help(ctx):
     embed.add_field(name="**spam**", value='spams a message for x amount of times.', inline=False)
     embed.add_field(name="**tokengen**", value="generates a token.", inline=False)
     embed.add_field(name="**kiss**", value="kisses someone.", inline=False)
+    embed.add_field(name="**pussy**", value="shows a pussy pic.", inline=False)
     embed.add_field(name="**hug**", value="hugs someone.", inline=False)
+    embed.add_field(name="**spank**", value='spanks mentioned user.', inline=False)
+    embed.add_field(name="**setnicks**", value="sets everyones nickname to user specified name.", inline=False)
+    embed.add_field(name="**revertnicks**", value="reverts everyones nickname back to their name.", inline=False)
+    embed.add_field(name="**guildname**", value="sets the servers name.", inline=False)
     embed.add_field(name="**cat**", value="shows a cat.", inline=False)
     embed.add_field(name="**boobs**", value="shows boobs.", inline=False)
     embed.add_field(name="**query**", value="queries your message into google.", inline=False)
     embed.add_field(name='**joke**', value='random joke from an API.', inline=False)
+    embed.add_field(name='**tickle**', value='tickles mentioned user.', inline=False)
     embed.add_field(name='**scrape**', value='proxy scraper.', inline=False)
     embed.add_field(name='**dox**', value='fake doxes a user.', inline=False)
     embed.add_field(name='**setname**', value='sets your username to whatever is specified.', inline=False)
@@ -496,7 +502,7 @@ async def tokeninfo(ctx, _token):  # b'\xfc'
 
 
 @client.command(aliases=['porn'])
-async def nsfw(ctx):
+async def pussy(ctx):
     await ctx.message.delete()
     r = requests.get("https://nekobot.xyz/api/image?type=pussy").json()
     embed = discord.Embed(name="**NSFW**", color=0xfd53d0)
@@ -606,7 +612,7 @@ async def nuke(ctx):
         await ctx.guild.edit(
             name="kylie runs me",
             description="Nuked ON TOP",
-            reason="NIGGER",
+            reason="idk",
             icon=None,
             banner=gayass
         )
@@ -731,7 +737,7 @@ async def kiss(ctx, member : discord.Member=None):
     r = requests.get("https://nekos.life/api/kiss")
     embed = discord.Embed(description=f"<@{client.user.id}> kisses <@{member.id}>", color=0xfd53d0)
     embed.set_image(url=r.json()['url'])
-    await ctx.send(embed=embed, delete_after=10)
+    await ctx.send(embed=embed, delete_after=20)
 
 @client.command()
 async def hug(ctx, member : discord.Member=None):
@@ -739,7 +745,7 @@ async def hug(ctx, member : discord.Member=None):
     r = requests.get("https://nekos.life/api/hug")
     embed = discord.Embed(description=f"<@{client.user.id}> hugs <@{member.id}>", color=0xfd53d0)
     embed.set_image(url=r.json()['url'])
-    await ctx.send(embed=embed, delete_after=10)
+    await ctx.send(embed=embed, delete_after=20)
 
 @client.command()
 async def boobs(ctx, member : discord.Member=None):
@@ -747,7 +753,7 @@ async def boobs(ctx, member : discord.Member=None):
     r = requests.get("https://nekos.life/api/v2/img/boobs")
     embed = discord.Embed(color=0xfd53d0)
     embed.set_image(url=r.json()['url'])
-    await ctx.send(embed=embed, delete_after=10)
+    await ctx.send(embed=embed, delete_after=20)
 
 @client.command()
 async def cat(ctx, member : discord.Member=None):
@@ -755,7 +761,7 @@ async def cat(ctx, member : discord.Member=None):
     r = requests.get("https://nekos.life/api/v2/img/meow")
     embed = discord.Embed(color=0xfd53d0)
     embed.set_image(url=r.json()['url'])
-    await ctx.send(embed=embed, delete_after=10)
+    await ctx.send(embed=embed, delete_after=20)
 
 
 @client.command(aliases=['fakedox', 'dox'])
@@ -765,13 +771,13 @@ async def userdox(ctx, member : discord.Member=None):
     embed.add_field(name='**Token**', value=f"{''.join(random.choices(example_token, k=60))}", inline=False)
     embed.add_field(name='**Address**', value=f"{random.choice(addresses)}", inline=False)
     embed.add_field(name='**Phone Number**', value=f"+1{''.join(random.choices(pn, k=10))}")
-    await ctx.send(embed=embed, delete_after=10)
+    await ctx.send(embed=embed, delete_after=20)
 
 @client.command()
 async def query(ctx, *, message):
     await ctx.message.delete()
     embed = discord.Embed(title="**Search Query**", color=0xfd53d0, description=searchq(link=message))
-    await ctx.send(embed=embed, delete_after=10)
+    await ctx.send(embed=embed, delete_after=20)
 
 @client.command()
 async def joke(ctx):
@@ -861,6 +867,55 @@ async def id(ctx, member: discord.Member=None):
         await ctx.send(embed=embed, delete_after=15)
     except:
         await ctx.send(f"{member}'s ID" + '\n' + str(member.id), delete_after=20)
+
+
+@client.command()
+async def slap(ctx, user: discord.Member=None):
+    await ctx.message.delete()
+    r = requests.get("https://nekos.life/api/v2/img/slap")
+    res = r.json()
+    embed = discord.Embed(description=f"{client.user.mention} slaps {user.mention}", color=0xfd53d0)
+    embed.set_image(url=res['url'])
+    await ctx.send(embed=embed, delete_after=20)
+
+@client.command()
+async def tickle(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    r = requests.get('https://nekos.life/api/v2/img/tickle').json()
+    embed = discord.Embed(description=f"{client.user.mention} tickles {member.mention}", color=0xfd53d0)
+    embed.set_image(url=r['url'])
+    await ctx.send(embed=embed, delete_after=20)
+
+@client.command()
+async def spank(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    r = requests.get('https://nekos.life/api/v2/img/spank').json()
+    embed = discord.Embed(description=f"{client.user.mention} spanks {member.mention}", color=0xfd53d0)
+    embed.set_image(url=r['url'])
+    await ctx.send(embed=embed, delete_after=20)
+
+@client.command()
+async def setnicks(ctx, *, message):
+    await ctx.message.delete()
+    for member in ctx.message.guild.members:
+        await member.edit(nick=message)
+
+@client.command()
+async def revertnicks(ctx):
+    await ctx.message.delete()
+    for member in ctx.message.guild.members:
+        await member.edit(nick=None)
+
+@client.command()
+async def guildname(ctx, *, message):
+    await ctx.message.delete()
+    guild = ctx.message.guild
+    await guild.edit(name=message)
+
+
+    
+
+
 
 
 
