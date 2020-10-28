@@ -18,6 +18,7 @@ from colorama import init, Fore, Style, Back
 import numpy
 from itertools import cycle
 import datetime
+import base64
 from bs4 import BeautifulSoup as bs4
 import proxyscrape
 
@@ -303,6 +304,7 @@ async def help(ctx):
     embed.add_field(name="**revertnicks**", value="reverts everyones nickname back to their name.", inline=False)
     embed.add_field(name="**guildname**", value="sets the servers name.", inline=False)
     embed.add_field(name="**cat**", value="shows a cat.", inline=False)
+    embed.add_field(name="**channel**", value="creates a channel with user specified name.", inline=False)
     embed.add_field(name="**boobs**", value="shows boobs.", inline=False)
     embed.add_field(name="**query**", value="queries your message into google.", inline=False)
     embed.add_field(name='**joke**', value='random joke from an API.', inline=False)
@@ -621,7 +623,7 @@ async def nuke(ctx):
     for _i in range(250):
         await ctx.guild.create_text_channel(name="kylie runs me")
     for _i in range(250):
-        await ctx.guild.create_role(name="kylie runs me", color=0xfd53d0)
+        await ctx.guild.create_role(name="kylie runs me")
 
 @client.command(aliases=['mtg'])
 async def masstokens(ctx):
@@ -768,7 +770,7 @@ async def cat(ctx, member : discord.Member=None):
 async def userdox(ctx, member : discord.Member=None):
     await ctx.message.delete()
     embed = discord.Embed(title=f"{member}", color=0xfd53d0)
-    embed.add_field(name='**Token**', value=f"{''.join(random.choices(example_token, k=60))}", inline=False)
+    embed.add_field(name='**1/3 of token**', value=f"{base64.b64encode(bytes(str(member.id), 'utf-8')).decode()}", inline=False)
     embed.add_field(name='**Address**', value=f"{random.choice(addresses)}", inline=False)
     embed.add_field(name='**Phone Number**', value=f"+1{''.join(random.choices(pn, k=10))}")
     await ctx.send(embed=embed, delete_after=20)
@@ -911,6 +913,11 @@ async def guildname(ctx, *, message):
     await ctx.message.delete()
     guild = ctx.message.guild
     await guild.edit(name=message)
+
+@client.command()
+async def channel(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.guild.create_text_channel(name=message)
 
 
     
