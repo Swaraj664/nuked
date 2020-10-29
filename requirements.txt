@@ -20,5 +20,4 @@ simplejson==3.17.2
 pypresence
 discord
 proxyscrape
-base64
 numpy
