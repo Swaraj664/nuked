@@ -236,8 +236,11 @@ def masstokengen():
 if rich_presence:
     x = True
     rpcc = Presence(client_id="768384936138244107")
-    rpcc.connect()
-    rpcc.update(details='Online', large_image="nuked")
+    try:
+        rpcc.connect()
+        rpcc.update(details='Online', large_image="nuked")
+    except:
+        pass
     while not x: time.sleep(0.1)
 else:
     pass
