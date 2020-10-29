@@ -15,4 +15,13 @@ kylie#1337 was banned. rip :(
 
 
 
+# IMPORTANT !
+using this tool CAN and MIGHT get your account banned, since selfbots ARE AGAINST Discord's ToS.
+https://discord.com/terms
+I do not condone usage of this tool, i just made it
+lol
+
+
+
+
 
