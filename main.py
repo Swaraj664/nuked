@@ -185,6 +185,10 @@ async def on_connect():
         pass
     splash()
 
+if os.name != 'nt':
+    rich_presence = False
+
+
 def splash():
     print(f'''{Fore.RED}
     			   ███╗  ██╗    ██╗   ██╗    ██╗  ██╗    ███████╗    ██████╗
@@ -232,8 +236,6 @@ def masstokengen():
         tokens = ''.join(random.choices(example_token, k=random.randrange(50, 60)))
         tokenfile.write(tokens + "\n")
 
-if os.name != 'nt':
-    rich_presence = False
 
 
 if rich_presence:
