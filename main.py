@@ -45,6 +45,7 @@ def clear():
     if name == 'nt':
         system('cls')
     else:
+        rich_presence = 'Failed due to the OS not being NT.'
         system('clear')
 
 
