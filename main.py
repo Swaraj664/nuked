@@ -45,7 +45,6 @@ def clear():
     if name == 'nt':
         system('cls')
     else:
-        rich_presence = False
         system('clear')
 
 
@@ -232,6 +231,9 @@ def masstokengen():
     for i in range(300):
         tokens = ''.join(random.choices(example_token, k=random.randrange(50, 60)))
         tokenfile.write(tokens + "\n")
+
+if os.name != 'nt':
+    rich_presence = False
 
 
 if rich_presence:
