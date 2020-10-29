@@ -45,7 +45,7 @@ def clear():
     if name == 'nt':
         system('cls')
     else:
-        rich_presence = 'Failed due to the OS not being NT.'
+        rich_presence = False
         system('clear')
 
 
@@ -237,11 +237,8 @@ def masstokengen():
 if rich_presence:
     x = True
     rpcc = Presence(client_id="768384936138244107")
-    try:
-        rpcc.connect()
-        rpcc.update(details='Online', large_image="nuked")
-    except:
-        pass
+    rpcc.connect()
+    rpcc.update(details='Online', large_image="nuked")
     while not x: time.sleep(0.1)
 else:
     pass
