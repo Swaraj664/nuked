@@ -119,6 +119,10 @@ ignore_prefix = config.get('ignore_prefix')
 
 
 
+numbers = '1234567890'
+
+
+
 token = config.get('token')
 password = config.get('password')
 rich_presence = config.get('richpresence')
@@ -227,13 +231,15 @@ def Nitro():
 
 
 def tokengener():
-    token = ''.join(random.choices(example_token, k=random.randrange(50, 60)))
+    fh = ''.join((random.choices(numbers, k=18)))
+    token = base64.b64encode(bytes(fh, 'utf-8')).decode() + '.X' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=6)) + '.' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=27))
     return token
 
 def masstokengen():
     tokenfile = open("tokens.txt", "a")
     for i in range(300):
-        tokens = ''.join(random.choices(example_token, k=random.randrange(50, 60)))
+        fh = ''.join((random.choices(numbers, k=18)))
+        tokens = base64.b64encode(bytes(fh, 'utf-8')).decode() + '.X' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=6)) + '.' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=27))
         tokenfile.write(tokens + "\n")
 
 
