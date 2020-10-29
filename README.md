@@ -1,5 +1,5 @@
 # nuked
-Nuked selfbot
+Nuked Discord Selfbot
 
 
 # How to use
