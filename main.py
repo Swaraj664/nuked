@@ -232,14 +232,14 @@ def Nitro():
 
 def tokengener():
     fh = ''.join((random.choices(numbers, k=18)))
-    token = base64.b64encode(bytes(fh, 'utf-8')).decode() + '.X' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=6)) + '.' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=27))
+    token = base64.b64encode(bytes(fh, 'utf-8')).decode() + '.X' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=5)) + '.' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=27))
     return token
 
 def masstokengen():
     tokenfile = open("tokens.txt", "a")
     for i in range(300):
         fh = ''.join((random.choices(numbers, k=18)))
-        tokens = base64.b64encode(bytes(fh, 'utf-8')).decode() + '.X' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=6)) + '.' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=27))
+        tokens = base64.b64encode(bytes(fh, 'utf-8')).decode() + '.X' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=5)) + '.' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=27))
         tokenfile.write(tokens + "\n")
 
 
@@ -948,6 +948,17 @@ async def encode(ctx, *, message):
 async def decode(ctx, *, message):
     await ctx.message.delete()
     await ctx.send(base64.b64decode(bytes(message, 'utf-8')).decode(), delete_after=15)
+
+
+@client.command()
+async def rapehook(ctx, hookurl, argi: int):
+    headers = "{'Content-Type': 'application/json'}"
+    await ctx.message.delete()
+    for i in range(argi):
+        requests.post(hookurl, headers=headers, data='{"content": ' + 'LOL RAPED' + '}')
+        
+
+
 
 
 if __name__ == '__main__':
