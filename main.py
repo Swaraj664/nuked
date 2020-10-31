@@ -330,10 +330,14 @@ async def help(ctx):
     embed.add_field(name='**tickle**', value='tickles mentioned user.', inline=False)
     embed.add_field(name='**scrape**', value='proxy scraper.', inline=False)
     embed.add_field(name='**dox**', value='fake doxes a user.', inline=False)
+    embed.add_field(name='**getpfp**', value='gets a mentioned users pfp link and displays it in console.', inline=False)
+    embed.add_field(name='**getallpfp**', value='tries to get everyones pfp link and dumps in in a text file.', inline=False)
+    embed.add_field(name='**encode**', value='encodes a string to base64.', inline=False)
+    embed.add_field(name='**decode**', value='decodes a base64 string.', inline=False)
     embed.add_field(name='**setname**', value='sets your username to whatever is specified.', inline=False)
     embed.add_field(name='**allservers**', value='displays every server you\'re in inside of the console.', inline=False)
     embed.add_field(name='**embed**', value='sends a user specified embed.', inline=False)
-    embed.add_field(name='**id**', value='shows a user\'s id.', inline=False)
+    embed.add_field(name='**channel**', value='creates a channel with user specified name.', inline=False)
     embed.add_field(name='**bold**', value='sends your message, but bold.', inline=False)
     embed.add_field(name='**italics**', value='sends your message, but italicized.', inline=False)
     embed.add_field(name='**hidden**', value='sends your message, but hidden.', inline=False)
@@ -485,7 +489,6 @@ async def tokenfuck(ctx, _token):
                 print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}{e}" + Fore.RESET)
             else:
                 break
-
 
 @client.command(aliases=['tokinfo', 'tdox'])
 async def tokeninfo(ctx, _token):
@@ -818,7 +821,7 @@ async def allservers(ctx):
     await ctx.message.delete()
     async for guild in client.fetch_guilds():
         print(guild)
-    time.sleep(25)
+    await asyncio.sleep(25)
     splash()
 
 
@@ -949,14 +952,23 @@ async def decode(ctx, *, message):
     await ctx.message.delete()
     await ctx.send(base64.b64decode(bytes(message, 'utf-8')).decode(), delete_after=15)
 
+@client.command()
+async def getpfp(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    print(Fore.LIGHTBLUE_EX + f'{member.display_name}#{member.discriminator}\'s profile picture link: ' + Fore.LIGHTGREEN_EX + str(member.avatar_url))
+    await asyncio.sleep(20)
+    splash()
+
 
 @client.command()
-async def rapehook(ctx, hookurl, argi: int):
-    headers = "{'Content-Type': 'application/json'}"
+async def getallpfp(ctx, member: discord.Member=None):
     await ctx.message.delete()
-    for i in range(argi):
-        requests.post(hookurl, headers=headers, data='{"content": ' + 'LOL RAPED' + '}')
-        
+    txtfile = open(f'{ctx.message.guild} pfps.txt', 'w')
+    try:
+        for member in ctx.message.guild.members:
+            txtfile.write(f'{member.display_name}#{member.discriminator}\'s profile picture link: {member.avatar_url}\n')
+    except:
+        pass
 
 
 
