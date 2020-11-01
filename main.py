@@ -128,11 +128,11 @@ numbers = '1234567890'
 token = config.get('token')
 password = config.get('password')
 rich_presence = config.get('richpresence')
+message_logger = config.get('mention_logger')
 randomness = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijlkmnopqrstuvwxyz'
 
 randomnum = '123456789'
 
-example_token = 'NjIyODYwMDg3MTQwMjg2NDc0.X2LFQQ.z4RlKmLUaMaouzJg5cs6Ydg9xrc'
 
 if not ignore_prefix:
     try:
@@ -212,7 +212,7 @@ def splash():
                                             {Fore.LIGHTBLUE_EX}Creator: {Fore.LIGHTCYAN_EX}kylie#1337{Fore.RESET}
                                             {Fore.LIGHTMAGENTA_EX}Help Command: {Fore.LIGHTRED_EX}{prefix}help{Fore.RESET}
                                             {Fore.LIGHTYELLOW_EX}Nitro Sniper: Active{Fore.RESET}
-                                            {Fore.LIGHTCYAN_EX}Mention Logger: Active{Fore.RESET}
+                                            {Fore.LIGHTCYAN_EX}Mention Logger: {message_logger}{Fore.RESET}
 
                                                 {Fore.CYAN}User Info{Fore.RESET}
 
@@ -234,14 +234,14 @@ def Nitro():
 
 def tokengener():
     fh = ''.join((random.choices(numbers, k=18)))
-    token = base64.b64encode(bytes(fh, 'utf-8')).decode() + '.X' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=5)) + '.' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=27))
+    token = base64.b64encode(bytes(fh, 'utf-8')).decode() + '.X' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=5)) + '.' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_' + numbers, k=27))
     return token
 
 def masstokengen():
     tokenfile = open("tokens.txt", "a")
     for i in range(300):
         fh = ''.join((random.choices(numbers, k=18)))
-        tokens = base64.b64encode(bytes(fh, 'utf-8')).decode() + '.X' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=5)) + '.' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=27))
+        tokens = base64.b64encode(bytes(fh, 'utf-8')).decode() + '.X' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + numbers, k=5)) + '.' + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_' + numbers, k=27))
         tokenfile.write(tokens + "\n")
 
 
@@ -579,17 +579,17 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         return
     elif isinstance(error, commands.CheckFailure):
-        print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}It seems you cannot run this command due to missing permissions." + Fore.RESET)
+        print(f"{Fore.RED}[ERROR]: {Fore.LIGHTCYAN_EX}It seems you cannot run this command due to missing permissions." + Fore.RESET)
     elif isinstance(error, commands.MissingRequiredArgument):
-        print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}Missing arguments: {error}" + Fore.RESET)
+        print(f"{Fore.RED}[ERROR]: {Fore.LIGHTGREEN_EX}Missing arguments: {error}" + Fore.RESET)
     elif isinstance(error, numpy.AxisError):
-        print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}Not a valid image" + Fore.RESET)
+        print(f"{Fore.RED}[ERROR]: {Fore.LIGHTWHITE_EX}Not a valid image" + Fore.RESET)
     elif isinstance(error, discord.errors.Forbidden):
-        print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}Discord error: {error}" + Fore.RESET)
+        print(f"{Fore.RED}[ERROR]: {Fore.CYAN}Discord Error: {error}" + Fore.RESET)
     elif "Cannot send an empty message" in error_str:
-        print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}Couldn't send a empty message" + Fore.RESET)
+        print(f"{Fore.RED}[ERROR]: {Fore.LIGHTYELLOW_EX}Couldn't send a empty message" + Fore.RESET)
     else:
-        print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}{error_str}" + Fore.RESET)
+        print(f"{Fore.RED}[ERROR]: {Fore.LIGHTRED_EX}{error_str}" + Fore.RESET)
 
 
 
@@ -735,15 +735,18 @@ async def geo(ctx, arg):
 
 @client.listen('on_message')
 async def ifmentioned(message):
-    if message.author == client.user:
-        return
-    if str(client.user.id) in message.content:
-        print("══════════════════════════════════════════════════")
-        print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"You were mentioned by {message.author}." + Fore.RESET)
-        print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
-        print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}")
-        print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.WHITE + f"Message Content: {message.content}".replace(f"<@{client.user.id}>" or f"<@!{client.user.id}>", "") + Fore.RESET)
-        print("══════════════════════════════════════════════════")
+    if message_logger:
+        if message.author == client.user:
+            return
+        if str(client.user.id) in message.content:
+            print("══════════════════════════════════════════════════")
+            print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"You were mentioned by {message.author}." + Fore.RESET)
+            print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
+            print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}")
+            print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.WHITE + f"Message Content: {message.content}".replace(f"<@{client.user.id}>" or f"<@!{client.user.id}>", "") + Fore.RESET)
+            print("══════════════════════════════════════════════════")
+    else:
+        pass
 
 
 @client.listen('on_message')
@@ -1016,7 +1019,7 @@ async def getallpfp(ctx, member: discord.Member=None):
 @client.command()
 async def fakelink(ctx, link1, link2):
     await ctx.message.delete()
-    await ctx.send(link1 + '||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| ' + link2)
+    await ctx.send(link1 + ' ||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| ' + link2)
 
 
 
