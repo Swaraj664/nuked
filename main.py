@@ -356,6 +356,7 @@ async def nsfw(ctx):
 
 @client.command()
 async def malicious(ctx):
+    await ctx.message.delete()
     embed = discord.Embed(title='**Malicious Commands**', color=0xfd53d0)
     embed.add_field(name="**tokengen**", value="generates a user token.", inline=False)
     embed.add_field(name="**setnicks**", value="[nickname] sets everyones nickname to user specified name.", inline=False)
@@ -368,6 +369,7 @@ async def malicious(ctx):
 
 @client.command()
 async def fun(ctx):
+    await ctx.message.delete()
     embed = discord.Embed(title='**Fun Commands**', color=0xfd53d0)
     embed.add_field(name="**cat**", value="sends a random embedded image of a cat.", inline=False)
     embed.add_field(name='**joke**', value='sends a random embedded joke from an API.', inline=False)
@@ -379,7 +381,7 @@ async def fun(ctx):
     embed.add_field(name="**spam**", value='[amount] spams a message for specified amount of times.', inline=False)
     embed.add_field(name="**kiss**", value="[mentioned user] kisses someone.", inline=False)
     embed.add_field(name="**hug**", value="[mentioned user] hugs someone.", inline=False)
-    embed.set_footer(text=f"Prefix is \"{prefix}\"")
+    embed.set_footer(text=f"Command prefix is \"{prefix}\"")
     await ctx.send(embed=embed, delete_after=25)
 
 
@@ -1015,7 +1017,6 @@ async def getallpfp(ctx, member: discord.Member=None):
 async def fakelink(ctx, link1, link2):
     await ctx.message.delete()
     await ctx.send(link1 + '||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| ' + link2)
-
 
 
 
