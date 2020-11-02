@@ -977,12 +977,12 @@ async def channel(ctx, *, message):
 @client.command()
 async def encode(ctx, *, message):
     await ctx.message.delete()
-    await ctx.send(base64.b64encode(bytes(message, 'utf-8')).decode(), delete_after=15)
+    await ctx.send(base64.b64encode(bytes(message, 'utf-8')).decode())
 
 @client.command()
 async def decode(ctx, *, message):
     await ctx.message.delete()
-    await ctx.send(base64.b64decode(bytes(message, 'utf-8')).decode(), delete_after=15)
+    await ctx.send(base64.b64decode(bytes(message, 'utf-8')).decode())
 
 @client.command()
 async def getpfp(ctx, member: discord.Member=None):
@@ -1015,10 +1015,11 @@ async def fakelink(ctx, link1, link2):
     await ctx.send(link1 + ' ||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| ' + link2)
 
 @client.command()
-async def acode(ctx, *, message):
+async def addy(ctx):
     await ctx.message.delete()
-    await ctx.send(autism(text=message))
+    await ctx.send(randaddr())
             
+
 
 
 
