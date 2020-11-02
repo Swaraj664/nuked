@@ -374,6 +374,7 @@ async def fun(ctx):
     embed.add_field(name="**spam**", value='[amount] spams a message for specified amount of times.', inline=False)
     embed.add_field(name="**kiss**", value="[mentioned user] kisses someone.", inline=False)
     embed.add_field(name="**hug**", value="[mentioned user] hugs someone.", inline=False)
+    embed.add_field(name='**addy**', value='sends a random address.', inline=False)
     embed.set_footer(text=f"Command prefix is \"{prefix}\"")
     await ctx.send(embed=embed, delete_after=25)
 
