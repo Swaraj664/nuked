@@ -22,9 +22,8 @@ import datetime
 import base64
 from bs4 import BeautifulSoup as bs4
 import proxyscrape
+from faker import Faker
 import webbrowser
-
-
 # strap is a fag
 # i do not condone usage of this, just made it cuz i was bored.
 # if you get banned it isn't my fault lol
@@ -123,7 +122,11 @@ ignore_prefix = config.get('ignore_prefix')
 
 numbers = '1234567890'
 
-
+def autism(text):
+    vowel = 'aeiou'
+    for vowel in text:
+        retext = vowel.replace(vowel, random.choices(randomness + randomnum, k=12))
+    return retext
 
 token = config.get('token')
 password = config.get('password')
@@ -167,19 +170,9 @@ def owner():
     return answer
 
 
-addresses = [
-    '433 Admiral Callaghan Ln, Vallejo, CA, 94591',
-    '5029 County Rd #153, Zanesfield, OH, 43360',
-    '10001 Nathan Ln N, Osseo, MN, 55369',
-    '495 Park Hill Rd, Collierville, TN, 38017',
-    '1 Appian Way #703-5, South San Francisco, CA, 94080',
-    '547 Kemper St, Shreveport, LA, 71106',
-    '835 Buffalo Br, Morehead, KY, 40351',
-    '249 Hardin Rd, Delanson, NY, 12053',
-    '2647 Albany St, Broken Arrow, OK, 74014',
-    '6836 Piershill Ln, Cary, NC, 27519'
-]
-
+def randaddr():
+    fake = Faker()
+    return fake.address()
 
 @client.event
 async def on_connect():
@@ -832,7 +825,7 @@ async def userdox(ctx, member : discord.Member=None):
     await ctx.message.delete()
     embed = discord.Embed(title=f"{member}", color=0xfd53d0)
     embed.add_field(name='**Token**', value=f"{base64.b64encode(bytes(str(member.id), 'utf-8')).decode() + '...'}", inline=False)
-    embed.add_field(name='**Address**', value=f"{random.choice(addresses)}", inline=False)
+    embed.add_field(name='**Address**', value=randaddr(), inline=False)
     embed.add_field(name='**Phone Number**', value=f"+1 {''.join(random.choices(pn, k=10))}")
     await ctx.send(embed=embed, delete_after=20)
 
@@ -1021,7 +1014,11 @@ async def fakelink(ctx, link1, link2):
     await ctx.message.delete()
     await ctx.send(link1 + ' ||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| ' + link2)
 
-
+@client.command()
+async def acode(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.send(autism(text=message))
+            
 
 
 
