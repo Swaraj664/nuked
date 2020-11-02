@@ -21,3 +21,4 @@ pypresence
 discord
 proxyscrape
 numpy
+faker
