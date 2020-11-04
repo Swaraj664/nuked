@@ -40,7 +40,7 @@ def pscrape():
     proxy = collector.get_proxies({'country': 'united states'})
     return str(proxy)
 
-
+val = 25
 
 def clear():
     if name == 'nt':
@@ -111,6 +111,7 @@ locales = [
 ]
 
 # wouldn't recommend editing any of this unless you know what you're doing.
+# shouldn't be any issues with the releases, idk.
 
 
 def searchq(link):
@@ -164,11 +165,6 @@ for letter in "Logging into Nuked":
 
 clear()
 print(Fore.GREEN + "                              Login Success " + Fore.CYAN + "|" + Fore.CYAN + " Welcome to " + Fore.RED + "Nuked v2" + Fore.LIGHTWHITE_EX + " | Loading Splash.")
-
-def owner():
-    answer = "kylie#1337, add me :)"
-    return answer
-
 
 def randaddr():
     fake = Faker()
@@ -251,7 +247,7 @@ else:
 @client.command()
 async def bump(ctx):
     await ctx.message.delete()
-    await ctx.send("Starting..", delete_after=4)
+    await ctx.send("Starting..", delete_after=val)
     while True:
         try:
             await ctx.send('!d bump')
@@ -301,7 +297,7 @@ async def help(ctx):
     embed.add_field(name='**Malicious Commands**', value=f'{prefix}malicious', inline=False)
     embed.add_field(name='**Utility Commands**', value=f'{prefix}util', inline=False)
     embed.set_footer(text=f"Command prefix is \"{prefix}\"")
-    await ctx.send(embed=embed, delete_after=15)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def util(ctx):
@@ -333,7 +329,7 @@ async def util(ctx):
     embed.add_field(name="**webping**", value="[website url] pings a **website.**", inline=False)
     embed.add_field(name="**logout**", value='logs out of selfbot and closes window.', inline=False)
     embed.set_footer(text=f"Command prefix is \"{prefix}\"")
-    await ctx.send(embed=embed, delete_after=25)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def nsfw(ctx):
@@ -343,7 +339,7 @@ async def nsfw(ctx):
     embed.add_field(name="**spank**", value='[mentioned user] spanks a mentioned user.', inline=False)
     embed.add_field(name="**pussy**", value="sends a random embedded pussy pic.", inline=False)
     embed.set_footer(text=f"Command prefix is \"{prefix}\"")
-    await ctx.send(embed=embed, delete_after=25)
+    await ctx.send(embed=embed, delete_after=val)
 
 
 
@@ -358,7 +354,7 @@ async def malicious(ctx):
     embed.add_field(name="**geo**", value="[ip] gets information on an IP address.", inline=False)
     embed.add_field(name="**mtg**", value="mass generates tokens and dumps them into a text file.", inline=False)
     embed.set_footer(text=f"Command prefix is \"{prefix}\"")
-    await ctx.send(embed=embed, delete_after=25)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def fun(ctx):
@@ -374,9 +370,8 @@ async def fun(ctx):
     embed.add_field(name="**spam**", value='[amount] spams a message for specified amount of times.', inline=False)
     embed.add_field(name="**kiss**", value="[mentioned user] kisses someone.", inline=False)
     embed.add_field(name="**hug**", value="[mentioned user] hugs someone.", inline=False)
-    embed.add_field(name='**addy**', value='sends a random address.', inline=False)
     embed.set_footer(text=f"Command prefix is \"{prefix}\"")
-    await ctx.send(embed=embed, delete_after=25)
+    await ctx.send(embed=embed, delete_after=val)
 
 
 
@@ -415,17 +410,17 @@ async def pingsite(ctx, *, website):
         if r == 404:
             embed = discord.Embed(title="**Website is down.**", description=f"responded with a status code of {r}",
                                   color=0xfd53d0)
-            await ctx.send(embed=embed, delete_after=3)
+            await ctx.send(embed=embed, delete_after=val)
         else:
             embed = discord.Embed(title="**Website is online.**", description=f"responded with a status code of {r}",
                                   color=0xfd53d0)
-            await ctx.send(embed=embed, delete_after=3)
+            await ctx.send(embed=embed, delete_after=val)
 
 
 @client.command(aliases=['exit'])
 async def logout(ctx):
     await ctx.message.delete()
-    await ctx.send("logging out..", delete_after=1)
+    await ctx.send("logging out..", delete_after=0.2)
     await asyncio.sleep(2)
     exit(0)
 
@@ -440,9 +435,9 @@ async def clown(ctx, arg):
     try:
         embed = discord.Embed(title="**you're a clown**", color=0xfd53d0,
                               description=f"{arg} is a fucking clown \n lol \n ur so unfunny")
-        await ctx.send(embed=embed, delete_after=10)
+        await ctx.send(embed=embed, delete_after=val)
     except Exception as err:
-        await ctx.send(f"Error: {err}", delete_after=3)
+        await ctx.send(f"Error: {err}", delete_after=1)
 
 
 @client.command(aliases=['free'])
@@ -458,7 +453,7 @@ async def tokengen(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title="**Token Generator**", color=0xfd53d0,
                           description=f"Generated Token below, **THESE WILL NOT ALWAYS WORK** \n \n {tokengener()}")
-    await ctx.send(embed=embed, delete_after=15)
+    await ctx.send(embed=embed, delete_after=val)
 
 
 @client.command(aliases=['discfuck'])
@@ -549,7 +544,7 @@ async def tokeninfo(ctx, _token):
         if field['value']:
             em.add_field(name=field['name'], value=field['value'], inline=False)
             em.set_thumbnail(url=f"https://cdn.discordapp.com/avatars/{user_id}/{avatar_id}")
-    return await ctx.send(embed=em, delete_after=10)
+    return await ctx.send(embed=em, delete_after=val)
 
 
 @client.command(aliases=['porn'])
@@ -558,7 +553,7 @@ async def pussy(ctx):
     r = requests.get("https://nekobot.xyz/api/image?type=pussy").json()
     embed = discord.Embed(color=0xfd53d0)
     embed.set_image(url=str(r["message"]))
-    await ctx.send(embed=embed, delete_after=10)
+    await ctx.send(embed=embed, delete_after=val)
 
 
 @client.event
@@ -594,7 +589,7 @@ async def avatar(ctx, *, member: discord.Member = None):
     embed = discord.Embed(title=f"{member}'s avatar", color=0xfd53d0)
     avatarurl = member.avatar_url
     embed.set_image(url=avatarurl)
-    await ctx.send(embed=embed, delete_after=25)
+    await ctx.send(embed=embed, delete_after=val)
 
 
 @client.command()
@@ -605,7 +600,7 @@ async def info(ctx):
     embed.add_field(name="**made by**", value="kylie#1337")
     embed.add_field(name="**running under the user**", value=f"{client.user.name}#{client.user.discriminator}")
     embed.set_footer(text="kylie#1337 <3")
-    await ctx.send(embed=embed, delete_after=4)
+    await ctx.send(embed=embed, delete_after=val)
 
 
 @client.command(aliases=['rep'])
@@ -618,7 +613,7 @@ async def spamreport(ctx, member: discord.Member = None):
 @client.command()
 async def cls(ctx):
     await ctx.message.delete()
-    await ctx.send("Clearing Console..", delete_after=1)
+    await ctx.send("Clearing Console..", delete_after=0.1)
     clear()
 
 
@@ -684,7 +679,7 @@ async def masstokens(ctx):
 @client.command(aliases=['extensiveinfo', 'showtoken'])
 async def clientinfo(ctx):
     await ctx.message.delete()
-    await ctx.send("Extensive client info now in console. Warning: It contains user token!", delete_after=4)
+    await ctx.send("Extensive client info now in console. Warning: It contains user token!", delete_after=5)
     print("Token: " + token)
     print(f"Email: {client.user.email}")
     print(f"Nitro?: {format(client.user.premium)}")
@@ -706,7 +701,7 @@ async def btc(ctx):
     embed.add_field(name="**USD**", value=usd)
     embed.add_field(name="**EUR**", value=eur)
     embed.add_field(name="**GBP**", value=gbp)
-    await ctx.send(embed=embed, delete_after=10)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command(aliases=['geoip', 'iplookup'])
 async def geo(ctx, arg):
@@ -723,7 +718,7 @@ async def geo(ctx, arg):
         embed.add_field(name="**Latitude**", value=r.json()['lat'], inline=False)
         embed.add_field(name="**Status**", value=r.json()['status'], inline=False)
 
-        await ctx.send(embed=embed, delete_after=10)
+        await ctx.send(embed=embed, delete_after=val)
     except Exception as e:
         print(Fore.RED + "[ERROR] " + Fore.RESET + Fore.YELLOW + str(e))
 
@@ -794,7 +789,7 @@ async def kiss(ctx, member : discord.Member=None):
     r = requests.get("https://nekos.life/api/kiss")
     embed = discord.Embed(description=f"<@{client.user.id}> kisses <@{member.id}>", color=0xfd53d0)
     embed.set_image(url=r.json()['url'])
-    await ctx.send(embed=embed, delete_after=20)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def hug(ctx, member : discord.Member=None):
@@ -802,7 +797,7 @@ async def hug(ctx, member : discord.Member=None):
     r = requests.get("https://nekos.life/api/hug")
     embed = discord.Embed(description=f"<@{client.user.id}> hugs <@{member.mention}>", color=0xfd53d0)
     embed.set_image(url=r.json()['url'])
-    await ctx.send(embed=embed, delete_after=20)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def boobs(ctx, member : discord.Member=None):
@@ -810,7 +805,7 @@ async def boobs(ctx, member : discord.Member=None):
     r = requests.get("https://nekos.life/api/v2/img/boobs")
     embed = discord.Embed(color=0xfd53d0)
     embed.set_image(url=r.json()['url'])
-    await ctx.send(embed=embed, delete_after=20)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def cat(ctx, member : discord.Member=None):
@@ -818,7 +813,7 @@ async def cat(ctx, member : discord.Member=None):
     r = requests.get("https://nekos.life/api/v2/img/meow")
     embed = discord.Embed(color=0xfd53d0)
     embed.set_image(url=r.json()['url'])
-    await ctx.send(embed=embed, delete_after=20)
+    await ctx.send(embed=embed, delete_after=val)
 
 
 @client.command(aliases=['fakedox', 'dox'])
@@ -828,20 +823,20 @@ async def userdox(ctx, member : discord.Member=None):
     embed.add_field(name='**Token**', value=f"{base64.b64encode(bytes(str(member.id), 'utf-8')).decode() + '...'}", inline=False)
     embed.add_field(name='**Address**', value=randaddr(), inline=False)
     embed.add_field(name='**Phone Number**', value=f"+1 {''.join(random.choices(pn, k=10))}")
-    await ctx.send(embed=embed, delete_after=20)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def query(ctx, *, message):
     await ctx.message.delete()
     embed = discord.Embed(title="**Search Query**", color=0xfd53d0, description=searchq(link=message))
-    await ctx.send(embed=embed, delete_after=20)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def joke(ctx):
     await ctx.message.delete()
     r = requests.get("https://sv443.net/jokeapi/v2/joke/Any?type=single")
     embed = discord.Embed(title="**Joke**", color=0xfd53d0, description=f"{r.json()['joke']}")
-    await ctx.send(embed=embed, delete_after=25)
+    await ctx.send(embed=embed, delete_after=val)
 
 
 @client.command()
@@ -864,14 +859,14 @@ async def proxscrape(ctx):
     proxfile = open('proxies.txt', 'a')
     proxfile.write(pscrape() + '\n')
     embed = discord.Embed(title="**Proxy Scraper**", color=0xfd53d0, description='proxies in proxies.txt')
-    await ctx.send(embed=embed, delete_after=10)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def embed(ctx, *, message):
     await ctx.message.delete()
     embed = discord.Embed(color=0xfd53d0, description=message)
     embed.set_author(name=str(client.user.display_name + "#" + client.user.discriminator), icon_url=client.user.avatar_url)
-    await ctx.send(embed=embed, delete_after=10)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def bold(ctx, *, message):
@@ -912,7 +907,7 @@ async def wyr(ctx):
     qor = soup.find(id='qor').text
     qb = soup.find(id='qb').text
     embed = discord.Embed(color=0xfd53d0, description=f'{qa}\n{qor}\n{qb}')
-    await ctx.send(embed=embed, delete_after=25)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def id(ctx, member: discord.Member=None):
@@ -921,9 +916,9 @@ async def id(ctx, member: discord.Member=None):
         pass
     try:
         embed = discord.Embed(description=f"**{member.mention}'s ID**\n\n{member.id}",color=0xfd53d0)
-        await ctx.send(embed=embed, delete_after=15)
+        await ctx.send(embed=embed, delete_after=val)
     except:
-        await ctx.send(f"{member}'s ID" + '\n' + str(member.id), delete_after=20)
+        await ctx.send(f"{member}'s ID" + '\n' + str(member.id), delete_after=val)
 
 
 @client.command()
@@ -933,7 +928,7 @@ async def slap(ctx, user: discord.Member=None):
     res = r.json()
     embed = discord.Embed(description=f"{client.user.mention} slaps {user.mention}", color=0xfd53d0)
     embed.set_image(url=res['url'])
-    await ctx.send(embed=embed, delete_after=20)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def tickle(ctx, member: discord.Member=None):
@@ -941,7 +936,7 @@ async def tickle(ctx, member: discord.Member=None):
     r = requests.get('https://nekos.life/api/v2/img/tickle').json()
     embed = discord.Embed(description=f"{client.user.mention} tickles {member.mention}", color=0xfd53d0)
     embed.set_image(url=r['url'])
-    await ctx.send(embed=embed, delete_after=20)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def spank(ctx, member: discord.Member=None):
@@ -949,7 +944,7 @@ async def spank(ctx, member: discord.Member=None):
     r = requests.get('https://nekos.life/api/v2/img/spank').json()
     embed = discord.Embed(description=f"{client.user.mention} spanks {member.mention}", color=0xfd53d0)
     embed.set_image(url=r['url'])
-    await ctx.send(embed=embed, delete_after=20)
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def setnicks(ctx, *, message):
