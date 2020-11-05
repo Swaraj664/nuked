@@ -133,6 +133,7 @@ token = config.get('token')
 password = config.get('password')
 rich_presence = config.get('richpresence')
 message_logger = config.get('mention_logger')
+mentionblocker = config.get('block_ping')
 randomness = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijlkmnopqrstuvwxyz'
 
 randomnum = '123456789'
@@ -327,6 +328,7 @@ async def util(ctx):
     embed.add_field(name="**fakelink**", value="[link1] [link2] creates a fake link using an exploit which hides links if the message consists of too many |'s.", inline=False)
     embed.add_field(name='**userinfo**', value='[mentioned user] shows user info on a mentioned person.', inline=False)
     embed.add_field(name="**webping**", value="[website url] pings a **website.**", inline=False)
+    embed.add_field(name="**poll**", value="[topic] sends a poll with voting reactions.")
     embed.add_field(name="**logout**", value='logs out of selfbot and closes window.', inline=False)
     embed.set_footer(text=f"Command prefix is \"{prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
@@ -727,7 +729,7 @@ async def ifmentioned(message):
     if message_logger:
         if message.author == client.user:
             return
-        if str(client.user.id) in message.content:
+        if client.user.mention in message.content:
             print("══════════════════════════════════════════════════")
             print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"You were mentioned by {message.author}." + Fore.RESET)
             print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
@@ -1015,74 +1017,27 @@ async def addy(ctx):
     await ctx.message.delete()
     await ctx.send(randaddr())
             
+@client.command()
+async def poll(ctx, *, message):
+    await ctx.message.delete()
+    embed = discord.Embed(title="**Poll**", color=0xfd53d0)
+    embed.add_field(name=f"{message}", value="✅ ❌", inline=False)
+    message = await ctx.send(embed=embed, delete_after=250)
+    await message.add_reaction("✅")
+    await message.add_reaction("❌")
 
-
-
+@client.listen('on_message')
+async def unpingable(message):
+    if mentionblocker:
+        if client.user.mention in message.content:
+            await message.channel.send('|| ||')
+        else:
+            pass
+    else:
+        pass
 
 if __name__ == '__main__':
     Init()
 else:
-    clear()
-    try:
-        ctypes.windll.kernel32.SetConsoleTitleW('wow')
-    except:
-        pass
-    print('why you tryna skid rip nuked?')
-    input('all credits go to kylie#0010')
+    exit()
 
-
-"""
-
-
-kkkkkkkk                                   lllllll   iiii                                                  1111111    333333333333333    333333333333333   77777777777777777777
-k::::::k                                   l:::::l  i::::i                          ######    ######      1::::::1   3:::::::::::::::33 3:::::::::::::::33 7::::::::::::::::::7
-k::::::k                                   l:::::l   iiii                           #::::#    #::::#     1:::::::1   3::::::33333::::::33::::::33333::::::37::::::::::::::::::7
-k::::::k                                   l:::::l                                  #::::#    #::::#     111:::::1   3333333     3:::::33333333     3:::::3777777777777:::::::7
- k:::::k    kkkkkkkyyyyyyy           yyyyyyyl::::l iiiiiii     eeeeeeeeeeee    ######::::######::::######   1::::1               3:::::3            3:::::3           7::::::7
- k:::::k   k:::::k  y:::::y         y:::::y l::::l i:::::i   ee::::::::::::ee  #::::::::::::::::::::::::#   1::::1               3:::::3            3:::::3          7::::::7
- k:::::k  k:::::k    y:::::y       y:::::y  l::::l  i::::i  e::::::eeeee:::::ee######::::######::::######   1::::1       33333333:::::3     33333333:::::3          7::::::7
- k:::::k k:::::k      y:::::y     y:::::y   l::::l  i::::i e::::::e     e:::::e     #::::#    #::::#        1::::l       3:::::::::::3      3:::::::::::3          7::::::7
- k::::::k:::::k        y:::::y   y:::::y    l::::l  i::::i e:::::::eeeee::::::e     #::::#    #::::#        1::::l       33333333:::::3     33333333:::::3        7::::::7
- k:::::::::::k          y:::::y y:::::y     l::::l  i::::i e:::::::::::::::::e ######::::######::::######   1::::l               3:::::3            3:::::3      7::::::7
- k:::::::::::k           y:::::y:::::y      l::::l  i::::i e::::::eeeeeeeeeee  #::::::::::::::::::::::::#   1::::l               3:::::3            3:::::3     7::::::7
- k::::::k:::::k           y:::::::::y       l::::l  i::::i e:::::::e           ######::::######::::######   1::::l               3:::::3            3:::::3    7::::::7
-k::::::k k:::::k           y:::::::y       l::::::li::::::ie::::::::e               #::::#    #::::#     111::::::1113333333     3:::::33333333     3:::::3   7::::::7
-k::::::k  k:::::k           y:::::y        l::::::li::::::i e::::::::eeeeeeee       #::::#    #::::#     1::::::::::13::::::33333::::::33::::::33333::::::3  7::::::7
-k::::::k   k:::::k         y:::::y         l::::::li::::::i  ee:::::::::::::e       ######    ######     1::::::::::13:::::::::::::::33 3:::::::::::::::33  7::::::7
-kkkkkkkk    kkkkkkk       y:::::y          lllllllliiiiiiii    eeeeeeeeeeeeee                            111111111111 333333333333333    333333333333333   77777777
-                         y:::::y
-                        y:::::y
-                       y:::::y
-                      y:::::y
-                     yyyyyyy
-
-
-
-
-   SSSSSSSSSSSSSSS      tttt                                                                                               000000000          000000000          000000000       1111111
- SS:::::::::::::::S  ttt:::t                                                                     ######    ######        00:::::::::00      00:::::::::00      00:::::::::00    1::::::1
-S:::::SSSSSS::::::S  t:::::t                                                                     #::::#    #::::#      00:::::::::::::00  00:::::::::::::00  00:::::::::::::00 1:::::::1
-S:::::S     SSSSSSS  t:::::t                                                                     #::::#    #::::#     0:::::::000:::::::00:::::::000:::::::00:::::::000:::::::0111:::::1
-S:::::S        ttttttt:::::ttttttt   rrrrr   rrrrrrrrr   aaaaaaaaaaaaa  ppppp   ppppppppp   ######::::######::::######0::::::0   0::::::00::::::0   0::::::00::::::0   0::::::0   1::::1
-S:::::S        t:::::::::::::::::t   r::::rrr:::::::::r  a::::::::::::a p::::ppp:::::::::p  #::::::::::::::::::::::::#0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::1
- S::::SSSS     t:::::::::::::::::t   r:::::::::::::::::r aaaaaaaaa:::::ap:::::::::::::::::p ######::::######::::######0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::1
-  SS::::::SSSSStttttt:::::::tttttt   rr::::::rrrrr::::::r         a::::app::::::ppppp::::::p     #::::#    #::::#     0:::::0 000 0:::::00:::::0 000 0:::::00:::::0 000 0:::::0   1::::l
-    SSS::::::::SS    t:::::t          r:::::r     r:::::r  aaaaaaa:::::a p:::::p     p:::::p     #::::#    #::::#     0:::::0 000 0:::::00:::::0 000 0:::::00:::::0 000 0:::::0   1::::l
-       SSSSSS::::S   t:::::t          r:::::r     rrrrrrraa::::::::::::a p:::::p     p:::::p######::::######::::######0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::l
-            S:::::S  t:::::t          r:::::r           a::::aaaa::::::a p:::::p     p:::::p#::::::::::::::::::::::::#0:::::0     0:::::00:::::0     0:::::00:::::0     0:::::0   1::::l
-            S:::::S  t:::::t    ttttttr:::::r          a::::a    a:::::a p:::::p    p::::::p######::::######::::######0::::::0   0::::::00::::::0   0::::::00::::::0   0::::::0   1::::l
-SSSSSSS     S:::::S  t::::::tttt:::::tr:::::r          a::::a    a:::::a p:::::ppppp:::::::p     #::::#    #::::#     0:::::::000:::::::00:::::::000:::::::00:::::::000:::::::0111::::::111
-S::::::SSSSSS:::::S  tt::::::::::::::tr:::::r          a:::::aaaa::::::a p::::::::::::::::p      #::::#    #::::#      00:::::::::::::00  00:::::::::::::00  00:::::::::::::00 1::::::::::1
-S:::::::::::::::SS     tt:::::::::::ttr:::::r           a::::::::::aa:::ap::::::::::::::pp       ######    ######        00:::::::::00      00:::::::::00      00::    :::::::00   1::::::::::1
- SSSSSSSSSSSSSSS         ttttttttttt  rrrrrrr            aaaaaaaaaa  aaaap::::::pppppppp                                   000000000          000000000          000000000     111111111111
-                                                                         p:::::p
-                                                                         p:::::p
-                                                                        p:::::::p
-                                                                        p:::::::p
-                                                                        p:::::::p
-                                                                        ppppppppp
-
-"""
-
-
-# Nuked v2 by kylie#1337
