@@ -138,10 +138,12 @@ randomness = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijlkmnopqrstuvwxyz'
 
 randomnum = '123456789'
 
-
+if os.name != 'nt':
+    rich_presence = False
+    
 if not ignore_prefix:
     try:
-        ctypes.windll.kernel32.SetConsoleTitleW("Nuked v2 | Enter desired prefix.")
+        ctypes.windll.kernel32.SetConsoleTitleW("Nuked | Enter desired prefix.")
     except:
         pass
     prefix = input("Enter desired prefix, press enter for default (.): ")
@@ -165,7 +167,7 @@ for letter in "Logging into Nuked":
     time.sleep(0.1)
 
 clear()
-print(Fore.GREEN + "                              Login Success " + Fore.CYAN + "|" + Fore.CYAN + " Welcome to " + Fore.RED + "Nuked v2" + Fore.LIGHTWHITE_EX + " | Loading Splash.")
+print(Fore.GREEN + "                              Login Success " + Fore.CYAN + "|" + Fore.CYAN + " Welcome to " + Fore.RED + "Nuked" + Fore.LIGHTWHITE_EX + " | Loading Splash.")
 
 def randaddr():
     fake = Faker()
@@ -176,13 +178,11 @@ async def on_connect():
     system('cls')
     try:
         ctypes.windll.kernel32.SetConsoleTitleW(
-            f'Welcome to Nuked v2, {client.user.name}#{client.user.discriminator}. Command prefix is \"{prefix}\" | Login Successful.')
+            f'Welcome to Nuked, {client.user.name}#{client.user.discriminator}. Command prefix is \"{prefix}\" | Login Successful.')
     except:
         pass
     splash()
 
-if os.name != 'nt':
-    rich_presence = False
 
 
 def splash():
@@ -194,7 +194,7 @@ def splash():
     			   ██║ ╚███║    ╚██████╔╝    ██║ ╚██╗    ███████╗    ██████╔╝
     			   ╚═╝  ╚══╝     ╚═════╝     ╚═╝  ╚═╝    ╚══════╝    ╚═════╝
 
-                                            {Fore.RESET}{Fore.LIGHTGREEN_EX}Welcome to {Fore.RED}Nuked v2 {Fore.RESET}
+                                            {Fore.RESET}{Fore.LIGHTGREEN_EX}Welcome to {Fore.RED}Nuked {Fore.RESET}
 
                                                 {Fore.CYAN}Selfbot Info{Fore.RESET}
 
@@ -217,6 +217,21 @@ def splash():
         ''' + Fore.RESET)
 
 
+
+
+if rich_presence:
+        x = True
+        rpcc = Presence(client_id="768384936138244107")
+        rpcc.connect()
+        rpcc.update(details='Online', large_image="nuked")
+        while not x: 
+            time.sleep(0.1)
+else:
+    pass
+
+
+
+
 def Nitro():
     code = ''.join(random.choices(randomness + randomnum, k=16))
     return f'https://discord.gift/{code}'
@@ -236,14 +251,7 @@ def masstokengen():
 
 
 
-if rich_presence:
-    x = True
-    rpcc = Presence(client_id="768384936138244107")
-    rpcc.connect()
-    rpcc.update(details='Online', large_image="nuked")
-    while not x: time.sleep(0.1)
-else:
-    pass
+
 
 @client.command()
 async def bump(ctx):
@@ -1035,6 +1043,10 @@ async def unpingable(message):
             pass
     else:
         pass
+
+
+    
+        
 
 if __name__ == '__main__':
     Init()
