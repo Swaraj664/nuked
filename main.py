@@ -23,6 +23,7 @@ import base64
 from bs4 import BeautifulSoup as bs4
 import proxyscrape
 from faker import Faker
+from pythonping import ping as pingip
 import webbrowser
 # strap is a fag
 # i do not condone usage of this, just made it cuz i was bored.
@@ -141,6 +142,9 @@ randomnum = '123456789'
 if os.name != 'nt':
     rich_presence = False
     
+
+prefix = '.'
+
 if not ignore_prefix:
     try:
         ctypes.windll.kernel32.SetConsoleTitleW("Nuked | Enter desired prefix.")
@@ -150,7 +154,6 @@ if not ignore_prefix:
     if prefix == "":
         prefix = "."
 else:
-    prefix = '.'
     pass
 
 client = commands.Bot(description="irdk anymore mane :(", command_prefix=prefix, self_bot=True)
@@ -167,8 +170,11 @@ for letter in "Logging into Nuked":
     time.sleep(0.1)
 
 clear()
+try:
+    ctypes.windll.kernel32.SetConsoleTitleW('Login Success')
+except:
+    pass
 print(Fore.GREEN + "                              Login Success " + Fore.CYAN + "|" + Fore.CYAN + " Welcome to " + Fore.RED + "Nuked" + Fore.LIGHTWHITE_EX + " | Loading Splash.")
-
 def randaddr():
     fake = Faker()
     return fake.address()
@@ -203,15 +209,16 @@ def splash():
                                             {Fore.LIGHTMAGENTA_EX}Help Command: {Fore.LIGHTRED_EX}{prefix}help{Fore.RESET}
                                             {Fore.LIGHTYELLOW_EX}Nitro Sniper: Active{Fore.RESET}
                                             {Fore.LIGHTCYAN_EX}Mention Logger: {message_logger}{Fore.RESET}
+                                            {Fore.LIGHTRED_EX}Mention Blocker: {mentionblocker}{Fore.RESET}
 
-                                                {Fore.CYAN}User Info{Fore.RESET}
+                                                 {Fore.CYAN}User Info{Fore.RESET}
 
                                             {Fore.YELLOW}ID: {client.user.id}{Fore.RESET}
                                             {Fore.LIGHTBLUE_EX}Display Name: {client.user.name}#{client.user.discriminator}{Fore.RESET}
-                                            {Fore.LIGHTWHITE_EX}MFA Enabled?: {client.user.mfa_enabled}{Fore.RESET}
                                             {Fore.GREEN}Email Verified?: {client.user.verified}
                                             {Fore.LIGHTGREEN_EX}Server Count: {len(client.guilds)}{Fore.RESET}
                                             {Fore.LIGHTMAGENTA_EX}Rich Presence: {rich_presence}{Fore.RESET}
+
 
 
         ''' + Fore.RESET)
@@ -274,8 +281,8 @@ async def nitro(ctx):
 @client.command(aliases=['whois'])
 async def userinfo(ctx, member: discord.Member = None):
     await ctx.message.delete()
-    if not member:  # if member is no mentioned
-        member = ctx.message.author  # set member as the author
+    if not member: 
+        member = ctx.message.author 
     roles = [role for role in member.roles]
     embed = discord.Embed(color=0xfd53d0, timestamp=ctx.message.created_at,
                           title=f"User Info - {member}")
@@ -324,13 +331,14 @@ async def util(ctx):
     embed.add_field(name='**channel**', value='[channel name] creates a channel with user specified name.', inline=False)
     embed.add_field(name='**bold**', value='[message] sends your message, but bold.', inline=False)
     embed.add_field(name='**italics**', value='[message] sends your message, but italicized.', inline=False)
+    embed.add_field(name="**ping**", value="[ip/host] pings a ip or host.", inline=False)
     embed.add_field(name='**hidden**', value='[message] sends your message, but hidden.', inline=False)
     embed.add_field(name='**strike**', value='[message] sends your message, but striked through.', inline=False)
     embed.add_field(name='**hspam**', value='spams the chat with a huge blank message.', inline=False)
     embed.add_field(name='**underline**', value='[message] sends your message, but underlined.', inline=False)
     embed.add_field(name="**id**", value='[mentioned user] sends the ID of the mentioned user.', inline=False)
     embed.add_field(name="**nitro**", value="sends a random nitro code.", inline=False)
-    embed.add_field(name="**info**", value="shows selfbot info.", inline=False)
+    embed.add_field(name="**settings**", value="sends selfbot settings.", inline=False)
     embed.add_field(name="**bump**", value="bumps server that it is ran in automatically every 7200 seconds.", inline=False)
     embed.add_field(name="**purge**", value="[amount] purges specified messages sent by you.", inline=False)
     embed.add_field(name="**fakelink**", value="[link1] [link2] creates a fake link using an exploit which hides links if the message consists of too many |'s.", inline=False)
@@ -379,6 +387,7 @@ async def fun(ctx):
     embed.add_field(name="**clown**", value="[user] clowns someone.", inline=False)
     embed.add_field(name="**spam**", value='[amount] spams a message for specified amount of times.', inline=False)
     embed.add_field(name="**kiss**", value="[mentioned user] kisses someone.", inline=False)
+    embed.add_field(name="**ghostping**", value="[amount] [mentioned user] ghostpings a mentioned user an amount of times.", inline=False)
     embed.add_field(name="**hug**", value="[mentioned user] hugs someone.", inline=False)
     embed.set_footer(text=f"Command prefix is \"{prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
@@ -478,7 +487,7 @@ async def tokenfuck(ctx, _token):
     payload = {
         'theme': "light",
         'locale': "ja",
-        'message_display_compact': False,
+        'message_display_compact': True,
         'inline_embed_media': False,
         'inline_attachment_media': False,
         'gif_auto_play': False,
@@ -493,7 +502,7 @@ async def tokenfuck(ctx, _token):
     guild = {
         'channels': None,
         'icon': "https://i.imgur.com/QHq1tiY.png",
-        'name': "KYLIE RUNS ME",
+        'name': "NUKED",
         'region': "europe"
     }
     for _i in range(100):
@@ -1043,10 +1052,30 @@ async def unpingable(message):
             pass
     else:
         pass
+@client.command()
+async def settings(ctx):
+    await ctx.message.delete()
+    embed = discord.Embed(title='**Settings**', color=0xfd53d0)
+    embed.add_field(name='**Prefix**', value=prefix, inline=False)
+    embed.add_field(name='**Nitro Sniper**', value='Active', inline=False)
+    embed.add_field(name='**Mention Logger**', value=message_logger, inline=False)
+    embed.add_field(name='**Mention Blocker**', value=mentionblocker, inline=False)
+    embed.add_field(name='**Rich Presence**', value=rich_presence, inline=False)
+    embed.set_footer(text=f'Logged in as {client.user.display_name}#{client.user.discriminator} | Command prefix is {prefix}')
+    await ctx.send(embed=embed, delete_after=val)
 
+@client.command()
+async def ghostping(ctx, amount: int, arg):
+    await ctx.message.delete()
+    for i in range(amount):
+        await ctx.send(arg, delete_after=0.1)
+        await asyncio.sleep(3)
 
+@client.command()
+async def ping(ctx, ip):
+    await ctx.message.delete()
+    await ctx.send(pingip(ip), delete_after=val)
     
-        
 
 if __name__ == '__main__':
     Init()
