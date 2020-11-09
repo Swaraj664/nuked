@@ -23,3 +23,4 @@ proxyscrape
 numpy
 faker
 python3-nmap
+pythonping
