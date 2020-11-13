@@ -218,9 +218,6 @@ def splash():
                                             {Fore.GREEN}Email Verified?: {client.user.verified}
                                             {Fore.LIGHTGREEN_EX}Server Count: {len(client.guilds)}{Fore.RESET}
                                             {Fore.LIGHTMAGENTA_EX}Rich Presence: {rich_presence}{Fore.RESET}
-
-
-
         ''' + Fore.RESET)
 
 
@@ -307,11 +304,12 @@ async def userinfo(ctx, member: discord.Member = None):
 @client.command()
 async def help(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**Help**', color=0xfd53d0)
+    embed = discord.Embed(title='**Help**', description=f'Welcome to Nuked, {client.user.display_name}#{client.user.discriminator}.',color=0xfd53d0)
     embed.add_field(name='**Fun Commands**', value=f'{prefix}fun', inline=False)
     embed.add_field(name='**NSFW Commands**', value=f'{prefix}nsfw', inline=False)
     embed.add_field(name='**Malicious Commands**', value=f'{prefix}malicious', inline=False)
     embed.add_field(name='**Utility Commands**', value=f'{prefix}util', inline=False)
+    embed.set_thumbnail(url=client.user.avatar_url)
     embed.set_footer(text=f"Command prefix is \"{prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
 
@@ -634,6 +632,7 @@ async def cls(ctx):
     await ctx.message.delete()
     await ctx.send("Clearing Console..", delete_after=0.1)
     clear()
+    splash()
 
 
 @client.command()
@@ -814,7 +813,7 @@ async def kiss(ctx, member : discord.Member=None):
 async def hug(ctx, member : discord.Member=None):
     await ctx.message.delete()
     r = requests.get("https://nekos.life/api/hug")
-    embed = discord.Embed(description=f"<@{client.user.id}> hugs <@{member.mention}>", color=0xfd53d0)
+    embed = discord.Embed(description=f"<@{client.user.id}> hugs {member.mention}", color=0xfd53d0)
     embed.set_image(url=r.json()['url'])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1067,15 +1066,30 @@ async def settings(ctx):
 @client.command()
 async def ghostping(ctx, amount: int, arg):
     await ctx.message.delete()
-    for i in range(amount):
-        await ctx.send(arg, delete_after=0.1)
-        await asyncio.sleep(3)
+    for i in range(int(amount / 2)):
+        await ctx.send(arg, delete_after=0.001)
+        await ctx.send(arg, delete_after=0.001)
+        await ctx.send(arg, delete_after=0.001)
+        await asyncio.sleep(15)
 
 @client.command()
 async def ping(ctx, ip):
     await ctx.message.delete()
     await ctx.send(pingip(ip), delete_after=val)
-    
+
+@client.command()
+async def masskick(ctx):
+    await ctx.message.delete()
+    for member in ctx.guild.members:
+        await member.kick()
+
+@client.command()
+async def fuck(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    r = requests.get('https://nekos.life/api/v2/img/Random_hentai_gif').json()
+    embed = discord.Embed(description=f'{client.user.mention} fucks {member.mention}', color=0xfd53d0)
+    embed.set_image(url=r["url"])
+    await ctx.send(embed=embed, delete_after=val)
 
 if __name__ == '__main__':
     Init()
