@@ -1,30 +1,17 @@
-import discord
-from discord.ext import commands, tasks
-import time
-import requests
-import asyncio
-import json
-import random
-import datetime
-import colorama
-import re
-import os
+import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet
 from os import system, name
 from pypresence import Presence
 from time import sleep
-import ctypes
-import nmap3
-import colorama
 from colorama import init, Fore, Style, Back
-import numpy
 from itertools import cycle
-import datetime
-import base64
+from discord.ext import commands, tasks
+from os import system, name
+from itertools import cycle
 from bs4 import BeautifulSoup as bs4
-import proxyscrape
 from faker import Faker
 from pythonping import ping as pingip
-import webbrowser
+
+
 # strap is a fag
 # i do not condone usage of this, just made it cuz i was bored.
 # if you get banned it isn't my fault lol
@@ -200,7 +187,7 @@ def splash():
     			   ██║ ╚███║    ╚██████╔╝    ██║ ╚██╗    ███████╗    ██████╔╝
     			   ╚═╝  ╚══╝     ╚═════╝     ╚═╝  ╚═╝    ╚══════╝    ╚═════╝
 
-                                            {Fore.RESET}{Fore.LIGHTGREEN_EX}Welcome to {Fore.RED}Nuked {Fore.RESET}
+                                            {Fore.RESET}{Fore.LIGHTGREEN_EX}Welcome to {Fore.RED}Nuked{Fore.RESET}
 
                                                 {Fore.CYAN}Selfbot Info{Fore.RESET}
 
@@ -225,9 +212,9 @@ def splash():
 
 if rich_presence:
         x = True
-        rpcc = Presence(client_id="768384936138244107")
+        rpcc = Presence(client_id="777057310228742174")
         rpcc.connect()
-        rpcc.update(details='Online', large_image="nuked")
+        rpcc.update(details='Online', large_image="avatar", start=time.time())
         while not x: 
             time.sleep(0.1)
 else:
@@ -674,7 +661,7 @@ async def nuke(ctx):
             pass
     try:
         await ctx.guild.edit(
-            name="kylie runs me",
+            name="https://github.com/kyliex/nuked",
             description="Nuked ON TOP",
             reason="idk",
             icon=None,
@@ -683,9 +670,9 @@ async def nuke(ctx):
     except:
         pass
     for _i in range(250):
-        await ctx.guild.create_text_channel(name="kylie runs me")
+        await ctx.guild.create_text_channel(name="get nuked lol")
     for _i in range(250):
-        await ctx.guild.create_role(name="kylie runs me")
+        await ctx.guild.create_role(name="get nuked lol")
 
 @client.command(aliases=['mtg'])
 async def masstokens(ctx):
@@ -1046,7 +1033,7 @@ async def poll(ctx, *, message):
 async def unpingable(message):
     if mentionblocker:
         if client.user.mention in message.content:
-            await message.channel.send('|| ||')
+            await message.channel.send('** **')
         else:
             pass
     else:
@@ -1090,6 +1077,15 @@ async def fuck(ctx, member: discord.Member=None):
     embed = discord.Embed(description=f'{client.user.mention} fucks {member.mention}', color=0xfd53d0)
     embed.set_image(url=r["url"])
     await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def ascii(ctx, *, message):
+    await ctx.message.delete()
+    result = pyfiglet.figlet_format(message)
+    if len(result) > 1992:
+        return
+    else:
+        await ctx.send('```' + result + '```')
 
 if __name__ == '__main__':
     Init()
