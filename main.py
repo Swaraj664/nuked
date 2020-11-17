@@ -37,7 +37,7 @@ except ImportError:
 # ily ;)
 
 
-
+version = 'v3'
 
 
 
@@ -235,11 +235,12 @@ def splash():
     			   {Fore.LIGHTCYAN_EX}██║ ╚███║    ╚██████╔╝    ██║{Fore.LIGHTMAGENTA_EX} ╚██╗    ███████╗    ██████╔╝
     			   {Fore.LIGHTCYAN_EX}╚═╝  ╚══╝     ╚═════╝     ╚═╝{Fore.LIGHTMAGENTA_EX}  ╚═╝    ╚══════╝    ╚═════╝
 
-                                   {Fore.LIGHTCYAN_EX}        ╔══════════{Fore.LIGHTMAGENTA_EX}════════{Fore.RESET}
+                                   {Fore.LIGHTCYAN_EX}        ╔═════════{Fore.LIGHTMAGENTA_EX}═══════{Fore.RESET}
                                    {Fore.LIGHTCYAN_EX}        ║      {Fore.LIGHTMAGENTA_EX}Selfbot {Fore.LIGHTCYAN_EX}Info{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║                                     {Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Prefix: {Fore.LIGHTCYAN_EX}{client.command_prefix}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Creator: {Fore.LIGHTCYAN_EX}kylie#1337{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Version: {Fore.LIGHTCYAN_EX}{version}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Help Command: {Fore.LIGHTCYAN_EX}{client.command_prefix}help{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Nitro Sniper: {Fore.LIGHTCYAN_EX}Active{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Mention Logger: {Fore.LIGHTCYAN_EX}{message_logger}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
@@ -252,7 +253,7 @@ def splash():
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Email Verified?: {Fore.LIGHTCYAN_EX}{client.user.verified}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Server Count: {Fore.LIGHTCYAN_EX}{Fore.LIGHTCYAN_EX}{len(client.guilds)}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Rich Presence: {Fore.LIGHTCYAN_EX}{Fore.LIGHTCYAN_EX}{rich_presence}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}        ╚══════════{Fore.LIGHTMAGENTA_EX}════════{Fore.RESET}
+                                   {Fore.LIGHTCYAN_EX}        ╚═════════{Fore.LIGHTMAGENTA_EX}═══════{Fore.RESET}
         ''' + Fore.RESET)
 
 
@@ -785,12 +786,12 @@ async def ifmentioned(message):
         if message.author == client.user:
             return
         if client.user.mention in message.content:
-            print("══════════════════════════════════════════════════")
-            print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"You were mentioned by {message.author}." + Fore.RESET)
-            print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
-            print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}")
-            print(Fore.LIGHTYELLOW_EX + "[Mentioned] " + Fore.RESET + Fore.WHITE + f"Message Content: {message.content}".replace(f"<@{client.user.id}>" or f"<@!{client.user.id}>", "") + Fore.RESET)
-            print("══════════════════════════════════════════════════")
+            print(f"{Fore.LIGHTCYAN_EX}╔══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════{Fore.RESET}")
+            print(Fore.LIGHTCYAN_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"You were mentioned by {message.author}." + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}")
+            print(Fore.LIGHTCYAN_EX + "║ [Mentioned] " + Fore.RESET + Fore.WHITE + f"Message Content: {message.content}".replace(f"<@{client.user.id}>" or f"<@!{client.user.id}>", "") + Fore.RESET)
+            print(f"{Fore.LIGHTCYAN_EX}╚══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════" + Fore.RESET)
     else:
         pass
 
@@ -810,32 +811,33 @@ async def nitrosnipe(message):
 
 
         if 'This gift has been redeemed already.' in r:
-            print("══════════════════════════════════════════════════")
-            print(Fore.RED + "[Nitro Sniper] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Nitro Code sent by {message.author}." + Fore.RESET)
-            print(Fore.RED + "[Nitro Sniper] " + Fore.RESET + Fore.CYAN + f"Message Content: {message.content}" + Fore.RESET)
-            print(Fore.RED + "[Nitro Sniper] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
-            print(Fore.RED + "[Nitro Sniper] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}" + Fore.RESET)
-            print(Fore.RED + "[Nitro Sniper] " + Fore.RESET + Fore.YELLOW + f"Status: Already Redeemed" + Fore.RESET)
-            print("══════════════════════════════════════════════════")
+            print(f"{Fore.LIGHTCYAN_EX}╔══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════{Fore.RESET}")
+            print(Fore.LIGHTCYAN_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Nitro Code sent by {message.author}." + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.CYAN + f"Message Content: {message.content}" + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}" + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.YELLOW + f"Status: Already Redeemed" + Fore.RESET)
+            print(f"{Fore.LIGHTCYAN_EX}╚══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════" + Fore.RESET)
 
         elif 'subscription_plan' in r:
-            print("══════════════════════════════════════════════════")
-            print(Fore.LIGHTGREEN_EX + "[Nitro Sniper] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Nitro Code sent by {message.author}." + Fore.RESET)
-            print(Fore.LIGHTGREEN_EX + "[Nitro Sniper] " + Fore.RESET + Fore.CYAN + f"Message Content: {message.content}" + Fore.RESET)
-            print(Fore.LIGHTGREEN_EX + "[Nitro Sniper] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
-            print(Fore.LIGHTGREEN_EX + "[Nitro Sniper] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}" + Fore.RESET)
-            print(Fore.LIGHTGREEN_EX + "[Nitro Sniper] " + Fore.RESET + Fore.YELLOW + f"Status: Nitro Success" + Fore.RESET)
-            print("══════════════════════════════════════════════════")
+            print(f"{Fore.LIGHTCYAN_EX}╔══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════{Fore.RESET}")
+            print(Fore.LIGHTCYAN_EX + "║" +Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Nitro Code sent by {message.author}." + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" +Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.CYAN + f"Message Content: {message.content}" + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" + Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" +Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}" + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" +Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.YELLOW + f"Status: Nitro Success" + Fore.RESET)
+            print(f"{Fore.LIGHTCYAN_EX}╚══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════{Fore.RESET}")
+
 
 
         elif 'Unknown Gift Code' in r:
-            print("══════════════════════════════════════════════════")
-            print(Fore.LIGHTRED_EX + "[Nitro Sniper] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Nitro Code sent by {message.author}." + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "[Nitro Sniper] " + Fore.RESET + Fore.CYAN + f"Message Content: {message.content}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "[Nitro Sniper] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "[Nitro Sniper] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "[Nitro Sniper] " + Fore.RESET + Fore.YELLOW + f"Status: Unknown Code" + Fore.RESET)
-            print("══════════════════════════════════════════════════")
+            print(f"{Fore.LIGHTCYAN_EX}╔══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════{Fore.RESET}")
+            print(Fore.LIGHTCYAN_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Nitro Code sent by {message.author}." + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.CYAN + f"Message Content: {message.content}" + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}" + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.YELLOW + f"Status: Unknown Code" + Fore.RESET)
+            print(f"{Fore.LIGHTCYAN_EX}╚══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════{Fore.RESET}")
 
         else:
             return
@@ -1099,7 +1101,7 @@ async def settings(ctx):
     embed.add_field(name='**Mention Logger**', value=message_logger, inline=False)
     embed.add_field(name='**Mention Blocker**', value=mentionblocker, inline=False)
     embed.add_field(name='**Rich Presence**', value=rich_presence, inline=False)
-    embed.set_footer(text=f'Logged in as {client.user.display_name}#{client.user.discriminator} | Command prefix is {prefix}')
+    embed.set_footer(text=f'Logged in as {client.user.display_name}#{client.user.discriminator} | Command prefix is \'{client.command_prefix}\' | Nuked v3')
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
