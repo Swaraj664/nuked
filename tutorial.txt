@@ -18,11 +18,11 @@ python main.py
 or running the RUN ME SECOND batch file.
 
 if there are any module errors, you can fix this by typing this into the command prompt:
-pip install modulename 
+pip install themodulesname 
 
 as long as your token is in the config.json, everything should work fine.
 
 updates will be posted frequently, check my github every week or so to update.
 
 
-thanks for using nuked !
+thanks for using Nuked !
