@@ -235,24 +235,24 @@ def splash():
     			   {Fore.LIGHTCYAN_EX}██║ ╚███║    ╚██████╔╝    ██║{Fore.LIGHTMAGENTA_EX} ╚██╗    ███████╗    ██████╔╝
     			   {Fore.LIGHTCYAN_EX}╚═╝  ╚══╝     ╚═════╝     ╚═╝{Fore.LIGHTMAGENTA_EX}  ╚═╝    ╚══════╝    ╚═════╝
 
-                                   {Fore.LIGHTCYAN_EX}          ╔══════════{Fore.LIGHTMAGENTA_EX}════════{Fore.RESET}
-                                   {Fore.LIGHTCYAN_EX}          ║      {Fore.LIGHTMAGENTA_EX}Selfbot {Fore.LIGHTCYAN_EX}Info{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║                                     {Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║  {Fore.LIGHTMAGENTA_EX}Prefix: {Fore.LIGHTCYAN_EX}{client.command_prefix}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║  {Fore.LIGHTMAGENTA_EX}Creator: {Fore.LIGHTCYAN_EX}kylie#1337{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║  {Fore.LIGHTMAGENTA_EX}Help Command: {Fore.LIGHTCYAN_EX}{client.command_prefix}help{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║  {Fore.LIGHTMAGENTA_EX}Nitro Sniper: {Fore.LIGHTCYAN_EX}Active{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║  {Fore.LIGHTMAGENTA_EX}Mention Logger: {Fore.LIGHTCYAN_EX}{message_logger}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║  {Fore.LIGHTMAGENTA_EX}Mention Blocker: {Fore.LIGHTCYAN_EX}{mentionblocker}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║
-                                   {Fore.LIGHTCYAN_EX}          ║      {Fore.LIGHTMAGENTA_EX}User {Fore.LIGHTCYAN_EX}Info{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║                                     
-                                   {Fore.LIGHTCYAN_EX}          ║  {Fore.LIGHTMAGENTA_EX}Display Name: {Fore.LIGHTCYAN_EX}{client.user.name}#{client.user.discriminator}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║  {Fore.LIGHTMAGENTA_EX}ID: {Fore.LIGHTCYAN_EX}{client.user.id}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║  {Fore.LIGHTMAGENTA_EX}Email Verified?: {Fore.LIGHTCYAN_EX}{client.user.verified}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║  {Fore.LIGHTMAGENTA_EX}Server Count: {Fore.LIGHTCYAN_EX}{Fore.LIGHTCYAN_EX}{len(client.guilds)}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ║  {Fore.LIGHTMAGENTA_EX}Rich Presence: {Fore.LIGHTCYAN_EX}{Fore.LIGHTCYAN_EX}{rich_presence}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}          ╚══════════{Fore.LIGHTMAGENTA_EX}════════{Fore.RESET}
+                                   {Fore.LIGHTCYAN_EX}        ╔══════════{Fore.LIGHTMAGENTA_EX}════════{Fore.RESET}
+                                   {Fore.LIGHTCYAN_EX}        ║      {Fore.LIGHTMAGENTA_EX}Selfbot {Fore.LIGHTCYAN_EX}Info{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║                                     {Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Prefix: {Fore.LIGHTCYAN_EX}{client.command_prefix}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Creator: {Fore.LIGHTCYAN_EX}kylie#1337{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Help Command: {Fore.LIGHTCYAN_EX}{client.command_prefix}help{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Nitro Sniper: {Fore.LIGHTCYAN_EX}Active{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Mention Logger: {Fore.LIGHTCYAN_EX}{message_logger}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Mention Blocker: {Fore.LIGHTCYAN_EX}{mentionblocker}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║
+                                   {Fore.LIGHTCYAN_EX}        ║      {Fore.LIGHTMAGENTA_EX}User {Fore.LIGHTCYAN_EX}Info{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║                                     
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Display Name: {Fore.LIGHTCYAN_EX}{client.user.name}#{client.user.discriminator}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}ID: {Fore.LIGHTCYAN_EX}{client.user.id}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Email Verified?: {Fore.LIGHTCYAN_EX}{client.user.verified}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Server Count: {Fore.LIGHTCYAN_EX}{Fore.LIGHTCYAN_EX}{len(client.guilds)}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Rich Presence: {Fore.LIGHTCYAN_EX}{Fore.LIGHTCYAN_EX}{rich_presence}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ╚══════════{Fore.LIGHTMAGENTA_EX}════════{Fore.RESET}
         ''' + Fore.RESET)
 
 
