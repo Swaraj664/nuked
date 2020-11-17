@@ -22,3 +22,4 @@ discord
 proxyscrape
 numpy==1.19.2
 faker
+cursor

@@ -1,5 +1,5 @@
 try:
-    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet
+    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor
     from os import system, name
     from pypresence import Presence
     from time import sleep
@@ -16,7 +16,7 @@ try:
 except ImportError:
 
     print('There was an error importing something, retrying.')
-    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet
+    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor
     from os import system, name
     from pypresence import Presence
     from time import sleep
@@ -36,8 +36,10 @@ except ImportError:
 # hopefully
 # ily ;)
 
-with open('config.json') as f:
-    config = json.load(f)
+
+
+
+
 
 
 def pscrape():
@@ -56,7 +58,31 @@ def clear():
 
 
 pn = '0123456789'
+
 colorama.init()
+
+if not os.path.exists('./config.json'):
+    with open('./config.json', 'w') as fp:
+        print(Fore.LIGHTCYAN_EX + 'Welcome to the initial setup process for the Nuked selfbot.')
+        setup_token = input('Enter your Discord token: ')
+        setup_password = input('Enter your Discord password (enter None if you don\'t want to): ')
+        setup_data = {
+            "token": setup_token, 
+            "password": setup_password, 
+            "richpresence": True, 
+            "ignore_prefix": False,
+            "mention_logger": True,
+            "block_ping": True
+        }
+        print('Additional settings can be tweaked in config.json!')
+        time.sleep(3)
+        json.dump(setup_data, fp)
+        clear()
+        Fore.RESET
+
+with open('config.json') as f:
+    config = json.load(f)
+
 
 def Init():
     if config.get('token') == "token here":
@@ -207,8 +233,6 @@ def splash():
     			   {Fore.LIGHTCYAN_EX}██║ ╚███║    ╚██████╔╝    ██║{Fore.LIGHTMAGENTA_EX} ╚██╗    ███████╗    ██████╔╝
     			   {Fore.LIGHTCYAN_EX}╚═╝  ╚══╝     ╚═════╝     ╚═╝{Fore.LIGHTMAGENTA_EX}  ╚═╝    ╚══════╝    ╚═════╝
 
-                                            {Fore.RESET}{Fore.LIGHTCYAN_EX}Welcome to {Fore.LIGHTMAGENTA_EX}Nuked{Fore.RESET}
-
                                    {Fore.LIGHTCYAN_EX}╔══════════════════{Fore.RESET}{Fore.LIGHTMAGENTA_EX}═══════════════════╗
                                    {Fore.LIGHTCYAN_EX}║           {Fore.LIGHTMAGENTA_EX}Selfbot {Fore.LIGHTCYAN_EX}Info{Fore.RESET}{Fore.LIGHTMAGENTA_EX}              ║
                                    {Fore.LIGHTCYAN_EX}║                                     {Fore.LIGHTMAGENTA_EX}║
@@ -217,19 +241,18 @@ def splash():
                                    {Fore.LIGHTCYAN_EX}║       {Fore.LIGHTMAGENTA_EX}Help Command: {Fore.LIGHTCYAN_EX}{client.command_prefix}help{Fore.RESET}{Fore.LIGHTMAGENTA_EX}           ║
                                    {Fore.LIGHTCYAN_EX}║       {Fore.LIGHTMAGENTA_EX}Nitro Sniper: {Fore.LIGHTCYAN_EX}Active{Fore.RESET}{Fore.LIGHTMAGENTA_EX}          ║
                                    {Fore.LIGHTCYAN_EX}║       {Fore.LIGHTMAGENTA_EX}Mention Logger: {Fore.LIGHTCYAN_EX}{message_logger}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}          ║
-                                   {Fore.LIGHTCYAN_EX}║       {Fore.LIGHTMAGENTA_EX}Mention Blocker: {Fore.LIGHTCYAN_EX}{mentionblocker}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}        ║
+                                   {Fore.LIGHTCYAN_EX}║       {Fore.LIGHTMAGENTA_EX}Mention Blocker: {Fore.LIGHTCYAN_EX}{mentionblocker}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}         ║
                                    {Fore.LIGHTCYAN_EX}║                           {Fore.LIGHTMAGENTA_EX}          ║
                                    {Fore.LIGHTCYAN_EX}║           {Fore.LIGHTMAGENTA_EX}User {Fore.LIGHTCYAN_EX}Info{Fore.RESET}{Fore.LIGHTMAGENTA_EX}                 ║
                                    {Fore.LIGHTCYAN_EX}║                                   {Fore.LIGHTMAGENTA_EX}  ║
-                                   {Fore.LIGHTCYAN_EX}║       {Fore.LIGHTMAGENTA_EX}ID: {Fore.LIGHTCYAN_EX}{client.user.id}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}        ║
+                                   {Fore.LIGHTCYAN_EX}║                                     {Fore.LIGHTMAGENTA_EX}║
                                    {Fore.LIGHTCYAN_EX}║       {Fore.LIGHTMAGENTA_EX}Display Name: {Fore.LIGHTCYAN_EX}{client.user.name}#{client.user.discriminator}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}      ║
+                                   {Fore.LIGHTCYAN_EX}║       {Fore.LIGHTMAGENTA_EX}ID: {Fore.LIGHTCYAN_EX}{client.user.id}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}        ║
                                    {Fore.LIGHTCYAN_EX}║       {Fore.LIGHTMAGENTA_EX}Email Verified?: {Fore.LIGHTCYAN_EX}{client.user.verified}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}         ║
                                    {Fore.LIGHTCYAN_EX}║       {Fore.LIGHTMAGENTA_EX}Server Count: {Fore.LIGHTCYAN_EX}{Fore.LIGHTCYAN_EX}{len(client.guilds)}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}              ║
                                    {Fore.LIGHTCYAN_EX}║       {Fore.LIGHTMAGENTA_EX}Rich Presence: {Fore.LIGHTCYAN_EX}{Fore.LIGHTCYAN_EX}{rich_presence}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}           ║
                                    {Fore.LIGHTCYAN_EX}╚══════════════════{Fore.RESET}{Fore.LIGHTMAGENTA_EX}═══════════════════╝
         ''' + Fore.RESET)
-
-
 
 
 if rich_presence:
@@ -1163,6 +1186,10 @@ async def setprefix(ctx, arg):
     splash()
 
 if __name__ == '__main__':
+    try:
+        cursor.hide()
+    except:
+        pass
     Init()
 else:
     exit()
