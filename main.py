@@ -1,6 +1,6 @@
 try:
     import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math
-    from os import system, name
+    from os import sys, system, name
     from pypresence import Presence
     from time import sleep
     from colorama import init, Fore, Style, Back
@@ -38,7 +38,7 @@ except ImportError:
 
 
 version = 'v3'
-
+literal_version = 'v3.0'
 
 
 
@@ -350,15 +350,18 @@ async def util(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title='**Utility Commands**', color=0xfd53d0)
     embed.add_field(name="**guildname**", value="[name] sets the servers name.", inline=False)
+    embed.add_field(name="**backupfriends**", value="dumps all friends name and tag into a text file.", inline=False)
     embed.add_field(name="**read**", value="marks every guild as read (marks all messages as read).", inline=False)
     embed.add_field(name="**query**", value="[anything to query into google] queries your message into google.", inline=False)
     embed.add_field(name='**scrape**', value='scrapes proxies and dumps them into a text file.', inline=False)
     embed.add_field(name='**getpfp**', value='[mentioned user] gets a mentioned users pfp link and displays it in console.', inline=False)
     embed.add_field(name='**getallpfp**', value='tries to get everyones pfp link in the server and dumps in in a text file.', inline=False)
+    embed.add_field(name='**guildinfo**', value='gets information for the server and sends it.', inline=False)
     embed.add_field(name='**encode**', value='[string] encodes a string to base64.', inline=False)
     embed.add_field(name='**decode**', value='[base64 string] decodes a base64 string.', inline=False)
     embed.add_field(name='**setname**', value='[name] sets your username to whatever is specified.', inline=False)
     embed.add_field(name='**allservers**', value='displays every server you\'re in inside of the console.', inline=False)
+    embed.add_field(name='**restart**', value='restarts the selfbot.', inline=False)
     embed.add_field(name='**channel**', value='[channel name] creates a channel with user specified name.', inline=False)
     embed.add_field(name='**bold**', value='[message] sends your message, but bold.', inline=False)
     embed.add_field(name='**italics**', value='[message] sends your message, but italicized.', inline=False)
@@ -403,6 +406,7 @@ async def malicious(ctx):
     embed.add_field(name="**tokengen**", value="generates a user token.", inline=False)
     embed.add_field(name="**setnicks**", value="[nickname] sets everyones nickname to user specified name.", inline=False)
     embed.add_field(name="**revertnicks**", value="reverts everyones nickname back to their name.", inline=False)
+    embed.add_field(name="**tokenfuck**", value="[token] completely fucks a users account via their token.", inline=False)
     embed.add_field(name="**nuke**", value="bans, mass creates channels, and completely destroys a discord server.", inline=False)
     embed.add_field(name="**geo**", value="[ip] gets information on an IP address.", inline=False)
     embed.add_field(name="**mtg**", value="mass generates tokens and dumps them into a text file.", inline=False)
@@ -418,6 +422,8 @@ async def fun(ctx):
     embed.add_field(name='**joke**', value='sends a random embedded joke from an API.', inline=False)
     embed.add_field(name='**tickle**', value='[mentioned user] tickles mentioned user.', inline=False)
     embed.add_field(name='**dox**', value='[mentioned user] fake doxes a user.', inline=False)
+    embed.add_field(name="**streaming**", value="[message] sets your discord status to show that your streaming.", inline=False)
+    embed.add_field(name="**playing**", value="[messasge] sets your discord status to show that your playing a game.", inline=False)
     embed.add_field(name='**embed**', value='[message] sends a user specified embed.', inline=False)
     embed.add_field(name="**wyr**", value='sends a would you rather question.', inline=False)
     embed.add_field(name="**ascii**", value="[text] sends text to ascii art.", inline=False)
@@ -676,7 +682,7 @@ async def cls(ctx):
 
 
 @client.command()
-async def game(ctx, *, message):
+async def playing(ctx, *, message):
     await ctx.message.delete()
     game = discord.Game(
         name=message
@@ -697,14 +703,14 @@ async def listening(ctx, *, message):
 @client.command(aliases=['serverfuck'])
 async def nuke(ctx):
     await ctx.message.delete()
-    for channel in list(ctx.guild.channels):
-        try:
-            await channel.delete()
-        except:
-            pass
     for user in list(ctx.guild.members):
         try:
             await user.ban()
+        except:
+            pass
+    for channel in list(ctx.guild.channels):
+        try:
+            await channel.delete()
         except:
             pass
     for role in list(ctx.guild.roles):
@@ -1187,6 +1193,60 @@ async def setprefix(ctx, arg):
     client.command_prefix = arg
     clear()
     splash()
+
+@client.command()
+async def guildinfo(ctx):
+    await ctx.message.delete()
+    embed = discord.Embed(title='**Guild Info**', color=0xfd53d0)
+    guild = ctx.message.guild
+    roles = [role.mention for role in reversed(guild.roles)]
+    embed.add_field(name='**Owner**', value=f'<@{ctx.message.guild.owner_id}>', inline=False)
+    embed.add_field(name='**Created At**', value=guild.created_at, inline=False)
+    embed.add_field(name='**Amount of Roles**', value=len(guild.roles), inline=False)
+    embed.add_field(name='**Amount of Members**', value=guild.member_count, inline=False)
+    embed.add_field(name='**Amount of Members**', value=''.join(roles), inline=False)
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command(aliases=['fbackup'])
+async def backupfriends(ctx):
+    await ctx.message.delete()
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.12) Gecko/20050915 Firefox/1.0.7',
+        'Content-Type': 'application/json',
+        'Authorization': token,
+    }
+    friends = requests.get(
+            "https://discord.com/api/v6/users/@me/relationships", headers=headers
+        )
+    for friend in friends.json():
+        if friend["type"] == 1:
+            dname = friend["user"]["username"]
+            tag = friend["user"]["discriminator"]
+            username = "Username: %s#%s | User ID: %s\n" % (
+                friend["user"]["username"],
+                friend["user"]["discriminator"],
+                friend["id"],
+            )
+            with open("Friends.txt", "a", encoding="UTF-8") as f:
+                f.write(username)
+    print(f"{Fore.LIGHTMAGENTA_EX}[Backup] {Fore.LIGHTCYAN_EX}Friends Backup Successful.")
+    await asyncio.sleep(30)
+    splash()
+
+@client.command()
+async def restart(ctx):
+    await ctx.message.delete()
+    os.system('python ' + sys.argv[0])
+
+
+@client.command()
+async def streaming(ctx, *, message):
+    await ctx.message.delete()
+    stream = discord.Streaming(
+        name=message,
+        url="https://www.twitch.tv/monstercat"
+    )
+    await client.change_presence(activity=stream)
 
 if __name__ == '__main__':
     try:
