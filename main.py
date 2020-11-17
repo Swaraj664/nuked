@@ -1,16 +1,33 @@
-import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet
-from os import system, name
-from pypresence import Presence
-from time import sleep
-from colorama import init, Fore, Style, Back
-from itertools import cycle
-from discord.ext import commands, tasks
-from os import system, name
-from itertools import cycle
-from bs4 import BeautifulSoup as bs4
-from faker import Faker
-from pythonping import ping as pingip
+try:
+    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet
+    from os import system, name
+    from pypresence import Presence
+    from time import sleep
+    from colorama import init, Fore, Style, Back
+    from itertools import cycle
+    from discord.ext import commands, tasks
+    from os import system, name
+    from itertools import cycle
+    from bs4 import BeautifulSoup as bs4
+    from faker import Faker
+    from pythonping import ping as pingip
+    from telnetlib import Telnet
 
+except ImportError:
+
+    print('There was an error importing something, retrying.')
+    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet
+    from os import system, name
+    from pypresence import Presence
+    from time import sleep
+    from colorama import init, Fore, Style, Back
+    from itertools import cycle
+    from discord.ext import commands, tasks
+    from os import system, name
+    from itertools import cycle
+    from bs4 import BeautifulSoup as bs4
+    from faker import Faker
+    from pythonping import ping as pingip
 
 # strap is a fag
 # i do not condone usage of this, just made it cuz i was bored.
@@ -130,7 +147,6 @@ if os.name != 'nt':
     rich_presence = False
     
 
-prefix = '.'
 
 if not ignore_prefix:
     try:
@@ -142,6 +158,9 @@ if not ignore_prefix:
         prefix = "."
 else:
     pass
+
+if ignore_prefix:
+    prefix = '.'
 
 client = commands.Bot(description="irdk anymore mane :(", command_prefix=prefix, self_bot=True)
 
@@ -171,7 +190,7 @@ async def on_connect():
     system('cls')
     try:
         ctypes.windll.kernel32.SetConsoleTitleW(
-            f'Welcome to Nuked, {client.user.name}#{client.user.discriminator}. Command prefix is \"{prefix}\" | Login Successful.')
+            f'Welcome to Nuked, {client.user.name}#{client.user.discriminator}. Command prefix is \"{client.command_prefix}\" | Login Successful.')
     except:
         pass
     splash()
@@ -189,22 +208,23 @@ def splash():
 
                                             {Fore.RESET}{Fore.LIGHTGREEN_EX}Welcome to {Fore.RED}Nuked{Fore.RESET}
 
-                                                {Fore.CYAN}Selfbot Info{Fore.RESET}
-
-                                            {Fore.LIGHTGREEN_EX}Prefix: {Fore.WHITE}{prefix}{Fore.RESET}
-                                            {Fore.LIGHTBLUE_EX}Creator: {Fore.LIGHTCYAN_EX}kylie#1337{Fore.RESET}
-                                            {Fore.LIGHTMAGENTA_EX}Help Command: {Fore.LIGHTRED_EX}{prefix}help{Fore.RESET}
-                                            {Fore.LIGHTYELLOW_EX}Nitro Sniper: Active{Fore.RESET}
-                                            {Fore.LIGHTCYAN_EX}Mention Logger: {message_logger}{Fore.RESET}
-                                            {Fore.LIGHTRED_EX}Mention Blocker: {mentionblocker}{Fore.RESET}
-
-                                                 {Fore.CYAN}User Info{Fore.RESET}
-
-                                            {Fore.YELLOW}ID: {client.user.id}{Fore.RESET}
-                                            {Fore.LIGHTBLUE_EX}Display Name: {client.user.name}#{client.user.discriminator}{Fore.RESET}
-                                            {Fore.GREEN}Email Verified?: {client.user.verified}
-                                            {Fore.LIGHTGREEN_EX}Server Count: {len(client.guilds)}{Fore.RESET}
-                                            {Fore.LIGHTMAGENTA_EX}Rich Presence: {rich_presence}{Fore.RESET}
+                                   ╔═════════════════════════════════════╗
+                                   ║           {Fore.CYAN}Selfbot Info{Fore.RESET}              ║
+                                   ║       {Fore.LIGHTGREEN_EX}Prefix: {Fore.WHITE}{client.command_prefix}{Fore.RESET}                     ║
+                                   ║       {Fore.LIGHTBLUE_EX}Creator: {Fore.LIGHTCYAN_EX}kylie#1337{Fore.RESET}           ║
+                                   ║       {Fore.LIGHTMAGENTA_EX}Help Command: {Fore.LIGHTRED_EX}{prefix}help{Fore.RESET}           ║
+                                   ║       {Fore.LIGHTYELLOW_EX}Nitro Sniper: Active{Fore.RESET}          ║
+                                   ║       {Fore.LIGHTCYAN_EX}Mention Logger: {message_logger}{Fore.RESET}          ║
+                                   ║       {Fore.LIGHTRED_EX}Mention Blocker: {mentionblocker}{Fore.RESET}        ║
+                                   ║                                     ║
+                                   ║           {Fore.CYAN}User Info{Fore.RESET}                 ║
+                                   ║                                     ║
+                                   ║       {Fore.YELLOW}ID: {client.user.id}{Fore.RESET}        ║
+                                   ║       {Fore.LIGHTBLUE_EX}Display Name: {client.user.name}#{client.user.discriminator}{Fore.RESET}      ║
+                                   ║       {Fore.GREEN}Email Verified?: {client.user.verified}{Fore.RESET}         ║
+                                   ║       {Fore.LIGHTGREEN_EX}Server Count: {len(client.guilds)}{Fore.RESET}              ║
+                                   ║       {Fore.LIGHTMAGENTA_EX}Rich Presence: {rich_presence}{Fore.RESET}           ║
+                                   ╚═════════════════════════════════════╝
         ''' + Fore.RESET)
 
 
@@ -215,8 +235,6 @@ if rich_presence:
         rpcc = Presence(client_id="777057310228742174")
         rpcc.connect()
         rpcc.update(details='Online', large_image="avatar", start=time.time())
-        while not x: 
-            time.sleep(0.1)
 else:
     pass
 
@@ -292,12 +310,12 @@ async def userinfo(ctx, member: discord.Member = None):
 async def help(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title='**Help**', description=f'Welcome to Nuked, {client.user.display_name}#{client.user.discriminator}.',color=0xfd53d0)
-    embed.add_field(name='**Fun Commands**', value=f'{prefix}fun', inline=False)
-    embed.add_field(name='**NSFW Commands**', value=f'{prefix}nsfw', inline=False)
-    embed.add_field(name='**Malicious Commands**', value=f'{prefix}malicious', inline=False)
-    embed.add_field(name='**Utility Commands**', value=f'{prefix}util', inline=False)
+    embed.add_field(name='**Fun Commands**', value=f'{client.command_prefix}fun', inline=False)
+    embed.add_field(name='**NSFW Commands**', value=f'{client.command_prefix}nsfw', inline=False)
+    embed.add_field(name='**Malicious Commands**', value=f'{client.command_prefix}malicious', inline=False)
+    embed.add_field(name='**Utility Commands**', value=f'{client.command_prefix}util', inline=False)
     embed.set_thumbnail(url=client.user.avatar_url)
-    embed.set_footer(text=f"Command prefix is \"{prefix}\"")
+    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
@@ -305,6 +323,7 @@ async def util(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title='**Utility Commands**', color=0xfd53d0)
     embed.add_field(name="**guildname**", value="[name] sets the servers name.", inline=False)
+    embed.add_field(name="**read**", value="marks every guild as read (marks all messages as read).", inline=False)
     embed.add_field(name="**query**", value="[anything to query into google] queries your message into google.", inline=False)
     embed.add_field(name='**scrape**', value='scrapes proxies and dumps them into a text file.', inline=False)
     embed.add_field(name='**getpfp**', value='[mentioned user] gets a mentioned users pfp link and displays it in console.', inline=False)
@@ -319,6 +338,9 @@ async def util(ctx):
     embed.add_field(name="**ping**", value="[ip/host] pings a ip or host.", inline=False)
     embed.add_field(name='**hidden**', value='[message] sends your message, but hidden.', inline=False)
     embed.add_field(name='**strike**', value='[message] sends your message, but striked through.', inline=False)
+    embed.add_field(name="**tokengen**", value="generates a user token.", inline=False)
+    embed.add_field(name="**setprefix**", value="[prefix] allows you to change the command prefix.", inline=False)
+    embed.add_field(name="**nmap**", value="[ip/host] portscans an IP address or host if you have nmap installed on your pc.", inline=False)
     embed.add_field(name='**hspam**', value='spams the chat with a huge blank message.', inline=False)
     embed.add_field(name='**underline**', value='[message] sends your message, but underlined.', inline=False)
     embed.add_field(name="**id**", value='[mentioned user] sends the ID of the mentioned user.', inline=False)
@@ -329,9 +351,10 @@ async def util(ctx):
     embed.add_field(name="**fakelink**", value="[link1] [link2] creates a fake link using an exploit which hides links if the message consists of too many |'s.", inline=False)
     embed.add_field(name='**userinfo**', value='[mentioned user] shows user info on a mentioned person.', inline=False)
     embed.add_field(name="**webping**", value="[website url] pings a **website.**", inline=False)
+    embed.add_field(name="**download**", value="sends the nuked download link.**", inline=False)
     embed.add_field(name="**poll**", value="[topic] sends a poll with voting reactions.")
     embed.add_field(name="**logout**", value='logs out of selfbot and closes window.', inline=False)
-    embed.set_footer(text=f"Command prefix is \"{prefix}\"")
+    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
@@ -341,7 +364,7 @@ async def nsfw(ctx):
     embed.add_field(name="**boobs**", value="sends a random embedded image of boobs.", inline=False)
     embed.add_field(name="**spank**", value='[mentioned user] spanks a mentioned user.', inline=False)
     embed.add_field(name="**pussy**", value="sends a random embedded pussy pic.", inline=False)
-    embed.set_footer(text=f"Command prefix is \"{prefix}\"")
+    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
 
 
@@ -356,7 +379,7 @@ async def malicious(ctx):
     embed.add_field(name="**nuke**", value="bans, mass creates channels, and completely destroys a discord server.", inline=False)
     embed.add_field(name="**geo**", value="[ip] gets information on an IP address.", inline=False)
     embed.add_field(name="**mtg**", value="mass generates tokens and dumps them into a text file.", inline=False)
-    embed.set_footer(text=f"Command prefix is \"{prefix}\"")
+    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
@@ -364,17 +387,20 @@ async def fun(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title='**Fun Commands**', color=0xfd53d0)
     embed.add_field(name="**cat**", value="sends a random embedded image of a cat.", inline=False)
+    embed.add_field(name="**phcomment**", value="[username] [message] sends an image of a custom pornhub comment.", inline=False)
     embed.add_field(name='**joke**', value='sends a random embedded joke from an API.', inline=False)
     embed.add_field(name='**tickle**', value='[mentioned user] tickles mentioned user.', inline=False)
     embed.add_field(name='**dox**', value='[mentioned user] fake doxes a user.', inline=False)
     embed.add_field(name='**embed**', value='[message] sends a user specified embed.', inline=False)
     embed.add_field(name="**wyr**", value='sends a would you rather question.', inline=False)
+    embed.add_field(name="**ascii**", value="[text] sends text to ascii art.", inline=False)
+    embed.add_field(name="**tweet**", value="[username] [message] sends a custom tweet image.", inline=False)
     embed.add_field(name="**clown**", value="[user] clowns someone.", inline=False)
     embed.add_field(name="**spam**", value='[amount] spams a message for specified amount of times.', inline=False)
     embed.add_field(name="**kiss**", value="[mentioned user] kisses someone.", inline=False)
     embed.add_field(name="**ghostping**", value="[amount] [mentioned user] ghostpings a mentioned user an amount of times.", inline=False)
     embed.add_field(name="**hug**", value="[mentioned user] hugs someone.", inline=False)
-    embed.set_footer(text=f"Command prefix is \"{prefix}\"")
+    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
 
 
@@ -1042,7 +1068,7 @@ async def unpingable(message):
 async def settings(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title='**Settings**', color=0xfd53d0)
-    embed.add_field(name='**Prefix**', value=prefix, inline=False)
+    embed.add_field(name='**Prefix**', value=client.command_prefix, inline=False)
     embed.add_field(name='**Nitro Sniper**', value='Active', inline=False)
     embed.add_field(name='**Mention Logger**', value=message_logger, inline=False)
     embed.add_field(name='**Mention Blocker**', value=mentionblocker, inline=False)
@@ -1086,6 +1112,53 @@ async def ascii(ctx, *, message):
         return
     else:
         await ctx.send('```' + result + '```')
+
+@client.command()
+async def download(ctx):
+    await ctx.message.delete()
+    embed = discord.Embed(title="**Use this link to download Nuked**", color=0xfd53d0, description="https://github.com/kyliex/nuked")
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def nmap(ctx, ip):
+    await ctx.message.delete()
+    try:
+        results = os.popen(f'nmap {ip}').read()
+        await ctx.send('```' + results + '```')
+    except Exception as e:
+        print(e)
+
+@client.command()
+async def tweet(ctx, username, *, message):
+    await ctx.message.delete()
+    r = requests.get(f'https://nekobot.xyz/api/imagegen?type=tweet&username={username}&text={message}').json()
+    embed = discord.Embed(color=0xfd53d0)
+    embed.set_image(url=r["message"])
+    await ctx.send(embed=embed, delete_after=val)
+
+
+@client.command()
+async def read(ctx):
+    await ctx.message.delete()
+    for guild in client.guilds:
+        await guild.ack()
+
+@client.command()
+async def phcomment(ctx, user, *, message):
+    await ctx.message.delete()
+    r = requests.get(f'https://nekobot.xyz/api/imagegen?type=phcomment&text={message}&username={user}&image={str(ctx.author.avatar_url_as(format="png"))}').json()
+    embed = discord.Embed(color=0xfd53d0)
+    embed.set_image(url=r["message"])
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def setprefix(ctx, arg):
+    await ctx.message.delete()
+    if len(arg) > 1:
+        return print(Fore.RED + '[Error]: ' + Fore.CYAN + f'Prefix is too long ({len(arg)} characters). Max length is 1.')
+    client.command_prefix = arg
+    clear()
+    splash()
 
 if __name__ == '__main__':
     Init()
