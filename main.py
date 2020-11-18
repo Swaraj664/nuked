@@ -1093,7 +1093,8 @@ async def poll(ctx, *, message):
 async def unpingable(message):
     if mentionblocker:
         if client.user.mention in message.content:
-            await message.channel.send('** **')
+            guild = message.guild 
+            await guild.ack()
         else:
             pass
     else:
