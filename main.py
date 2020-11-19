@@ -241,6 +241,7 @@ def splash():
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Prefix: {Fore.LIGHTCYAN_EX}{client.command_prefix}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Creator: {Fore.LIGHTCYAN_EX}kylie#1337{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Version: {Fore.LIGHTCYAN_EX}{version}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
+                                   {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Command Count: {Fore.LIGHTCYAN_EX}{len(client.commands)}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Help Command: {Fore.LIGHTCYAN_EX}{client.command_prefix}help{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Nitro Sniper: {Fore.LIGHTCYAN_EX}Active{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Mention Logger: {Fore.LIGHTCYAN_EX}{message_logger}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
@@ -265,8 +266,51 @@ if rich_presence:
 else:
     pass
 
+def old_splash():
+    print(f'''{Fore.RED}
+    			   ███╗  ██╗    ██╗   ██╗    ██╗  ██╗    ███████╗    ██████╗
+    			   ████╗ ██║    ██║   ██║    ██║ ██╔╝    ██╔════╝    ██╔══██╗
+    			   ██╔██╗██║    ██║   ██║    █████═╝     █████╗      ██║  ██║
+    			   ██║╚████║    ██║   ██║    ██╔═██╗     ██╔══╝      ██║  ██║
+    			   ██║ ╚███║    ╚██████╔╝    ██║ ╚██╗    ███████╗    ██████╔╝
+    			   ╚═╝  ╚══╝     ╚═════╝     ╚═╝  ╚═╝    ╚══════╝    ╚═════╝
+
+                                            {Fore.RESET}{Fore.LIGHTGREEN_EX}Welcome to {Fore.RED}Nuked{Fore.RESET}
+
+                                                {Fore.CYAN}Selfbot Info{Fore.RESET}
+
+                                            {Fore.LIGHTGREEN_EX}Prefix: {Fore.WHITE}{prefix}{Fore.RESET}
+                                            {Fore.LIGHTBLUE_EX}Creator: {Fore.LIGHTCYAN_EX}kylie#1337{Fore.RESET}
+                                            {Fore.LIGHTMAGENTA_EX}Help Command: {Fore.LIGHTRED_EX}{prefix}help{Fore.RESET}
+                                            {Fore.LIGHTYELLOW_EX}Nitro Sniper: Active{Fore.RESET}
+                                            {Fore.LIGHTCYAN_EX}Mention Logger: {message_logger}{Fore.RESET}
+                                            {Fore.LIGHTRED_EX}Mention Blocker: {mentionblocker}{Fore.RESET}
+
+                                                 {Fore.CYAN}User Info{Fore.RESET}
+
+                                            {Fore.YELLOW}ID: {client.user.id}{Fore.RESET}
+                                            {Fore.LIGHTBLUE_EX}Display Name: {client.user.name}#{client.user.discriminator}{Fore.RESET}
+                                            {Fore.GREEN}Email Verified?: {client.user.verified}
+                                            {Fore.LIGHTGREEN_EX}Server Count: {len(client.guilds)}{Fore.RESET}
+                                            {Fore.LIGHTMAGENTA_EX}Rich Presence: {rich_presence}{Fore.RESET}
+        ''' + Fore.RESET)
+
+def testingp():
+    print(f'''{Fore.RESET}
+
+    			███╗  ██╗        ██╗   ██╗        ██╗  ██╗        ███████╗        ██████╗
+    			████╗ ██║        ██║   ██║        ██║ ██╔╝        ██╔════╝        ██╔══██╗
+    			██╔██╗██║        ██║   ██║        █████═╝░        █████╗          ██║  ██║
+    			██║╚████         ██║   ██║        ██╔═██╗░        ██╔══╝          ██║  ██║
+    			██║ ╚███║        ╚██████╔╝        ██║ ╚██╗        ███████╗        ██████╔╝
+    			╚═╝  ╚══╝         ╚═════╝         ╚═╝  ╚═╝        ╚══════╝        ╚═════╝
 
 
+
+
+                           {Fore.CYAN}Nuked | kylie#1337 <3 | {Fore.BLUE}Logged in as: {client.user.name}#{client.user.discriminator} {Fore.CYAN}| ID: {Fore.BLUE}{client.user.id}   
+                           {Fore.CYAN}Prefix: {Fore.WHITE}{prefix}
+        ''' + Fore.RESET)
 
 def Nitro():
     code = ''.join(random.choices(randomness + randomnum, k=16))
@@ -340,7 +384,7 @@ async def help(ctx):
     embed.add_field(name='**Fun Commands**', value=f'{client.command_prefix}fun', inline=False)
     embed.add_field(name='**NSFW Commands**', value=f'{client.command_prefix}nsfw', inline=False)
     embed.add_field(name='**Malicious Commands**', value=f'{client.command_prefix}malicious', inline=False)
-    embed.add_field(name='**Utility Commands**', value=f'{client.command_prefix}util', inline=False)
+    embed.add_field(name='**Utility Commands**', value=f'{client.command_prefix}util | {client.command_prefix}util2', inline=False)
     embed.set_thumbnail(url=client.user.avatar_url)
     embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
@@ -349,22 +393,6 @@ async def help(ctx):
 async def util(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title='**Utility Commands**', color=0xfd53d0)
-    embed.add_field(name="**guildname**", value="[name] sets the servers name.", inline=False)
-    embed.add_field(name="**backupfriends**", value="dumps all friends name and tag into a text file.", inline=False)
-    embed.add_field(name="**read**", value="marks every guild as read (marks all messages as read).", inline=False)
-    embed.add_field(name="**query**", value="[anything to query into google] queries your message into google.", inline=False)
-    embed.add_field(name='**scrape**', value='scrapes proxies and dumps them into a text file.', inline=False)
-    embed.add_field(name='**getpfp**', value='[mentioned user] gets a mentioned users pfp link and displays it in console.', inline=False)
-    embed.add_field(name='**getallpfp**', value='tries to get everyones pfp link in the server and dumps in in a text file.', inline=False)
-    embed.add_field(name='**guildinfo**', value='gets information for the server and sends it.', inline=False)
-    embed.add_field(name='**encode**', value='[string] encodes a string to base64.', inline=False)
-    embed.add_field(name='**decode**', value='[base64 string] decodes a base64 string.', inline=False)
-    embed.add_field(name='**setname**', value='[name] sets your username to whatever is specified.', inline=False)
-    embed.add_field(name='**allservers**', value='displays every server you\'re in inside of the console.', inline=False)
-    embed.add_field(name='**restart**', value='restarts the selfbot.', inline=False)
-    embed.add_field(name='**channel**', value='[channel name] creates a channel with user specified name.', inline=False)
-    embed.add_field(name='**bold**', value='[message] sends your message, but bold.', inline=False)
-    embed.add_field(name='**italics**', value='[message] sends your message, but italicized.', inline=False)
     embed.add_field(name="**ping**", value="[ip/host] pings a ip or host.", inline=False)
     embed.add_field(name='**hidden**', value='[message] sends your message, but hidden.', inline=False)
     embed.add_field(name='**strike**', value='[message] sends your message, but striked through.', inline=False)
@@ -388,11 +416,40 @@ async def util(ctx):
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
+async def util2(ctx):
+    await ctx.message.delete()
+    embed = discord.Embed(title='**Utility Commands**', color=0xfd53d0)
+    embed.add_field(name="**guildname**", value="[name] sets the servers name.", inline=False)
+    embed.add_field(name="**backupfriends**", value="dumps all friends name and tag into a text file.", inline=False)
+    embed.add_field(name="**pscrape**", value="dumps proxies into a text file called proxies.", inline=False)
+    embed.add_field(name="**read**", value="marks every guild as read (marks all messages as read).", inline=False)
+    embed.add_field(name="**query**", value="[anything to query into google] queries your message into google.", inline=False)
+    embed.add_field(name='**scrape**', value='scrapes proxies and dumps them into a text file.', inline=False)
+    embed.add_field(name='**getpfp**', value='[mentioned user] gets a mentioned users pfp link and displays it in console.', inline=False)
+    embed.add_field(name='**getallpfp**', value='tries to get everyones pfp link in the server and dumps in in a text file.', inline=False)
+    embed.add_field(name='**guildinfo**', value='gets information for the server and sends it.', inline=False)
+    embed.add_field(name='**oldsplash**', value='resets the selfbots splash screen to the v2 splash.', inline=False)
+    embed.add_field(name='**newsplash**', value='resets the selfbots splash screen to the v3 splash.', inline=False)
+    embed.add_field(name='**encode**', value='[string] encodes a string to base64.', inline=False)
+    embed.add_field(name='**decode**', value='[base64 string] decodes a base64 string.', inline=False)
+    embed.add_field(name='**setname**', value='[name] sets your username to whatever is specified.', inline=False)
+    embed.add_field(name='**allservers**', value='displays every server you\'re in inside of the console.', inline=False)
+    embed.add_field(name='**restart**', value='restarts the selfbot.', inline=False)
+    embed.add_field(name='**channel**', value='[channel name] creates a channel with user specified name.', inline=False)
+    embed.add_field(name='**bold**', value='[message] sends your message, but bold.', inline=False)
+    embed.add_field(name='**italics**', value='[message] sends your message, but italicized.', inline=False)
+    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
+    await ctx.send(embed=embed, delete_after=val)
+
+
+@client.command()
 async def nsfw(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title='**NSFW Commands**', color=0xfd53d0)
     embed.add_field(name="**boobs**", value="sends a random embedded image of boobs.", inline=False)
+    embed.add_field(name="**hentai**", value="sends a random embedded image of hentai.", inline=False)
     embed.add_field(name="**spank**", value='[mentioned user] spanks a mentioned user.', inline=False)
+    embed.add_field(name="**fuck**", value='[mentioned user] fucks a mentioned user.', inline=False)
     embed.add_field(name="**pussy**", value="sends a random embedded pussy pic.", inline=False)
     embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
@@ -405,6 +462,8 @@ async def malicious(ctx):
     embed = discord.Embed(title='**Malicious Commands**', color=0xfd53d0)
     embed.add_field(name="**tokengen**", value="generates a user token.", inline=False)
     embed.add_field(name="**setnicks**", value="[nickname] sets everyones nickname to user specified name.", inline=False)
+    embed.add_field(name="**massban**", value="attempts to ban everyone in a guild.", inline=False)
+    embed.add_field(name="**masskick**", value="attempts to kick everyone in a guild.", inline=False)
     embed.add_field(name="**revertnicks**", value="reverts everyones nickname back to their name.", inline=False)
     embed.add_field(name="**tokenfuck**", value="[token] completely fucks a users account via their token.", inline=False)
     embed.add_field(name="**nuke**", value="bans, mass creates channels, and completely destroys a discord server.", inline=False)
@@ -418,13 +477,21 @@ async def fun(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title='**Fun Commands**', color=0xfd53d0)
     embed.add_field(name="**cat**", value="sends a random embedded image of a cat.", inline=False)
+    embed.add_field(name="**spamreport**", value="[mentioned user] spams chat with a fake reporting user message.", inline=False)
     embed.add_field(name="**phcomment**", value="[username] [message] sends an image of a custom pornhub comment.", inline=False)
+    embed.add_field(name="**lick**", value="[mentioned user] licks the mentioned user.", inline=False)
+    embed.add_field(name="**kill**", value="[mentioned user] kills the mentioned user.", inline=False)
+    embed.add_field(name="**cuddle**", value="[mentioned user] cuddles the mentioned user.", inline=False)
+    embed.add_field(name="**bite**", value="[mentioned user] bites the mentioned user.", inline=False)
+    embed.add_field(name="**slap**", value="[mentioned user] slaps a user.", inline=False)
     embed.add_field(name='**joke**', value='sends a random embedded joke from an API.', inline=False)
     embed.add_field(name='**tickle**', value='[mentioned user] tickles mentioned user.', inline=False)
     embed.add_field(name='**dox**', value='[mentioned user] fake doxes a user.', inline=False)
     embed.add_field(name="**streaming**", value="[message] sets your discord status to show that your streaming.", inline=False)
+    embed.add_field(name="**listening**", value="[message] sets your discord status to show that your listening to something.", inline=False)
     embed.add_field(name="**playing**", value="[messasge] sets your discord status to show that your playing a game.", inline=False)
     embed.add_field(name='**embed**', value='[message] sends a user specified embed.', inline=False)
+    embed.add_field(name="**addy**", value="sends a random address.", inline=False)
     embed.add_field(name="**wyr**", value='sends a would you rather question.', inline=False)
     embed.add_field(name="**ascii**", value="[text] sends text to ascii art.", inline=False)
     embed.add_field(name="**tweet**", value="[username] [message] sends a custom tweet image.", inline=False)
@@ -1015,13 +1082,19 @@ async def spank(ctx, member: discord.Member=None):
 async def setnicks(ctx, *, message):
     await ctx.message.delete()
     for member in ctx.message.guild.members:
-        await member.edit(nick=message)
+        try:
+            await member.edit(nick=message)
+        except:
+            pass
 
 @client.command()
 async def revertnicks(ctx):
     await ctx.message.delete()
     for member in ctx.message.guild.members:
-        await member.edit(nick=None)
+        try:
+            await member.edit(nick=None)
+        except:
+            pass
 
 @client.command()
 async def guildname(ctx, *, message):
@@ -1094,7 +1167,10 @@ async def unpingable(message):
     if mentionblocker:
         if client.user.mention in message.content:
             guild = message.guild 
-            await guild.ack()
+            try:
+                await guild.ack()
+            except:
+                pass
         else:
             pass
     else:
@@ -1134,7 +1210,7 @@ async def masskick(ctx):
 @client.command()
 async def fuck(ctx, member: discord.Member=None):
     await ctx.message.delete()
-    r = requests.get('https://nekos.life/api/v2/img/Random_hentai_gif').json()
+    r = requests.get('https://api.neko-chxn.xyz/v1/fuck/img').json()
     embed = discord.Embed(description=f'{client.user.mention} fucks {member.mention}', color=0xfd53d0)
     embed.set_image(url=r["url"])
     await ctx.send(embed=embed, delete_after=val)
@@ -1248,6 +1324,59 @@ async def streaming(ctx, *, message):
         url="https://www.twitch.tv/monstercat"
     )
     await client.change_presence(activity=stream)
+
+@client.command()
+async def oldsplash(ctx):
+    await ctx.message.delete()
+    clear()
+    old_splash()
+
+@client.command()
+async def newsplash(ctx):
+    await ctx.message.delete()
+    clear()
+    splash()
+
+@client.command()
+async def bite(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    r = requests.get('https://api.neko-chxn.xyz/v1/bite/img').json()
+    embed = discord.Embed(description=f'{client.user.mention} bites {member.mention}', color=0xfd53d0)
+    embed.set_image(url=r["url"])
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def cuddle(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    r = requests.get('https://api.neko-chxn.xyz/v1/cuddle/img').json()
+    embed = discord.Embed(description=f'{client.user.mention} cuddles {member.mention}', color=0xfd53d0)
+    embed.set_image(url=r["url"])
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def kill(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    r = requests.get('https://api.neko-chxn.xyz/v1/kill/img').json()
+    embed = discord.Embed(description=f'{client.user.mention} kills {member.mention}', color=0xfd53d0)
+    embed.set_image(url=r["url"])
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def hentai(ctx):
+    await ctx.message.delete()
+    r = requests.get('https://api.neko-chxn.xyz/v1/hentaiimg/img').json()
+    embed = discord.Embed(color=0xfd53d0)
+    embed.set_image(url=r["url"])
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def lick(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    r = requests.get('https://api.neko-chxn.xyz/v1/lick/img').json()
+    embed = discord.Embed(description=f'{client.user.mention} licks {member.mention}', color=0xfd53d0)
+    embed.set_image(url=r["url"])
+    await ctx.send(embed=embed, delete_after=val)
+
 
 if __name__ == '__main__':
     try:
