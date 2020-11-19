@@ -770,7 +770,7 @@ async def listening(ctx, *, message):
 @client.command(aliases=['serverfuck'])
 async def nuke(ctx):
     await ctx.message.delete()
-    for user in list(ctx.guild.members):
+    for user in ctx.guild.members:
         try:
             await user.ban()
         except:
@@ -1280,8 +1280,7 @@ async def guildinfo(ctx):
     embed.add_field(name='**Owner**', value=f'<@{ctx.message.guild.owner_id}>', inline=False)
     embed.add_field(name='**Created At**', value=guild.created_at, inline=False)
     embed.add_field(name='**Amount of Roles**', value=len(guild.roles), inline=False)
-    embed.add_field(name='**Amount of Members**', value=guild.member_count, inline=False)
-    embed.add_field(name='**Amount of Members**', value=''.join(roles), inline=False)
+    embed.add_field(name='**Amount of Members**', value=len(guild.members), inline=False)
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command(aliases=['fbackup'])
