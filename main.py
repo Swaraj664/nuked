@@ -1523,12 +1523,16 @@ def insert_returns(body):
 
 
 @client.command(name='eval')
-async def _eval(ctx, *, cmd):
+async def _eval(ctx, *, cmd=None):
     await ctx.message.delete()
-    if disable_eval:
-        print(f'{Fore.LIGHTRED_EX}[Warning]: {Fore.LIGHTCYAN_EX}The eval command is very dangerous! Be careful how you use it.{Fore.RESET}')
-        print(f'{Fore.LIGHTRED_EX}[Warning]: {Fore.LIGHTCYAN_EX}If you want to enable it, set the "disable_eval" value from true to false in config.json.{Fore.RESET}')
-        return
+    if not cmd:
+        if disable_eval:
+            print(f'{Fore.LIGHTRED_EX}[Warning]: {Fore.LIGHTCYAN_EX}The eval command is very dangerous! Be careful how you use it.{Fore.RESET}')
+            print(f'{Fore.LIGHTRED_EX}[Warning]: {Fore.LIGHTCYAN_EX}If you want to enable it, set the "disable_eval" value from true to false in config.json.{Fore.RESET}')
+            return
+        else:
+            print('Eval is missing a command argument.')
+            return
 
     cmd = cmd.strip("` ")
 
