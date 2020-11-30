@@ -1,5 +1,8 @@
 try:
-    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math
+    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math, wikipedia, urllib
+    from urbandictionary_top import udtop
+    import ast
+    from urllib.request import urlopen
     from os import sys, system, name
     from pypresence import Presence
     from time import sleep
@@ -21,7 +24,10 @@ except ImportError:
     if 'is not recognized as an internal or external command, operable program or batch file.' in installing:
         print('You do not have pip installed, redirecting to python page.')
         webbrowser.open_new('https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe')
-    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math
+    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math, wikipedia, urllib
+    from urbandictionary_top import udtop
+    import ast
+    from urllib.request import urlopen
     from os import system, name
     from pypresence import Presence
     from time import sleep
@@ -34,22 +40,35 @@ except ImportError:
     from faker import Faker
     from pythonping import ping as pingip
 
+collector = proxyscrape.create_collector('default', 'http')
+
 # strap is a fag
 # i do not condone usage of this, just made it cuz i was bored.
 # if you get banned it isn't my fault lol
 # this is violating tos but idc, i dont condone usage of it so im ok right?
 # hopefully
 # ily ;)
-
 version = 'v3'
 literal_version = 'v3.0'
 
-
+class NukedError(Exception):
+    def __init__(self, error, reason):
+        self.error = error
+        self.reason = reason
+        print(f'{Fore.LIGHTRED_EX}An error has occurred while running Nuked. Here is some more information:{Fore.RESET}\nError: {error}\nReason: {reason}')
 
 def pscrape():
-    collector = proxyscrape.create_collector('default', 'http')
-    proxy = collector.get_proxies({'country': 'united states'})
-    return str(proxy)
+    col = proxyscrape.get_collector('default')
+    proxy = col.get_proxy()
+    pr = [_proxy for _proxy in proxy]
+    return f'Proxy: {pr[0]}:{pr[1]}\nCountry: {pr[3]}\nType: {pr[5]}'
+
+def proxyscraper():
+    col = proxyscrape.get_collector('default')
+    proxies = col.get_proxies()
+    with open('proxies.txt', 'w') as prox:
+        for proxy in proxies:
+            prox.write(f'\nProxy: {proxy[0]}:{proxy[1]}\nCountry: {proxy[3]}\nType: {proxy[5]}\n')
 
 val = 25
 
@@ -59,28 +78,43 @@ def clear():
     else:
         system('clear')
 
+def _gayrate(mention):
+    percent = random.randint(0, 100)
+    return f'{mention} is {percent}% gay :rainbow_flag:'
 
+def _expose(mention):
+    dick = random.randint(0, 25)
+    height = random.randint(0, 120)
+    hot = random.randint(0, 100)
+    gay = random.randint(0, 100)
+    ugly = random.randint(0, 100)
+    horny = random.randint(0, 100)
+    return f'{mention} is {gay}% gay :rainbow_flag:\n{mention} is {hot}% hot :hot_face:\n{mention} is {height} inches tall :night_with_stars:\n{mention} is {ugly}% ugly :face_vomiting:\n{mention}\'s dick is {dick} inches :triangular_ruler:\n{mention} is {horny}% horny :lips:'
 
 pn = '0123456789'
 
 colorama.init()
 
 if not os.path.exists('./config.json'):
+    clear()
     with open('./config.json', 'w') as fp:
         print(Fore.LIGHTCYAN_EX + 'Welcome to the initial setup process for the Nuked selfbot.')
         setup_token = input('Enter your Discord token: ')
         setup_password = input('Enter your Discord password (enter None if you don\'t want to): ')
+        if setup_password is None:
+            setup_password = "None"
         setup_data = {
             "token": setup_token, 
             "password": setup_password, 
             "richpresence": True, 
             "ignore_prefix": False,
             "mention_logger": True,
-            "block_ping": True
+            "block_ping": True,
+            "disable_eval": True
         }
         print('Additional settings can be tweaked in config.json!')
         time.sleep(3)
-        json.dump(setup_data, fp)
+        json.dump(setup_data, fp, indent=4)
         clear()
         Fore.RESET
 
@@ -91,12 +125,10 @@ with open('config.json') as f:
 def Init():
     if config.get('token') == "token here":
         clear()
-        print(Fore.RED + "ERROR: " + Fore.RESET + "In the config.json file, did you enter your token?")
-        input("Press any key to exit, and go to the config.json file and put your token there.")
+        raise NukedError(error='Login Error', reason='Can\'t log into Discord without a token. (Did you enter a token in config.json?)')
     elif config.get('password') == "":
         clear()
-        print(Fore.RED + "ERROR: " + Fore.RESET + "In the config.json file, password must have a value. If you do not what to enter your password, simply put 'none' within the quotes.")
-        input("Press any key to exit and fix the error above.")
+        raise NukedError(error='Login Error', reason='In config.json, password must have a value.')
     else:
         try:
             client.run(token, bot=False, reconnect=True)
@@ -164,8 +196,9 @@ password = config.get('password')
 rich_presence = config.get('richpresence')
 message_logger = config.get('mention_logger')
 mentionblocker = config.get('block_ping')
+disable_eval = config.get('disable_eval')
 randomness = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijlkmnopqrstuvwxyz'
-
+randomsymbols = '!@#$%^&*()_+[]'
 randomnum = '123456789'
 
 if os.name != 'nt':
@@ -220,10 +253,6 @@ async def on_connect():
     except:
         pass
     splash()
-
-def usernames(username):
-    ul = len(username)
-    
 
 def splash():
     print(f'''{Fore.LIGHTCYAN_EX}
@@ -391,6 +420,7 @@ async def util(ctx):
     embed.add_field(name="**fakelink**", value="[link1] [link2] creates a fake link using an exploit which hides links if the message consists of too many |'s.", inline=False)
     embed.add_field(name='**userinfo**', value='[mentioned user] shows user info on a mentioned person.', inline=False)
     embed.add_field(name="**webping**", value="[website url] pings a **website.**", inline=False)
+    embed.add_field(name='**password**', value='sends a strong generated password.', inline=False)
     embed.add_field(name="**download**", value="sends the nuked download link.**", inline=False)
     embed.add_field(name="**poll**", value="[topic] sends a poll with voting reactions.")
     embed.add_field(name="**logout**", value='logs out of selfbot and closes window.', inline=False)
@@ -404,9 +434,10 @@ async def util2(ctx):
     embed.add_field(name="**guildname**", value="[name] sets the servers name.", inline=False)
     embed.add_field(name="**backupfriends**", value="dumps all friends name and tag into a text file.", inline=False)
     embed.add_field(name="**allcommands**", value="sends every command in the selfbot as a list.", inline=False)
-    embed.add_field(name="**pscrape**", value="dumps proxies into a text file called proxies.", inline=False)
+    embed.add_field(name="**proxy**", value="sends a random proxy with port.", inline=False)
     embed.add_field(name="**read**", value="marks every guild as read (marks all messages as read).", inline=False)
     embed.add_field(name="**query**", value="[anything to query into google] queries your message into google.", inline=False)
+    embed.add_field(name="**github**", value="opens a browser to the github of this selfbot.", inline=False)
     embed.add_field(name='**scrape**', value='scrapes proxies and dumps them into a text file.', inline=False)
     embed.add_field(name='**getpfp**', value='[mentioned user] gets a mentioned users pfp link and displays it in console.', inline=False)
     embed.add_field(name='**getallpfp**', value='tries to get everyones pfp link in the server and dumps in in a text file.', inline=False)
@@ -445,6 +476,7 @@ async def malicious(ctx):
     embed = discord.Embed(title='**Malicious Commands**', color=0xfd53d0)
     embed.add_field(name="**tokengen**", value="generates a user token.", inline=False)
     embed.add_field(name="**setnicks**", value="[nickname] sets everyones nickname to user specified name.", inline=False)
+    embed.add_field(name="**crash**", value="sends a lot of emojis that can lag a users discord client.", inline=False)
     embed.add_field(name="**massban**", value="attempts to ban everyone in a guild.", inline=False)
     embed.add_field(name="**masskick**", value="attempts to kick everyone in a guild.", inline=False)
     embed.add_field(name="**revertnicks**", value="reverts everyones nickname back to their name.", inline=False)
@@ -461,6 +493,11 @@ async def fun(ctx):
     embed = discord.Embed(title='**Fun Commands**', color=0xfd53d0)
     embed.add_field(name="**cat**", value="sends a random embedded image of a cat.", inline=False)
     embed.add_field(name="**spamreport**", value="[mentioned user] spams chat with a fake reporting user message.", inline=False)
+    embed.add_field(name="**ud**", value="[query] queries urban dictionary for a term.", inline=False)
+    embed.add_field(name="**wiki**", value="[query] queries wikipedia for text and returns a summary of it.", inline=False)
+    embed.add_field(name="**websteal**", value="[http or https url] steal a websites data and dump it into an html file.", inline=False)
+    embed.add_field(name="**gayrate**", value="[mentioned user] gayrates a user.", inline=False)
+    embed.add_field(name="**expose**", value="[mentioned user] exposes a user.", inline=False)
     embed.add_field(name="**phcomment**", value="[username] [message] sends an image of a custom pornhub comment.", inline=False)
     embed.add_field(name="**lick**", value="[mentioned user] licks the mentioned user.", inline=False)
     embed.add_field(name="**kill**", value="[mentioned user] kills the mentioned user.", inline=False)
@@ -469,6 +506,8 @@ async def fun(ctx):
     embed.add_field(name="**slap**", value="[mentioned user] slaps a user.", inline=False)
     embed.add_field(name='**joke**', value='sends a random embedded joke from an API.', inline=False)
     embed.add_field(name='**tickle**', value='[mentioned user] tickles mentioned user.', inline=False)
+    embed.add_field(name='**clyde**', value='[message] clydifys a message.', inline=False)
+    embed.add_field(name='**trumptweet**', value='[message] turns a message into a tweet from trump.', inline=False)
     embed.add_field(name='**dox**', value='[mentioned user] fake doxes a user.', inline=False)
     embed.add_field(name="**streaming**", value="[message] sets your discord status to show that your streaming.", inline=False)
     embed.add_field(name="**listening**", value="[message] sets your discord status to show that your listening to something.", inline=False)
@@ -486,16 +525,13 @@ async def fun(ctx):
     embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
 
-
-
 @client.command()
 async def purge(ctx, amount: int):
     await ctx.message.delete()
-    async for message in ctx.message.channel.history(limit=amount).filter(lambda m: m.author == client.user).map(
-            lambda m: m):
-        try:
+    async for message in ctx.channel.history(limit=amount):
+        if message.author == client.user:
             await message.delete()
-        except:
+        else:
             pass
 
 
@@ -503,7 +539,7 @@ async def purge(ctx, amount: int):
 async def spam(ctx, amount: int, *, message):
     await ctx.message.delete()
     for _i in range(amount):
-        await ctx.send(message)
+        await ctx.send(f'{message}\n' * 25)
         await asyncio.sleep(0.1)
 
 
@@ -685,7 +721,7 @@ async def on_command_error(ctx, error):
     elif isinstance(error, numpy.AxisError):
         print(f"{Fore.RED}[ERROR]: {Fore.LIGHTWHITE_EX}Not a valid image" + Fore.RESET)
     elif isinstance(error, discord.errors.Forbidden):
-        print(f"{Fore.RED}[ERROR]: {Fore.CYAN}Discord Error: {error}" + Fore.RESET)
+        print(f"{Fore.RED}[ERROR]: {Fore.CYAN}Not Allowed: {error}" + Fore.RESET)
     elif "Cannot send an empty message" in error_str:
         print(f"{Fore.RED}[ERROR]: {Fore.LIGHTYELLOW_EX}Couldn't send a empty message" + Fore.RESET)
     else:
@@ -779,7 +815,7 @@ async def masschannel(ctx):
         await ctx.guild.create_text_channel(name="get nuked lol")
 
 async def massrole(ctx):
-    for _i in range(250):
+    for _i in range(249):
         await ctx.guild.create_role(name="get nuked lol")
 
 @client.command(aliases=['serverfuck'])
@@ -852,7 +888,7 @@ async def ifmentioned(message):
             print(Fore.LIGHTCYAN_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"You were mentioned by {message.author}." + Fore.RESET)
             print(Fore.LIGHTCYAN_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
             print(Fore.LIGHTCYAN_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}")
-            print(Fore.LIGHTCYAN_EX + "║ [Mentioned] " + Fore.RESET + Fore.WHITE + f"Message Content: {message.content}".replace(f"<@{client.user.id}>" or f"<@!{client.user.id}>", "") + Fore.RESET)
+            print(Fore.LIGHTCYAN_EX + "║ [Mentioned] " + Fore.RESET + Fore.WHITE + f"Message Content: {message.content}".replace(f"<@{client.user.id}>" or f"<@!{client.user.id}>", f"{client.user.display_name}#{client.user.discriminator}") + Fore.RESET)
             print(f"{Fore.LIGHTCYAN_EX}╚══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════" + Fore.RESET)
     else:
         pass
@@ -975,11 +1011,9 @@ async def allservers(ctx):
 
 
 @client.command(aliases=['scrape'])
-async def proxscrape(ctx):
+async def proxy(ctx):
     await ctx.message.delete()
-    proxfile = open('proxies.txt', 'a')
-    proxfile.write(pscrape() + '\n')
-    embed = discord.Embed(title="**Proxy Scraper**", color=0xfd53d0, description='proxies in proxies.txt')
+    embed = discord.Embed(title="**Proxy**", color=0xfd53d0, description=pscrape())
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
@@ -1017,7 +1051,7 @@ async def hidden(ctx, *, message):
 @client.command(aliases=['hspam'])
 async def hiddenspam(ctx):
     await ctx.message.delete()
-    await ctx.send("||" + '\n'*400 + '||')
+    await ctx.send("||" + '\n'*1996 + '||')
 
 @client.command()
 async def wyr(ctx):
@@ -1241,12 +1275,13 @@ async def tweet(ctx, username, *, message):
 async def read(ctx):
     await ctx.message.delete()
     for guild in client.guilds:
-        await guild.ack()
+            await guild.ack()
+            await asyncio.sleep(1)
 
 @client.command()
 async def phcomment(ctx, user, *, message):
     await ctx.message.delete()
-    r = requests.get(f'https://nekobot.xyz/api/imagegen?type=phcomment&text={message}&username={user}&image={str(ctx.author.avatar_url_as(format="png"))}').json()
+    r = requests.get(f'https://nekobot.xyz/api/imagegen?type=phcomment&text={message}&username={user}&image=https://i.imgur.com/raRKTgZ.jpg').json()
     embed = discord.Embed(color=0xfd53d0)
     embed.set_image(url=r["message"])
     await ctx.send(embed=embed, delete_after=val)
@@ -1254,8 +1289,6 @@ async def phcomment(ctx, user, *, message):
 @client.command()
 async def setprefix(ctx, arg):
     await ctx.message.delete()
-    if len(arg) > 1:
-        return print(Fore.RED + '[Error]: ' + Fore.CYAN + f'Prefix is too long ({len(arg)} characters). Max length is 1.')
     client.command_prefix = arg
     clear()
     splash()
@@ -1331,7 +1364,7 @@ async def bite(ctx, member: discord.Member=None):
     r = requests.get('https://api.neko-chxn.xyz/v1/bite/img').json()
     embed = discord.Embed(description=f'{client.user.mention} bites {member.mention}', color=0xfd53d0)
     embed.set_image(url=r["url"])
-    await ctx.send(embed=embed, delete_after=val)
+    await ctx.send(embed=embed, delete_after=val) 
 
 @client.command()
 async def cuddle(ctx, member: discord.Member=None):
@@ -1391,6 +1424,144 @@ async def clyde(ctx, *, message):
     embed.set_image(url=r["message"])
     await ctx.send(embed=embed, delete_after=val)
 
+@client.command()
+async def crash(ctx):
+    await ctx.message.delete()
+    for i in range(25):
+        await ctx.send(""":chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains:""")
+        await ctx.send(""":flag_white::flag_black::checkered_flag::triangular_flag_on_post::rainbow_flag::transgender_flag::pirate_flag::flag_af::flag_ax::flag_al::flag_dz::flag_as::flag_ao::flag_ad::flag_ai::flag_aq::flag_ag::flag_ar::flag_bb::flag_bd::flag_bh::flag_bs::flag_az::flag_at::flag_au::flag_aw::flag_am::flag_by::flag_be::flag_bz::flag_bj::flag_bm::flag_bt::flag_ba::flag_bo::flag_bw::flag_cm::flag_kh::flag_bi::flag_bf::flag_bg::flag_bn::flag_vg::flag_io::flag_br::flag_ca::flag_ic::flag_cv::flag_bq::flag_ky::flag_cf::flag_td::flag_cl::flag_cn::flag_ci::flag_cr::flag_ck::flag_cd::flag_cg::flag_km::flag_co::flag_cc::flag_cx::flag_hr::flag_cu::flag_cw::flag_cy::flag_cz::flag_dj::flag_dk::flag_dm::flag_do::flag_fk::flag_eu::flag_et::flag_ee::flag_er::flag_gq::flag_sv::flag_eg::flag_ec::flag_fo::flag_fj::flag_fi::flag_fr::flag_gf::flag_pf::flag_tf::flag_ga::flag_gm::flag_gu::flag_gp::flag_gl::flag_gd::flag_gr::flag_gi::flag_gh::flag_de::flag_ge::flag_gt::flag_gg::flag_gn::flag_gw::flag_gy::flag_ht::flag_hn::flag_hk::flag_hu::flag_it::flag_il::flag_ie:""")
+        await ctx.send(""":chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains:""")
+        await ctx.send(""":flag_white::flag_black::checkered_flag::triangular_flag_on_post::rainbow_flag::transgender_flag::pirate_flag::flag_af::flag_ax::flag_al::flag_dz::flag_as::flag_ao::flag_ad::flag_ai::flag_aq::flag_ag::flag_ar::flag_bb::flag_bd::flag_bh::flag_bs::flag_az::flag_at::flag_au::flag_aw::flag_am::flag_by::flag_be::flag_bz::flag_bj::flag_bm::flag_bt::flag_ba::flag_bo::flag_bw::flag_cm::flag_kh::flag_bi::flag_bf::flag_bg::flag_bn::flag_vg::flag_io::flag_br::flag_ca::flag_ic::flag_cv::flag_bq::flag_ky::flag_cf::flag_td::flag_cl::flag_cn::flag_ci::flag_cr::flag_ck::flag_cd::flag_cg::flag_km::flag_co::flag_cc::flag_cx::flag_hr::flag_cu::flag_cw::flag_cy::flag_cz::flag_dj::flag_dk::flag_dm::flag_do::flag_fk::flag_eu::flag_et::flag_ee::flag_er::flag_gq::flag_sv::flag_eg::flag_ec::flag_fo::flag_fj::flag_fi::flag_fr::flag_gf::flag_pf::flag_tf::flag_ga::flag_gm::flag_gu::flag_gp::flag_gl::flag_gd::flag_gr::flag_gi::flag_gh::flag_de::flag_ge::flag_gt::flag_gg::flag_gn::flag_gw::flag_gy::flag_ht::flag_hn::flag_hk::flag_hu::flag_it::flag_il::flag_ie:""")
+        await ctx.send(""":chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains:""")
+        await ctx.send(""":flag_white::flag_black::checkered_flag::triangular_flag_on_post::rainbow_flag::transgender_flag::pirate_flag::flag_af::flag_ax::flag_al::flag_dz::flag_as::flag_ao::flag_ad::flag_ai::flag_aq::flag_ag::flag_ar::flag_bb::flag_bd::flag_bh::flag_bs::flag_az::flag_at::flag_au::flag_aw::flag_am::flag_by::flag_be::flag_bz::flag_bj::flag_bm::flag_bt::flag_ba::flag_bo::flag_bw::flag_cm::flag_kh::flag_bi::flag_bf::flag_bg::flag_bn::flag_vg::flag_io::flag_br::flag_ca::flag_ic::flag_cv::flag_bq::flag_ky::flag_cf::flag_td::flag_cl::flag_cn::flag_ci::flag_cr::flag_ck::flag_cd::flag_cg::flag_km::flag_co::flag_cc::flag_cx::flag_hr::flag_cu::flag_cw::flag_cy::flag_cz::flag_dj::flag_dk::flag_dm::flag_do::flag_fk::flag_eu::flag_et::flag_ee::flag_er::flag_gq::flag_sv::flag_eg::flag_ec::flag_fo::flag_fj::flag_fi::flag_fr::flag_gf::flag_pf::flag_tf::flag_ga::flag_gm::flag_gu::flag_gp::flag_gl::flag_gd::flag_gr::flag_gi::flag_gh::flag_de::flag_ge::flag_gt::flag_gg::flag_gn::flag_gw::flag_gy::flag_ht::flag_hn::flag_hk::flag_hu::flag_it::flag_il::flag_ie:""")
+
+@client.command()
+async def gayrate(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    embed = discord.Embed(title='Gay Rate', color=0xfd53d0, description=f'{_gayrate(member.mention)}')
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def expose(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    embed = discord.Embed(title='Exposed', color=0xfd53d0, description=f'{_expose(member.mention)}')
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def proxies(ctx):
+    await ctx.message.delete()
+    proxyscraper()
+    embed = discord.Embed(color=0xfd53d0, title='Proxy Scraper', description='Scraped proxies are in proxies.txt')
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def wiki(ctx, *, message):
+    await ctx.message.delete()
+    try:
+        try:
+            await ctx.send(wikipedia.summary(message, sentences=2))
+        except UserWarning:
+            pass
+    except Exception as e:
+        await ctx.send(e)
+
+@client.command()
+async def websteal(ctx, url):
+    await ctx.message.delete()
+    page = urlopen(url)
+    content = page.read()
+    number = random.randint(0, 10000)
+    with open(f'{number}.html', 'w') as webpage:
+        webpage.write(str(content))
+    await ctx.send(f'{url} webpage successfully stolen and stored in {number}.html', delete_after=val)
+
+@client.command()
+async def ud(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.send(udtop(message))
+
+@client.command()
+async def password(ctx):
+    await ctx.message.delete()
+    await ctx.send(''.join(random.choices(randomness + randomnum + randomsymbols, k=40)))
+
+@client.command()
+async def hookinfo(ctx, webhook):
+    await ctx.message.delete()
+    r = requests.get(webhook).json()
+    embed = discord.Embed(title='**Webhook Info**', color=0xfd53d0, description=f'Name: {r["name"]}\nAvatar: {r["avatar"]}\nID: {r["id"]}\nChannel ID: {r["channel_id"]}\nGuild ID: {r["guild_id"]}\nToken: {r["token"]}')
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def hooksend(ctx, webhook, *, message):
+    await ctx.message.delete()
+    _json = {"content": message}
+    r = requests.post(webhook, json=_json)
+    rs = requests.get(webhook).json()
+    if "Unknown Webhook" or "Invalid" in rs["message"]:
+        await ctx.send('Webhook is not valid.', delete_after=2)
+    else:
+        await ctx.send(f'Successfully sent `{message}` to webhook `{webhook}`', delete_after=2)
+
+@client.command()
+async def latency(ctx):
+    await ctx.message.delete()
+    await ctx.send(f'{int(round(client.latency * 1000))} ms')
+
+
+def insert_returns(body):
+    if isinstance(body[-1], ast.Expr):
+        body[-1] = ast.Return(body[-1].value)
+        ast.fix_missing_locations(body[-1])
+
+    if isinstance(body[-1], ast.If):
+        insert_returns(body[-1].body)
+        insert_returns(body[-1].orelse)
+
+    if isinstance(body[-1], ast.With):
+        insert_returns(body[-1].body)
+
+
+@client.command(name='eval')
+async def _eval(ctx, *, cmd):
+    await ctx.message.delete()
+    if disable_eval:
+        print(f'{Fore.LIGHTRED_EX}[Warning]: {Fore.LIGHTCYAN_EX}The eval command is very dangerous! Be careful how you use it.{Fore.RESET}')
+        print(f'{Fore.LIGHTRED_EX}[Warning]: {Fore.LIGHTCYAN_EX}If you want to enable it, set the "disable_eval" value from true to false in config.json.{Fore.RESET}')
+        return
+
+    cmd = cmd.strip("` ")
+
+    cmd = "\n".join(f"    {i}" for i in cmd.splitlines())
+
+    fn_name = "_eval_expr"
+
+    body = f"async def {fn_name}():\n{cmd}"
+
+    parsed = ast.parse(body)
+    body = parsed.body[0].body
+
+    insert_returns(body)
+
+    env = {
+        'client': client,
+        'discord': discord,
+        'commands': commands,
+        'ctx': ctx,
+        '__import__': __import__,
+        'token': token,
+        'print': print
+
+    }
+    exec(compile(parsed, filename='<ast>', mode='exec'), env)
+
+    result = (await eval(f'{fn_name}()', env))
+    try:
+        await ctx.send(result)
+    except:
+        pass
+
+
 if __name__ == '__main__':
     try:
         cursor.hide()
@@ -1399,4 +1570,3 @@ if __name__ == '__main__':
     Init()
 else:
     exit()
-
