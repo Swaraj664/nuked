@@ -1,6 +1,8 @@
 try:
-    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math, wikipedia, urllib
+    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math, wikipedia, urllib, paramiko, socket
     from urbandictionary_top import udtop
+    from tcp_latency import measure_latency
+    from paramiko import SSHClient
     import ast
     from urllib.request import urlopen
     from os import sys, system, name
@@ -18,7 +20,6 @@ try:
     from threading import Thread
 
 except ImportError:
-
     print('There was an error importing something, retrying.')
     installing = os.popen('pip install -r requirements.txt').read()
     if 'is not recognized as an internal or external command, operable program or batch file.' in installing:
@@ -41,6 +42,7 @@ except ImportError:
     from pythonping import ping as pingip
 
 collector = proxyscrape.create_collector('default', 'http')
+collector.refresh_proxies(force=True)
 
 # strap is a fag
 # i do not condone usage of this, just made it cuz i was bored.
@@ -48,6 +50,7 @@ collector = proxyscrape.create_collector('default', 'http')
 # this is violating tos but idc, i dont condone usage of it so im ok right?
 # hopefully
 # ily ;)
+
 version = 'v3'
 literal_version = 'v3.0'
 
@@ -64,11 +67,10 @@ def pscrape():
     return f'Proxy: {pr[0]}:{pr[1]}\nCountry: {pr[3]}\nType: {pr[5]}'
 
 def proxyscraper():
-    col = proxyscrape.get_collector('default')
-    proxies = col.get_proxies()
+    proxies = collector.get_proxies()
     with open('proxies.txt', 'w') as prox:
         for proxy in proxies:
-            prox.write(f'\nProxy: {proxy[0]}:{proxy[1]}\nCountry: {proxy[3]}\nType: {proxy[5]}\n')
+            prox.write(f'{proxy[0]}:{proxy[1]}\n')
 
 val = 25
 
@@ -93,6 +95,7 @@ def _expose(mention):
 
 pn = '0123456789'
 
+
 colorama.init()
 
 if not os.path.exists('./config.json'):
@@ -104,13 +107,14 @@ if not os.path.exists('./config.json'):
         if setup_password is None:
             setup_password = "None"
         setup_data = {
-            "token": setup_token, 
-            "password": setup_password, 
-            "richpresence": True, 
+            "token": setup_token,
+            "password": setup_password,
+            "richpresence": True,
             "ignore_prefix": False,
             "mention_logger": True,
             "block_ping": True,
-            "disable_eval": True
+            "disable_eval": True,
+            "slotbotsnipe": True
         }
         print('Additional settings can be tweaked in config.json!')
         time.sleep(3)
@@ -197,13 +201,14 @@ rich_presence = config.get('richpresence')
 message_logger = config.get('mention_logger')
 mentionblocker = config.get('block_ping')
 disable_eval = config.get('disable_eval')
+slotbot = config.get('slotbotsnipe')
 randomness = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijlkmnopqrstuvwxyz'
 randomsymbols = '!@#$%^&*()_+[]'
 randomnum = '123456789'
 
 if os.name != 'nt':
     rich_presence = False
-    
+
 
 
 if not ignore_prefix:
@@ -276,7 +281,7 @@ def splash():
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Mention Blocker: {Fore.LIGHTCYAN_EX}{mentionblocker}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║
                                    {Fore.LIGHTCYAN_EX}        ║      {Fore.LIGHTMAGENTA_EX}User {Fore.LIGHTCYAN_EX}Info{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
-                                   {Fore.LIGHTCYAN_EX}        ║                                     
+                                   {Fore.LIGHTCYAN_EX}        ║
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Display Name: {Fore.LIGHTCYAN_EX}{client.user.name}#{client.user.discriminator}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}ID: {Fore.LIGHTCYAN_EX}{client.user.id}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
                                    {Fore.LIGHTCYAN_EX}        ║  {Fore.LIGHTMAGENTA_EX}Email Verified?: {Fore.LIGHTCYAN_EX}{client.user.verified}{Fore.RESET}{Fore.LIGHTMAGENTA_EX}
@@ -365,10 +370,10 @@ async def nitro(ctx):
 @client.command(aliases=['whois'])
 async def userinfo(ctx, member: discord.Member = None):
     await ctx.message.delete()
-    if not member: 
-        member = ctx.message.author 
+    if not member:
+        member = ctx.message.author
     roles = [role for role in member.roles]
-    embed = discord.Embed(color=0xfd53d0, timestamp=ctx.message.created_at,
+    embed = discord.Embed(color=0xFFFAFA, timestamp=ctx.message.created_at,
                           title=f"User Info - {member}")
     embed.set_thumbnail(url=member.avatar_url)
 
@@ -391,7 +396,7 @@ async def userinfo(ctx, member: discord.Member = None):
 @client.command()
 async def help(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**Help**', description=f'Welcome to Nuked, {client.user.display_name}#{client.user.discriminator}.\nCommand count: {len(client.commands)}',color=0xfd53d0)
+    embed = discord.Embed(title='**Help**', description=f'Welcome to Nuked, {client.user.display_name}#{client.user.discriminator}.\nCommand count: {len(client.commands)}', color=0xFFFAFA)
     embed.add_field(name='**Fun Commands**', value=f'{client.command_prefix}fun', inline=False)
     embed.add_field(name='**NSFW Commands**', value=f'{client.command_prefix}nsfw', inline=False)
     embed.add_field(name='**Malicious Commands**', value=f'{client.command_prefix}malicious', inline=False)
@@ -403,7 +408,7 @@ async def help(ctx):
 @client.command()
 async def util(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**Utility Commands**', color=0xfd53d0)
+    embed = discord.Embed(title='**Utility Commands**', color=0xFFFAFA)
     embed.add_field(name="**ping**", value="[ip/host] pings a ip or host.", inline=False)
     embed.add_field(name='**hidden**', value='[message] sends your message, but hidden.', inline=False)
     embed.add_field(name='**strike**', value='[message] sends your message, but striked through.', inline=False)
@@ -414,15 +419,19 @@ async def util(ctx):
     embed.add_field(name='**underline**', value='[message] sends your message, but underlined.', inline=False)
     embed.add_field(name="**id**", value='[mentioned user] sends the ID of the mentioned user.', inline=False)
     embed.add_field(name="**nitro**", value="sends a random nitro code.", inline=False)
+    embed.add_field(name="**latency**", value="sends client latency.", inline=False)
     embed.add_field(name="**settings**", value="sends selfbot settings.", inline=False)
     embed.add_field(name="**bump**", value="bumps server that it is ran in automatically every 7200 seconds.", inline=False)
     embed.add_field(name="**purge**", value="[amount] purges specified messages sent by you.", inline=False)
     embed.add_field(name="**fakelink**", value="[link1] [link2] creates a fake link using an exploit which hides links if the message consists of too many |'s.", inline=False)
     embed.add_field(name='**userinfo**', value='[mentioned user] shows user info on a mentioned person.', inline=False)
     embed.add_field(name="**webping**", value="[website url] pings a **website.**", inline=False)
+    embed.add_field(name="**paping**", value="[ip] [port] tcp pings an ip.", inline=False)
+    embed.add_field(name="**hookinfo**", value="[webhook] gets webhook info.", inline=False)
     embed.add_field(name='**password**', value='sends a strong generated password.', inline=False)
     embed.add_field(name="**download**", value="sends the nuked download link.**", inline=False)
     embed.add_field(name="**poll**", value="[topic] sends a poll with voting reactions.")
+    embed.add_field(name="**eval**", value="[code/command etc] eval something (dangerous).", inline=False)
     embed.add_field(name="**logout**", value='logs out of selfbot and closes window.', inline=False)
     embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
@@ -430,12 +439,20 @@ async def util(ctx):
 @client.command()
 async def util2(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**Utility Commands**', color=0xfd53d0)
+    embed = discord.Embed(title='**Utility Commands**', color=0xFFFAFA)
     embed.add_field(name="**guildname**", value="[name] sets the servers name.", inline=False)
     embed.add_field(name="**backupfriends**", value="dumps all friends name and tag into a text file.", inline=False)
     embed.add_field(name="**allcommands**", value="sends every command in the selfbot as a list.", inline=False)
     embed.add_field(name="**proxy**", value="sends a random proxy with port.", inline=False)
+    embed.add_field(name="**friend**", value="[mentioned user] sends a friend request to the mentioned user.", inline=False)
+    embed.add_field(name="**unfriend**", value="[mentioned user] unfriends the mentioned user.", inline=False)
+    embed.add_field(name="**hypesquad**", value="[balance | brilliance | bravery | leave] changes your hypesquad.", inline=False)
     embed.add_field(name="**read**", value="marks every guild as read (marks all messages as read).", inline=False)
+    embed.add_field(name="**channels**", value="shows each channel in a guild, including ones not visible by you.", inline=False)
+    embed.add_field(name="**channelinfo**", value="[mentioned channel] gives info on a channel.", inline=False)
+    embed.add_field(name="**block**", value="[mentioned user] blocks the mentioned user.", inline=False)
+    embed.add_field(name="**createdm**", value="[mentioned user] creates a dm with the mentioned user.", inline=False)
+    embed.add_field(name="**send**", value="[mentioned user] [message] sends a dm to the mentioned user.", inline=False)
     embed.add_field(name="**query**", value="[anything to query into google] queries your message into google.", inline=False)
     embed.add_field(name="**github**", value="opens a browser to the github of this selfbot.", inline=False)
     embed.add_field(name='**scrape**', value='scrapes proxies and dumps them into a text file.', inline=False)
@@ -459,7 +476,7 @@ async def util2(ctx):
 @client.command()
 async def nsfw(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**NSFW Commands**', color=0xfd53d0)
+    embed = discord.Embed(title='**NSFW Commands**', color=0xFFFAFA)
     embed.add_field(name="**boobs**", value="sends a random embedded image of boobs.", inline=False)
     embed.add_field(name="**hentai**", value="sends a random embedded image of hentai.", inline=False)
     embed.add_field(name="**spank**", value='[mentioned user] spanks a mentioned user.', inline=False)
@@ -473,9 +490,12 @@ async def nsfw(ctx):
 @client.command()
 async def malicious(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**Malicious Commands**', color=0xfd53d0)
+    embed = discord.Embed(title='**Malicious Commands**', color=0xFFFAFA)
     embed.add_field(name="**tokengen**", value="generates a user token.", inline=False)
+    embed.add_field(name="**copy**", value="copies the server that it is ran in.", inline=False)
+    embed.add_field(name="**delhook**", value="[webhook] deletes a webhook.", inline=False)
     embed.add_field(name="**setnicks**", value="[nickname] sets everyones nickname to user specified name.", inline=False)
+    embed.add_field(name="**hooksend**", value="[webhook] [message] sends something to a webhook.", inline=False)
     embed.add_field(name="**crash**", value="sends a lot of emojis that can lag a users discord client.", inline=False)
     embed.add_field(name="**massban**", value="attempts to ban everyone in a guild.", inline=False)
     embed.add_field(name="**masskick**", value="attempts to kick everyone in a guild.", inline=False)
@@ -490,7 +510,7 @@ async def malicious(ctx):
 @client.command()
 async def fun(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**Fun Commands**', color=0xfd53d0)
+    embed = discord.Embed(title='**Fun Commands**', color=0xFFFAFA)
     embed.add_field(name="**cat**", value="sends a random embedded image of a cat.", inline=False)
     embed.add_field(name="**spamreport**", value="[mentioned user] spams chat with a fake reporting user message.", inline=False)
     embed.add_field(name="**ud**", value="[query] queries urban dictionary for a term.", inline=False)
@@ -555,11 +575,11 @@ async def pingsite(ctx, *, website):
             print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}{e}" + Fore.RESET)
         if r == 404:
             embed = discord.Embed(title="**Website is down.**", description=f"responded with a status code of {r}",
-                                  color=0xfd53d0)
+                                  color=0xFFFAFA)
             await ctx.send(embed=embed, delete_after=val)
         else:
             embed = discord.Embed(title="**Website is online.**", description=f"responded with a status code of {r}",
-                                  color=0xfd53d0)
+                                  color=0xFFFAFA)
             await ctx.send(embed=embed, delete_after=val)
 
 
@@ -579,7 +599,7 @@ async def clown(ctx, arg):
     if arg == "":
         await ctx.send("specify someone to clown tard", delete_after=5)
     try:
-        embed = discord.Embed(title="**you're a clown**", color=0xfd53d0,
+        embed = discord.Embed(title="**you're a clown**", color=0xFFFAFA,
                               description=f"{arg} is a fucking clown \n lol \n ur so unfunny")
         await ctx.send(embed=embed, delete_after=val)
     except Exception as err:
@@ -589,7 +609,7 @@ async def clown(ctx, arg):
 @client.command(aliases=['free'])
 async def freeaccounts(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title="**Free Accounts**", color=0xfd53d0,
+    embed = discord.Embed(title="**Free Accounts**", color=0xFFFAFA,
                           description="use this link for free accounts and shit \n \nhttps://leak.sx/")
     await ctx.send(embed=embed)
 
@@ -597,7 +617,7 @@ async def freeaccounts(ctx):
 @client.command(aliases=['token'])
 async def tokengen(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title="**Token Generator**", color=0xfd53d0,
+    embed = discord.Embed(title="**Token Generator**", color=0xFFFAFA,
                           description=f"Generated Token below, **THESE WILL NOT ALWAYS WORK** \n \n {tokengener()}")
     await ctx.send(embed=embed, delete_after=val)
 
@@ -679,7 +699,7 @@ async def tokeninfo(ctx, _token):
         print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}Invalid token" + Fore.RESET)
     em = discord.Embed(
         description=f"Name: `{res['username']}#{res['discriminator']}`\nID: `{res['id']}`\nEmail: `{res['email']}`\nCreation Date: `{creation_date}`\nProfile picture: [**Click here**](https://cdn.discordapp.com/avatars/{user_id}/{avatar_id})",
-        color=0xfd53d0)
+        color=0xFFFAFA)
     fields = [
         {'name': 'Phone', 'value': res['phone']},
         {'name': 'Flags', 'value': res['flags']},
@@ -698,7 +718,7 @@ async def tokeninfo(ctx, _token):
 async def pussy(ctx):
     await ctx.message.delete()
     r = requests.get("https://nekobot.xyz/api/image?type=pussy").json()
-    embed = discord.Embed(color=0xfd53d0)
+    embed = discord.Embed(color=0xFFFAFA)
     embed.set_image(url=str(r["message"]))
     await ctx.send(embed=embed, delete_after=val)
 
@@ -733,7 +753,7 @@ async def on_command_error(ctx, error):
 @client.command(aliases=['av'])
 async def avatar(ctx, *, member: discord.Member = None):
     await ctx.message.delete()
-    embed = discord.Embed(title=f"{member}'s avatar", color=0xfd53d0)
+    embed = discord.Embed(title=f"{member}'s avatar", color=0xFFFAFA)
     avatarurl = member.avatar_url
     embed.set_image(url=avatarurl)
     await ctx.send(embed=embed, delete_after=val)
@@ -742,7 +762,7 @@ async def avatar(ctx, *, member: discord.Member = None):
 @client.command()
 async def info(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title="**Selfbot Information**", color=0xfd53d0)
+    embed = discord.Embed(title="**Selfbot Information**", color=0xFFFAFA)
     embed.add_field(name="**made in**", value="discord.py")
     embed.add_field(name="**made by**", value="kylie#1337")
     embed.add_field(name="**running under the user**", value=f"{client.user.name}#{client.user.discriminator}")
@@ -801,7 +821,7 @@ async def destroy(ctx):
             pass
     try:
         await ctx.guild.edit(
-            name="https://github.com/kyliex/nuked",
+            name="https://github.com/appendable/nuked",
             description="Nuked ON TOP",
             reason="idk",
             icon=None,
@@ -829,7 +849,7 @@ async def nuke(ctx):
 async def masstokens(ctx):
     await ctx.message.delete()
     masstokengen()
-    embed = discord.Embed(title="**Generated 300 tokens.**", color=0xfd53d0, description="generated 300 tokens in tokens.txt. these might not work.")
+    embed = discord.Embed(title="**Generated 300 tokens.**", color=0xFFFAFA, description="generated 300 tokens in tokens.txt. these might not work.")
     await ctx.send(embed=embed)
 
 @client.command(aliases=['extensiveinfo', 'showtoken'])
@@ -853,7 +873,7 @@ async def btc(ctx):
     usd = r['USD']
     eur = r['EUR']
     gbp = r['GBP']
-    embed = discord.Embed(title='**BTC**', color=0xfd53d0)
+    embed = discord.Embed(title='**BTC**', color=0xFFFAFA)
     embed.add_field(name="**USD**", value=usd)
     embed.add_field(name="**EUR**", value=eur)
     embed.add_field(name="**GBP**", value=gbp)
@@ -864,7 +884,7 @@ async def geo(ctx, arg):
     await ctx.message.delete()
     try:
         r = requests.get(f'http://ip-api.com/json/{arg}')
-        embed = discord.Embed(title='**IP Lookup**', color=0xfd53d0)
+        embed = discord.Embed(title='**IP Lookup**', color=0xFFFAFA)
         embed.add_field(name="**ISP**", value=r.json()['isp'], inline=False)
         embed.add_field(name="**ASN**", value=r.json()['as'], inline=False)
         embed.add_field(name="**City**", value=r.json()['city'], inline=False)
@@ -883,7 +903,7 @@ async def ifmentioned(message):
     if message_logger:
         if message.author == client.user:
             return
-        if client.user.mention in message.content:
+        if client.user.mentioned_in(message):
             print(f"{Fore.LIGHTCYAN_EX}╔══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════{Fore.RESET}")
             print(Fore.LIGHTCYAN_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"You were mentioned by {message.author}." + Fore.RESET)
             print(Fore.LIGHTCYAN_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
@@ -944,7 +964,7 @@ async def nitrosnipe(message):
 async def kiss(ctx, member : discord.Member=None):
     await ctx.message.delete()
     r = requests.get("https://nekos.life/api/kiss")
-    embed = discord.Embed(description=f"<@{client.user.id}> kisses <@{member.id}>", color=0xfd53d0)
+    embed = discord.Embed(description=f"<@{client.user.id}> kisses <@{member.id}>", color=0xFFFAFA)
     embed.set_image(url=r.json()['url'])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -952,7 +972,7 @@ async def kiss(ctx, member : discord.Member=None):
 async def hug(ctx, member : discord.Member=None):
     await ctx.message.delete()
     r = requests.get("https://nekos.life/api/hug")
-    embed = discord.Embed(description=f"<@{client.user.id}> hugs {member.mention}", color=0xfd53d0)
+    embed = discord.Embed(description=f"<@{client.user.id}> hugs {member.mention}", color=0xFFFAFA)
     embed.set_image(url=r.json()['url'])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -960,7 +980,7 @@ async def hug(ctx, member : discord.Member=None):
 async def boobs(ctx, member : discord.Member=None):
     await ctx.message.delete()
     r = requests.get("https://nekos.life/api/v2/img/boobs")
-    embed = discord.Embed(color=0xfd53d0)
+    embed = discord.Embed(color=0xFFFAFA)
     embed.set_image(url=r.json()['url'])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -968,7 +988,7 @@ async def boobs(ctx, member : discord.Member=None):
 async def cat(ctx, member : discord.Member=None):
     await ctx.message.delete()
     r = requests.get("https://nekos.life/api/v2/img/meow")
-    embed = discord.Embed(color=0xfd53d0)
+    embed = discord.Embed(color=0xFFFAFA)
     embed.set_image(url=r.json()['url'])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -976,7 +996,7 @@ async def cat(ctx, member : discord.Member=None):
 @client.command(aliases=['fakedox', 'dox'])
 async def userdox(ctx, member : discord.Member=None):
     await ctx.message.delete()
-    embed = discord.Embed(title=f"{member}", color=0xfd53d0)
+    embed = discord.Embed(title=f"{member}", color=0xFFFAFA)
     embed.add_field(name='**Token**', value=f"{base64.b64encode(bytes(str(member.id), 'utf-8')).decode() + '...'}", inline=False)
     embed.add_field(name='**Address**', value=randaddr(), inline=False)
     embed.add_field(name='**Phone Number**', value=f"+1 {''.join(random.choices(pn, k=10))}")
@@ -985,14 +1005,14 @@ async def userdox(ctx, member : discord.Member=None):
 @client.command()
 async def query(ctx, *, message):
     await ctx.message.delete()
-    embed = discord.Embed(title="**Search Query**", color=0xfd53d0, description=searchq(link=message))
+    embed = discord.Embed(title="**Search Query**", color=0xFFFAFA, description=searchq(link=message))
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def joke(ctx):
     await ctx.message.delete()
     r = requests.get("https://sv443.net/jokeapi/v2/joke/Any?type=single")
-    embed = discord.Embed(title="**Joke**", color=0xfd53d0, description=f"{r.json()['joke']}")
+    embed = discord.Embed(title="**Joke**", color=0xFFFAFA, description=f"{r.json()['joke']}")
     await ctx.send(embed=embed, delete_after=val)
 
 
@@ -1013,13 +1033,13 @@ async def allservers(ctx):
 @client.command(aliases=['scrape'])
 async def proxy(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title="**Proxy**", color=0xfd53d0, description=pscrape())
+    embed = discord.Embed(title="**Proxy**", color=0xFFFAFA, description=pscrape())
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def embed(ctx, *, message):
     await ctx.message.delete()
-    embed = discord.Embed(color=0xfd53d0, description=message)
+    embed = discord.Embed(color=0xFFFAFA, description=message)
     embed.set_author(name=str(client.user.display_name + "#" + client.user.discriminator), icon_url=client.user.avatar_url)
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1061,7 +1081,7 @@ async def wyr(ctx):
     qa = soup.find(id='qa').text
     qor = soup.find(id='qor').text
     qb = soup.find(id='qb').text
-    embed = discord.Embed(color=0xfd53d0, description=f'{qa}\n{qor}\n{qb}')
+    embed = discord.Embed(color=0xFFFAFA, description=f'{qa}\n{qor}\n{qb}')
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
@@ -1070,7 +1090,7 @@ async def id(ctx, member: discord.Member=None):
     if not member:
         pass
     try:
-        embed = discord.Embed(description=f"**{member.mention}'s ID**\n\n{member.id}",color=0xfd53d0)
+        embed = discord.Embed(description=f"**{member.mention}'s ID**\n\n{member.id}",color=0xFFFAFA)
         await ctx.send(embed=embed, delete_after=val)
     except:
         await ctx.send(f"{member}'s ID" + '\n' + str(member.id), delete_after=val)
@@ -1081,7 +1101,7 @@ async def slap(ctx, user: discord.Member=None):
     await ctx.message.delete()
     r = requests.get("https://nekos.life/api/v2/img/slap")
     res = r.json()
-    embed = discord.Embed(description=f"{client.user.mention} slaps {user.mention}", color=0xfd53d0)
+    embed = discord.Embed(description=f"{client.user.mention} slaps {user.mention}", color=0xFFFAFA)
     embed.set_image(url=res['url'])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1089,7 +1109,7 @@ async def slap(ctx, user: discord.Member=None):
 async def tickle(ctx, member: discord.Member=None):
     await ctx.message.delete()
     r = requests.get('https://nekos.life/api/v2/img/tickle').json()
-    embed = discord.Embed(description=f"{client.user.mention} tickles {member.mention}", color=0xfd53d0)
+    embed = discord.Embed(description=f"{client.user.mention} tickles {member.mention}", color=0xFFFAFA)
     embed.set_image(url=r['url'])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1097,7 +1117,7 @@ async def tickle(ctx, member: discord.Member=None):
 async def spank(ctx, member: discord.Member=None):
     await ctx.message.delete()
     r = requests.get('https://nekos.life/api/v2/img/spank').json()
-    embed = discord.Embed(description=f"{client.user.mention} spanks {member.mention}", color=0xfd53d0)
+    embed = discord.Embed(description=f"{client.user.mention} spanks {member.mention}", color=0xFFFAFA)
     embed.set_image(url=r['url'])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1107,8 +1127,8 @@ async def setnicks(ctx, *, message):
     for member in ctx.message.guild.members:
         try:
             await member.edit(nick=message)
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
 @client.command()
 async def revertnicks(ctx):
@@ -1175,11 +1195,11 @@ async def fakelink(ctx, link1, link2):
 async def addy(ctx):
     await ctx.message.delete()
     await ctx.send(randaddr())
-            
+
 @client.command()
 async def poll(ctx, *, message):
     await ctx.message.delete()
-    embed = discord.Embed(title="**Poll**", color=0xfd53d0)
+    embed = discord.Embed(title="**Poll**", color=0xFFFAFA)
     embed.add_field(name=f"{message}", value="✅ ❌", inline=False)
     message = await ctx.send(embed=embed, delete_after=250)
     await message.add_reaction("✅")
@@ -1189,7 +1209,7 @@ async def poll(ctx, *, message):
 async def unpingable(message):
     if mentionblocker:
         if client.user.mention in message.content:
-            guild = message.guild 
+            guild = message.guild
             try:
                 await guild.ack()
             except:
@@ -1201,7 +1221,7 @@ async def unpingable(message):
 @client.command()
 async def settings(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**Settings**', color=0xfd53d0)
+    embed = discord.Embed(title='**Settings**', color=0xFFFAFA)
     embed.add_field(name='**Prefix**', value=client.command_prefix, inline=False)
     embed.add_field(name='**Nitro Sniper**', value='Active', inline=False)
     embed.add_field(name='**Mention Logger**', value=message_logger, inline=False)
@@ -1234,7 +1254,7 @@ async def masskick(ctx):
 async def fuck(ctx, member: discord.Member=None):
     await ctx.message.delete()
     r = requests.get('https://api.neko-chxn.xyz/v1/fuck/img').json()
-    embed = discord.Embed(description=f'{client.user.mention} fucks {member.mention}', color=0xfd53d0)
+    embed = discord.Embed(description=f'{client.user.mention} fucks {member.mention}', color=0xFFFAFA)
     embed.set_image(url=r["url"])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1250,23 +1270,27 @@ async def ascii(ctx, *, message):
 @client.command()
 async def download(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title="**Use this link to download Nuked**", color=0xfd53d0, description="https://github.com/kyliex/nuked")
+    embed = discord.Embed(title="**Use this link to download Nuked**", color=0xFFFAFA, description="https://github.com/kyliex/nuked")
     await ctx.send(embed=embed, delete_after=val)
+
+async def get_portscan(ip):
+    results = os.popen(f'nmap {ip}').read()
+    return f'```{results}```'
 
 @client.command()
 async def nmap(ctx, ip):
     await ctx.message.delete()
     try:
-        results = os.popen(f'nmap {ip}').read()
-        await ctx.send('```' + results + '```')
+        results = await get_portscan(ip)
+        await ctx.send(results)
     except Exception as e:
-        print(e)
+        await ctx.send(e)
 
 @client.command()
 async def tweet(ctx, username, *, message):
     await ctx.message.delete()
     r = requests.get(f'https://nekobot.xyz/api/imagegen?type=tweet&username={username}&text={message}').json()
-    embed = discord.Embed(color=0xfd53d0)
+    embed = discord.Embed(color=0xFFFAFA)
     embed.set_image(url=r["message"])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1282,7 +1306,7 @@ async def read(ctx):
 async def phcomment(ctx, user, *, message):
     await ctx.message.delete()
     r = requests.get(f'https://nekobot.xyz/api/imagegen?type=phcomment&text={message}&username={user}&image=https://i.imgur.com/raRKTgZ.jpg').json()
-    embed = discord.Embed(color=0xfd53d0)
+    embed = discord.Embed(color=0xFFFAFA)
     embed.set_image(url=r["message"])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1296,7 +1320,7 @@ async def setprefix(ctx, arg):
 @client.command()
 async def guildinfo(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**Guild Info**', color=0xfd53d0)
+    embed = discord.Embed(title='**Guild Info**', color=0xFFFAFA)
     guild = ctx.message.guild
     roles = [role.mention for role in reversed(guild.roles)]
     embed.add_field(name='**Owner**', value=f'<@{ctx.message.guild.owner_id}>', inline=False)
@@ -1308,28 +1332,9 @@ async def guildinfo(ctx):
 @client.command(aliases=['fbackup'])
 async def backupfriends(ctx):
     await ctx.message.delete()
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.12) Gecko/20050915 Firefox/1.0.7',
-        'Content-Type': 'application/json',
-        'Authorization': token,
-    }
-    friends = requests.get(
-            "https://discord.com/api/v6/users/@me/relationships", headers=headers
-        )
-    for friend in friends.json():
-        if friend["type"] == 1:
-            dname = friend["user"]["username"]
-            tag = friend["user"]["discriminator"]
-            username = "Username: %s#%s | User ID: %s\n" % (
-                friend["user"]["username"],
-                friend["user"]["discriminator"],
-                friend["id"],
-            )
-            with open("Friends.txt", "a", encoding="UTF-8") as f:
-                f.write(username)
-    print(f"{Fore.LIGHTMAGENTA_EX}[Backup] {Fore.LIGHTCYAN_EX}Friends Backup Successful.")
-    await asyncio.sleep(30)
-    splash()
+    ff = open('friends.txt', 'w', encoding='utf-8')
+    for friend in client.user.friends:
+        ff.write(f'{friend.name}#{friend.discriminator}\n')
 
 @client.command()
 async def restart(ctx):
@@ -1362,15 +1367,15 @@ async def newsplash(ctx):
 async def bite(ctx, member: discord.Member=None):
     await ctx.message.delete()
     r = requests.get('https://api.neko-chxn.xyz/v1/bite/img').json()
-    embed = discord.Embed(description=f'{client.user.mention} bites {member.mention}', color=0xfd53d0)
+    embed = discord.Embed(description=f'{client.user.mention} bites {member.mention}', color=0xFFFAFA)
     embed.set_image(url=r["url"])
-    await ctx.send(embed=embed, delete_after=val) 
+    await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def cuddle(ctx, member: discord.Member=None):
     await ctx.message.delete()
     r = requests.get('https://api.neko-chxn.xyz/v1/cuddle/img').json()
-    embed = discord.Embed(description=f'{client.user.mention} cuddles {member.mention}', color=0xfd53d0)
+    embed = discord.Embed(description=f'{client.user.mention} cuddles {member.mention}', color=0xFFFAFA)
     embed.set_image(url=r["url"])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1378,7 +1383,7 @@ async def cuddle(ctx, member: discord.Member=None):
 async def kill(ctx, member: discord.Member=None):
     await ctx.message.delete()
     r = requests.get('https://api.neko-chxn.xyz/v1/kill/img').json()
-    embed = discord.Embed(description=f'{client.user.mention} kills {member.mention}', color=0xfd53d0)
+    embed = discord.Embed(description=f'{client.user.mention} kills {member.mention}', color=0xFFFAFA)
     embed.set_image(url=r["url"])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1386,7 +1391,7 @@ async def kill(ctx, member: discord.Member=None):
 async def hentai(ctx):
     await ctx.message.delete()
     r = requests.get('https://api.neko-chxn.xyz/v1/hentaiimg/img').json()
-    embed = discord.Embed(color=0xfd53d0)
+    embed = discord.Embed(color=0xFFFAFA)
     embed.set_image(url=r["url"])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1394,7 +1399,7 @@ async def hentai(ctx):
 async def lick(ctx, member: discord.Member=None):
     await ctx.message.delete()
     r = requests.get('https://api.neko-chxn.xyz/v1/lick/img').json()
-    embed = discord.Embed(description=f'{client.user.mention} licks {member.mention}', color=0xfd53d0)
+    embed = discord.Embed(description=f'{client.user.mention} licks {member.mention}', color=0xFFFAFA)
     embed.set_image(url=r["url"])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1412,7 +1417,7 @@ async def github(ctx):
 async def trumptweet(ctx, *, message):
     await ctx.message.delete()
     r = requests.get(f'https://nekobot.xyz/api/imagegen?type=trumptweet&text={message}').json()
-    embed = discord.Embed(color=0xfd53d0)
+    embed = discord.Embed(color=0xFFFAFA)
     embed.set_image(url=r["message"])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1420,7 +1425,7 @@ async def trumptweet(ctx, *, message):
 async def clyde(ctx, *, message):
     await ctx.message.delete()
     r = requests.get(f'https://nekobot.xyz/api/imagegen?type=clyde&text={message}').json()
-    embed = discord.Embed(color=0xfd53d0)
+    embed = discord.Embed(color=0xFFFAFA)
     embed.set_image(url=r["message"])
     await ctx.send(embed=embed, delete_after=val)
 
@@ -1438,20 +1443,20 @@ async def crash(ctx):
 @client.command()
 async def gayrate(ctx, member: discord.Member=None):
     await ctx.message.delete()
-    embed = discord.Embed(title='Gay Rate', color=0xfd53d0, description=f'{_gayrate(member.mention)}')
+    embed = discord.Embed(title='Gay Rate', color=0xFFFAFA, description=f'{_gayrate(member.mention)}')
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def expose(ctx, member: discord.Member=None):
     await ctx.message.delete()
-    embed = discord.Embed(title='Exposed', color=0xfd53d0, description=f'{_expose(member.mention)}')
+    embed = discord.Embed(title='Exposed', color=0xFFFAFA, description=f'{_expose(member.mention)}')
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
 async def proxies(ctx):
     await ctx.message.delete()
     proxyscraper()
-    embed = discord.Embed(color=0xfd53d0, title='Proxy Scraper', description='Scraped proxies are in proxies.txt')
+    embed = discord.Embed(color=0xFFFAFA, title='Proxy Scraper', description='Scraped proxies are in proxies.txt')
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
@@ -1480,8 +1485,8 @@ async def ud(ctx, *, message):
     await ctx.message.delete()
     await ctx.send(udtop(message))
 
-@client.command()
-async def password(ctx):
+@client.command(name='password')
+async def _password(ctx):
     await ctx.message.delete()
     await ctx.send(''.join(random.choices(randomness + randomnum + randomsymbols, k=40)))
 
@@ -1489,7 +1494,7 @@ async def password(ctx):
 async def hookinfo(ctx, webhook):
     await ctx.message.delete()
     r = requests.get(webhook).json()
-    embed = discord.Embed(title='**Webhook Info**', color=0xfd53d0, description=f'Name: {r["name"]}\nAvatar: {r["avatar"]}\nID: {r["id"]}\nChannel ID: {r["channel_id"]}\nGuild ID: {r["guild_id"]}\nToken: {r["token"]}')
+    embed = discord.Embed(title='**Webhook Info**', color=0xFFFAFA, description=f'Name: {r["name"]}\nAvatar: {r["avatar"]}\nID: {r["id"]}\nChannel ID: {r["channel_id"]}\nGuild ID: {r["guild_id"]}\nToken: {r["token"]}')
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
@@ -1554,8 +1559,13 @@ async def _eval(ctx, *, cmd=None):
         'ctx': ctx,
         '__import__': __import__,
         'token': token,
-        'print': print
-
+        'print': print,
+        'os': os,
+        'sys': sys,
+        'system': system,
+        'asyncio': asyncio,
+        'time': time,
+        'datetime': datetime
     }
     exec(compile(parsed, filename='<ast>', mode='exec'), env)
 
@@ -1565,6 +1575,153 @@ async def _eval(ctx, *, cmd=None):
     except:
         pass
 
+@client.command()
+async def paping(ctx, ip: str, port: int):
+    await ctx.message.delete()
+    data = measure_latency(host=ip, port=port, runs=5, timeout=1)
+    embed = discord.Embed(title=f'**TCP Ping Results for {ip}:{port}**', description=f'{str(data[0])} ms\n{str(data[1])} ms\n{str(data[2])} ms\n{str(data[3])} ms\n{str(data[4])} ms', color=0xFFFAFA)
+    await ctx.send(embed=embed, delete_after=val)
+
+@client.listen('on_message')
+async def slotbotgrab(message):
+    if slotbot:
+        if 'Hurry and pick it up with' in message.content and message.author.id == 346353957029019648:
+            await message.channel.send('~grab')
+        else:
+            pass
+    else:
+        pass
+
+async def dynofarm(ctx):
+    while True:
+        await ctx.send(str(os.urandom(1)))
+        await asyncio.sleep(50)
+
+
+@client.command()
+async def hypesquad(ctx, choice=None):
+    await ctx.message.delete()
+    if not choice:
+        await client.user.edit(house=None, password=password)
+    elif choice == 'bravery' or choice == 'Bravery':
+        await client.user.edit(house=discord.HypeSquadHouse.bravery, password=password)
+    elif choice == 'brilliance' or choice == 'Brilliance':
+        await client.user.edit(house=discord.HypeSquadHouse.brilliance, password=password)
+    elif choice == 'balance' or choice == 'Balance':
+        await client.user.edit(house=discord.HypeSquadHouse.balance, password=password)
+
+@client.command()
+async def friend(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    if not member:
+        pass
+    else:
+        await member.send_friend_request()
+
+@client.command()
+async def unfriend(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    if not member:
+        pass
+    else:
+        await member.remove_friend()
+
+@client.command()
+async def block(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    if not member:
+        pass
+    else:
+        await member.block()
+
+
+@client.command()
+async def typing(ctx):
+    await ctx.message.delete()
+    while True:
+        await ctx.channel.trigger_typing()
+        await asyncio.sleep(10)
+
+
+@client.command()
+async def channelinfo(ctx, channel: discord.TextChannel=None):
+    await ctx.message.delete()
+    if not channel:
+        channel = ctx.channel
+        embed = discord.Embed(title='**Channel Info**', color=0xFFFAFA)
+        embed.add_field(name='**Is NSFW?**', value=channel.is_nsfw(), inline=False)
+        embed.add_field(name='**Is News Channel?**', value=channel.is_news(), inline=False)
+        embed.add_field(name='**Channel ID**', value=channel.id, inline=False)
+        embed.add_field(name='**Created At**', value=channel.created_at, inline=False)
+        embed.add_field(name='**Category ID**', value=channel.category_id, inline=False)
+        embed.add_field(name='**Members**', value=len(channel.members), inline=False)
+        embed.add_field(name='**Last Message ID**', value=channel.last_message_id, inline=False)
+        embed.add_field(name='**Mention**', value=channel.mention, inline=False)
+        embed.add_field(name='**Topic**', value=channel.topic, inline=False)
+        embed.add_field(name='**Position**', value=channel.position, inline=False)
+        embed.add_field(name='**Slowmode Delay**', value=channel.slowmode_delay, inline=False)
+        await ctx.send(embed=embed, delete_after=val)
+    else:
+        embed = discord.Embed(title='**Channel Info**', color=0xFFFAFA)
+        embed.add_field(name='**Is NSFW?**', value=channel.is_nsfw(), inline=False)
+        embed.add_field(name='**Is News Channel?**', value=channel.is_news(), inline=False)
+        embed.add_field(name='**Channel ID**', value=channel.id, inline=False)
+        embed.add_field(name='**Created At**', value=channel.created_at, inline=False)
+        embed.add_field(name='**Category ID**', value=channel.category_id, inline=False)
+        embed.add_field(name='**Members**', value=len(channel.members), inline=False)
+        embed.add_field(name='**Last Message ID**', value=channel.last_message_id, inline=False)
+        embed.add_field(name='**Mention**', value=channel.mention, inline=False)
+        embed.add_field(name='**Topic**', value=channel.topic, inline=False)
+        embed.add_field(name='**Position**', value=channel.position, inline=False)
+        embed.add_field(name='**Slowmode Delay**', value=channel.slowmode_delay, inline=False)
+        await ctx.send(embed=embed, delete_after=val)
+
+@client.command()
+async def channels(ctx):
+    await ctx.message.delete()
+    await ctx.send('\n'.join([channel.mention for channel in ctx.guild.channels]))
+
+@client.command()
+async def createdm(ctx, member: discord.Member=None):
+    await ctx.message.delete()
+    if not member:
+        pass
+    else:
+        await member.create_dm()
+
+@client.command()
+async def send(ctx, member: discord.Member=None, *, message):
+    await ctx.message.delete()
+    await member.send(content=message)
+
+@client.command()
+async def copy(ctx):
+    await ctx.message.delete()
+    xd = await client.create_guild(f'{ctx.guild.name}')
+    g = await client.fetch_guild(xd.id)
+    for cate in ctx.guild.categories:
+        x = await g.create_category(f"{cate.name}")
+        for chann in cate.channels:
+            if isinstance(chann, discord.VoiceChannel):
+                await x.create_voice_channel(f"{chann}")
+            if isinstance(chann, discord.TextChannel):
+                await x.create_text_channel(f"{chann}")
+    try:
+        await g.edit(icon=ctx.guild.icon_url)
+    except:
+        pass
+    
+@client.command()
+async def delhook(ctx, webhook: str):
+    await ctx.message.delete()
+    if not webhook:
+        return
+    else:
+        r = requests.delete(webhook)
+        if (r.status_code == 204):
+            await ctx.send('Webhook was deleted successfully.')
+        else:
+            await ctx.send('Failed to delete webhook.')
 
 if __name__ == '__main__':
     try:
