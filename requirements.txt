@@ -30,3 +30,4 @@ urbandictionary_top
 wikipedia
 paramiko
 tcp_latency
+pyperclip
