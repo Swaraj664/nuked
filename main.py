@@ -56,7 +56,8 @@ collector.refresh_proxies(force=True)
 # ily ;)
 
 version = 'v3'
-literal_version = 'v3.0'
+literal_version = 'v3.5'
+
 
 class NukedError(Exception):
     def __init__(self, error, reason):
@@ -260,7 +261,7 @@ async def on_connect():
     system('cls')
     try:
         ctypes.windll.kernel32.SetConsoleTitleW(
-            f'Welcome to Nuked, {client.user.name}#{client.user.discriminator}. Command prefix is \"{client.command_prefix}\" | Login Successful.')
+            f'Welcome to Nuked, {client.user.name}#{client.user.discriminator} | Login Successful.')
     except:
         pass
     splash()
@@ -352,7 +353,9 @@ def masstokengen():
         tokenfile.write(tokens + "\n")
 
 
-
+class Nuked:
+    def init():
+        Init()
 
 
 @client.command()
@@ -402,13 +405,12 @@ async def userinfo(ctx, member: discord.Member = None):
 @client.command()
 async def help(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**Help**', description=f'Welcome to Nuked, {client.user.display_name}#{client.user.discriminator}.\nCommand count: {len(client.commands)}', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+    embed = discord.Embed(title='**Help**', description=f'Welcome to Nuked, {client.user.display_name}#{client.user.discriminator}.\nCommand count: {len(client.commands)}\nCommand prefix: {client.command_prefix}', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
     embed.add_field(name='**Fun Commands**', value=f'{client.command_prefix}fun', inline=False)
     embed.add_field(name='**NSFW Commands**', value=f'{client.command_prefix}nsfw', inline=False)
     embed.add_field(name='**Malicious Commands**', value=f'{client.command_prefix}malicious', inline=False)
-    embed.add_field(name='**Utility Commands**', value=f'{client.command_prefix}util | {client.command_prefix}util2', inline=False)
+    embed.add_field(name='**Utility Commands**', value=f'{client.command_prefix}util\n{client.command_prefix}util2', inline=False)
     embed.set_thumbnail(url=client.user.avatar_url)
-    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
@@ -453,6 +455,8 @@ async def util2(ctx):
     embed.add_field(name="**friend**", value="[mentioned user] sends a friend request to the mentioned user.", inline=False)
     embed.add_field(name="**unfriend**", value="[mentioned user] unfriends the mentioned user.", inline=False)
     embed.add_field(name="**hypesquad**", value="[balance | brilliance | bravery | leave] changes your hypesquad.", inline=False)
+    embed.add_field(name="**ban**", value="[mentioned user] [reason] kicks the user for a reason.", inline=False)
+    embed.add_field(name="**kick**", value="[mentioned user] [reason] bans the user for a reason.", inline=False)
     embed.add_field(name="**read**", value="marks every guild as read (marks all messages as read).", inline=False)
     embed.add_field(name="**channels**", value="shows each channel in a guild, including ones not visible by you.", inline=False)
     embed.add_field(name="**channelinfo**", value="[mentioned channel] gives info on a channel.", inline=False)
@@ -504,6 +508,7 @@ async def malicious(ctx):
     embed.add_field(name="**hooksend**", value="[webhook] [message] sends something to a webhook.", inline=False)
     embed.add_field(name="**crash**", value="sends a lot of emojis that can lag a users discord client.", inline=False)
     embed.add_field(name="**massban**", value="attempts to ban everyone in a guild.", inline=False)
+    embed.add_field(name="**edittag**", value="[message] sends a message and glitches the edited tag.", inline=False)
     embed.add_field(name="**masskick**", value="attempts to kick everyone in a guild.", inline=False)
     embed.add_field(name="**revertnicks**", value="reverts everyones nickname back to their name.", inline=False)
     embed.add_field(name="**tokenfuck**", value="[token] completely fucks a users account via their token.", inline=False)
@@ -533,6 +538,11 @@ async def fun(ctx):
     embed.add_field(name='**joke**', value='sends a random embedded joke from an API.', inline=False)
     embed.add_field(name='**tickle**', value='[mentioned user] tickles mentioned user.', inline=False)
     embed.add_field(name='**clyde**', value='[message] clydifys a message.', inline=False)
+    embed.add_field(name="**rembed**", value="[message] sends a rainbow embed.", inline=False)
+    embed.add_field(name="**cuddle**", value="[mentioned user] cuddles the mentioned user.", inline=False)
+    embed.add_field(name="**invisnick**", value="sets your nickname to be invisible.", inline=False)
+    embed.add_field(name="**glitchnick**", value="sets your nickname to weird characters.", inline=False)
+    embed.add_field(name="**gif**", value="[message] queries a message into giphy and sends the gif.", inline=False)
     embed.add_field(name='**trumptweet**', value='[message] turns a message into a tweet from trump.', inline=False)
     embed.add_field(name='**dox**', value='[mentioned user] fake doxes a user.', inline=False)
     embed.add_field(name="**streaming**", value="[message] sets your discord status to show that your streaming.", inline=False)
@@ -1247,8 +1257,8 @@ async def unpingable(message):
 @client.command()
 async def settings(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title='**Settings**', color=0xFFFAFA)
-    embed.add_field(name='**Prefix**', value=client.command_prefix, inline=False, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+    embed = discord.Embed(title='**Settings**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+    embed.add_field(name='**Prefix**', value=client.command_prefix, inline=False)
     embed.add_field(name='**Nitro Sniper**', value='Active', inline=False)
     embed.add_field(name='**Mention Logger**', value=message_logger, inline=False)
     embed.add_field(name='**Mention Blocker**', value=mentionblocker, inline=False)
@@ -1840,11 +1850,13 @@ async def rembed(ctx, *, message):
     await msg.delete()
 
 
+
+
 if __name__ == '__main__':
     try:
         cursor.hide()
     except:
         pass
-    Init()
+    Nuked.init()
 else:
     exit()
