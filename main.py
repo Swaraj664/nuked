@@ -5,6 +5,8 @@ try:
     import ast
     from urllib.request import urlopen
     from os import system, name
+    from youtube_search import YoutubeSearch
+    import youtube_dl 
     import pyperclip
     import sys
     from pypresence import Presence
@@ -31,6 +33,8 @@ except ImportError as e:
     from tcp_latency import measure_latency
     import ast
     from urllib.request import urlopen
+    from youtube_search import YoutubeSearch
+    import youtube_dl 
     import pyperclip
     from os import system, name
     import sys
@@ -299,7 +303,7 @@ def splash():
 
 if rich_presence:
         x = True
-        rpcc = Presence(client_id="777057310228742174")
+        rpcc = Presence(client_id="794443652680122378")
         rpcc.connect()
         rpcc.update(details='Online', large_image="avatar", start=time.time())
 else:
@@ -403,163 +407,162 @@ async def userinfo(ctx, member: discord.Member = None):
 
 
 @client.command()
-async def help(ctx):
-    await ctx.message.delete()
-    embed = discord.Embed(title='**Help**', description=f'Welcome to Nuked, {client.user.display_name}#{client.user.discriminator}.\nCommand count: {len(client.commands)}\nCommand prefix: {client.command_prefix}', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
-    embed.add_field(name='**Fun Commands**', value=f'{client.command_prefix}fun', inline=False)
-    embed.add_field(name='**NSFW Commands**', value=f'{client.command_prefix}nsfw', inline=False)
-    embed.add_field(name='**Malicious Commands**', value=f'{client.command_prefix}malicious', inline=False)
-    embed.add_field(name='**Utility Commands**', value=f'{client.command_prefix}util\n{client.command_prefix}util2', inline=False)
-    embed.set_thumbnail(url=client.user.avatar_url)
-    await ctx.send(embed=embed, delete_after=val)
+async def help(ctx, c: str=None):
+    if not c:
+        await ctx.message.delete()
+        embed = discord.Embed(title='**Help**', description=f'Welcome to Nuked, {client.user.display_name}#{client.user.discriminator}.\nCommand count: {len(client.commands)}\nCommand prefix: {client.command_prefix}', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+        embed.add_field(name='**Fun Commands**', value=f'{client.command_prefix}help fun', inline=False)
+        embed.add_field(name='**NSFW Commands**', value=f'{client.command_prefix}help nsfw', inline=False)
+        embed.add_field(name='**Malicious Commands**', value=f'{client.command_prefix}help malicious', inline=False)
+        embed.add_field(name='**Utility Commands**', value=f'{client.command_prefix}help util\n{client.command_prefix}help util2', inline=False)
+        embed.set_thumbnail(url=client.user.avatar_url)
+        await ctx.send(embed=embed, delete_after=val)
+    elif c.lower() == 'fun':
+        await ctx.message.delete()
+        embed1 = discord.Embed(title='**Fun Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+        embed1.add_field(name="**cat**", value="sends a random embedded image of a cat.", inline=False)
+        embed1.add_field(name="**spamreport**", value="[mentioned user] spams chat with a fake reporting user message.", inline=False)
+        embed1.add_field(name="**ud**", value="[query] queries urban dictionary for a term.", inline=False)
+        embed1.add_field(name="**wiki**", value="[query] queries wikipedia for text and returns a summary of it.", inline=False)
+        embed1.add_field(name="**websteal**", value="[http or https url] steal a websites data and dump it into an html file.", inline=False)
+        embed1.add_field(name="**gayrate**", value="[mentioned user] gayrates a user.", inline=False)
+        embed1.add_field(name="**expose**", value="[mentioned user] exposes a user.", inline=False)
+        embed1.add_field(name="**phcomment**", value="[username] [message] sends an image of a custom pornhub comment.", inline=False)
+        embed1.add_field(name="**lick**", value="[mentioned user] licks the mentioned user.", inline=False)
+        embed1.add_field(name="**kill**", value="[mentioned user] kills the mentioned user.", inline=False)
+        embed1.add_field(name="**youtube**", value="[query] queries a message into youtube and returns the results.", inline=False)
+        embed1.add_field(name="**cuddle**", value="[mentioned user] cuddles the mentioned user.", inline=False)
+        embed1.add_field(name="**bite**", value="[mentioned user] bites the mentioned user.", inline=False)
+        embed1.add_field(name="**slap**", value="[mentioned user] slaps a user.", inline=False)
+        embed1.add_field(name='**joke**', value='sends a random embedded joke from an API.', inline=False)
+        embed1.add_field(name='**tickle**', value='[mentioned user] tickles mentioned user.', inline=False)
+        embed1.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
+        await ctx.send(embed=embed1, delete_after=val)
+    elif c.lower() == 'fun2':
+        embed = discord.Embed(title='**Fun Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+        embed.add_field(name='**clyde**', value='[message] clydifys a message.', inline=False)
+        embed.add_field(name="**rembed**", value="[message] sends a rainbow embed.", inline=False)
+        embed.add_field(name="**cuddle**", value="[mentioned user] cuddles the mentioned user.", inline=False)
+        embed.add_field(name="**invisnick**", value="sets your nickname to be invisible.", inline=False)
+        embed.add_field(name="**glitchnick**", value="sets your nickname to weird characters.", inline=False)
+        embed.add_field(name="**gif**", value="[message] queries a message into giphy and sends the gif.", inline=False)
+        embed.add_field(name='**trumptweet**', value='[message] turns a message into a tweet from trump.', inline=False)
+        embed.add_field(name='**dox**', value='[mentioned user] fake doxes a user.', inline=False)
+        embed.add_field(name="**streaming**", value="[message] sets your discord status to show that your streaming.", inline=False)
+        embed.add_field(name="**listening**", value="[message] sets your discord status to show that your listening to something.", inline=False)
+        embed.add_field(name="**playing**", value="[messasge] sets your discord status to show that your playing a game.", inline=False)
+        embed.add_field(name='**embed**', value='[message] sends a user specified embed.', inline=False)
+        embed.add_field(name="**addy**", value="sends a random address.", inline=False)
+        embed.add_field(name="**wyr**", value='sends a would you rather question.', inline=False)
+        embed.add_field(name="**ascii**", value="[text] sends text to ascii art.", inline=False)
+        embed.add_field(name="**tweet**", value="[username] [message] sends a custom tweet image.", inline=False)
+        embed.add_field(name="**clown**", value="[user] clowns someone.", inline=False)
+        embed.add_field(name="**spam**", value='[amount] spams a message for specified amount of times.', inline=False)
+        embed.add_field(name="**kiss**", value="[mentioned user] kisses someone.", inline=False)
+        embed.add_field(name="**ghostping**", value="[amount] [mentioned user] ghostpings a mentioned user an amount of times.", inline=False)
+        embed.add_field(name="**hug**", value="[mentioned user] hugs someone.", inline=False)
+        embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
+        await ctx.send(embed=embed, delete_after=val)
+    elif c.lower() == 'nsfw':
+        await ctx.message.delete()
+        embed2 = discord.Embed(title='**NSFW Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+        embed2.add_field(name="**boobs**", value="sends a random embedded image of boobs.", inline=False)
+        embed2.add_field(name="**hentai**", value="sends a random embedded image of hentai.", inline=False)
+        embed2.add_field(name="**spank**", value='[mentioned user] spanks a mentioned user.', inline=False)
+        embed2.add_field(name="**fuck**", value='[mentioned user] fucks a mentioned user.', inline=False)
+        embed2.add_field(name="**pussy**", value="sends a random embedded pussy pic.", inline=False)
+        embed2.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
+        await ctx.send(embed=embed2, delete_after=val)
+    elif c.lower() == 'malicious':
+        await ctx.message.delete()
+        embed3 = discord.Embed(title='**Malicious Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+        embed3.add_field(name="**tokengen**", value="generates a user token.", inline=False)
+        embed3.add_field(name="**copy**", value="copies the server that it is ran in.", inline=False)
+        embed3.add_field(name="**delhook**", value="[webhook] deletes a webhook.", inline=False)
+        embed3.add_field(name="**setnicks**", value="[nickname] sets everyones nickname to user specified name.", inline=False)
+        embed3.add_field(name="**hooksend**", value="[webhook] [message] sends something to a webhook.", inline=False)
+        embed3.add_field(name="**crash**", value="sends a lot of emojis that can lag a users discord client.", inline=False)
+        embed3.add_field(name="**massban**", value="attempts to ban everyone in a guild.", inline=False)
+        embed3.add_field(name="**edittag**", value="[message] sends a message and glitches the edited tag.", inline=False)
+        embed3.add_field(name="**masskick**", value="attempts to kick everyone in a guild.", inline=False)
+        embed3.add_field(name="**revertnicks**", value="reverts everyones nickname back to their name.", inline=False)
+        embed3.add_field(name="**tokenfuck**", value="[token] completely fucks a users account via their token.", inline=False)
+        embed3.add_field(name="**nuke**", value="bans, mass creates channels, and completely destroys a discord server.", inline=False)
+        embed3.add_field(name="**geo**", value="[ip] gets information on an IP address.", inline=False)
+        embed3.add_field(name="**mtg**", value="mass generates tokens and dumps them into a text file.", inline=False)
+        embed3.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
+        await ctx.send(embed=embed3, delete_after=val)
+    elif c.lower() == 'util':
+        await ctx.message.delete()
+        embed4 = discord.Embed(title='**Utility Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+        embed4.add_field(name="**ping**", value="[ip/host] pings a ip or host.", inline=False)
+        embed4.add_field(name='**hidden**', value='[message] sends your message, but hidden.', inline=False)
+        embed4.add_field(name='**strike**', value='[message] sends your message, but striked through.', inline=False)
+        embed4.add_field(name="**tokengen**", value="generates a user token.", inline=False)
+        embed4.add_field(name="**dlvid**", value="[query] downloads the top youtube video based on a query.", inline=False)
+        embed4.add_field(name="**setprefix**", value="[prefix] allows you to change the command prefix.", inline=False)
+        embed4.add_field(name="**nmap**", value="[ip/host] portscans an IP address or host if you have nmap installed on your pc.", inline=False)
+        embed4.add_field(name='**hspam**', value='spams the chat with a huge blank message.', inline=False)
+        embed4.add_field(name='**underline**', value='[message] sends your message, but underlined.', inline=False)
+        embed4.add_field(name="**id**", value='[mentioned user] sends the ID of the mentioned user.', inline=False)
+        embed4.add_field(name="**nitro**", value="sends a random nitro code.", inline=False)
+        embed4.add_field(name="**latency**", value="sends client latency.", inline=False)
+        embed4.add_field(name="**settings**", value="sends selfbot settings.", inline=False)
+        embed4.add_field(name="**bump**", value="bumps server that it is ran in automatically every 7200 seconds.", inline=False)
+        embed4.add_field(name="**purge**", value="[amount] purges specified messages sent by you.", inline=False)
+        embed4.add_field(name="**fakelink**", value="[link1] [link2] creates a fake link using an exploit which hides links if the message consists of too many |'s.", inline=False)
+        embed4.add_field(name='**userinfo**', value='[mentioned user] shows user info on a mentioned person.', inline=False)
+        embed4.add_field(name="**webping**", value="[website url] pings a **website.**", inline=False)
+        embed4.add_field(name="**paping**", value="[ip] [port] tcp pings an ip.", inline=False)
+        embed4.add_field(name="**hookinfo**", value="[webhook] gets webhook info.", inline=False)
+        embed4.add_field(name='**password**', value='sends a strong generated password.', inline=False)
+        embed4.add_field(name='**hastebin**', value='[content] uploads content to hastebin and returns the link.', inline=False)
+        embed4.add_field(name="**download**", value="sends the nuked download link.**", inline=False)
+        embed4.add_field(name="**poll**", value="[topic] sends a poll with voting reactions.")
+        embed4.add_field(name="**eval**", value="[code/command etc] eval something (dangerous).", inline=False)
+        embed4.add_field(name="**logout**", value='logs out of selfbot and closes window.', inline=False)
+        embed4.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
+        await ctx.send(embed=embed4, delete_after=val)
+    elif c.lower() == 'util2':
+        await ctx.message.delete()
+        embed5 = discord.Embed(title='**Utility Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+        embed5.add_field(name="**guildname**", value="[name] sets the servers name.", inline=False)
+        embed5.add_field(name="**backupfriends**", value="dumps all friends name and tag into a text file.", inline=False)
+        embed5.add_field(name="**allcommands**", value="sends every command in the selfbot as a list.", inline=False)
+        embed5.add_field(name="**proxy**", value="sends a random proxy with port.", inline=False)
+        embed5.add_field(name="**friend**", value="[mentioned user] sends a friend request to the mentioned user.", inline=False)
+        embed5.add_field(name="**unfriend**", value="[mentioned user] unfriends the mentioned user.", inline=False)
+        embed5.add_field(name="**hypesquad**", value="[balance | brilliance | bravery | leave] changes your hypesquad.", inline=False)
+        embed5.add_field(name='**snipe**', value='snipes a recently deleted message.', inline=False)
+        embed5.add_field(name="**ban**", value="[mentioned user] [reason] kicks the user for a reason.", inline=False)
+        embed5.add_field(name="**kick**", value="[mentioned user] [reason] bans the user for a reason.", inline=False)
+        embed5.add_field(name="**read**", value="marks every guild as read (marks all messages as read).", inline=False)
+        embed5.add_field(name="**channels**", value="shows each channel in a guild, including ones not visible by you.", inline=False)
+        embed5.add_field(name="**channelinfo**", value="[mentioned channel] gives info on a channel.", inline=False)
+        embed5.add_field(name="**block**", value="[mentioned user] blocks the mentioned user.", inline=False)
+        embed5.add_field(name="**createdm**", value="[mentioned user] creates a dm with the mentioned user.", inline=False)
+        embed5.add_field(name="**send**", value="[mentioned user] [message] sends a dm to the mentioned user.", inline=False)
+        embed5.add_field(name="**query**", value="[anything to query into google] queries your message into google.", inline=False)
+        embed5.add_field(name="**github**", value="opens a browser to the github of this selfbot.", inline=False)
+        embed5.add_field(name='**scrape**', value='scrapes proxies and dumps them into a text file.', inline=False)
+        embed5.add_field(name='**getpfp**', value='[mentioned user] gets a mentioned users pfp link and displays it in console.', inline=False)
+        embed5.add_field(name='**getallpfp**', value='tries to get everyones pfp link in the server and dumps in in a text file.', inline=False)
+        embed5.add_field(name='**guildinfo**', value='gets information for the server and sends it.', inline=False)
+        embed5.add_field(name='**oldsplash**', value='resets the selfbots splash screen to the v2 splash.', inline=False)
+        embed5.add_field(name='**newsplash**', value='resets the selfbots splash screen to the v3 splash.', inline=False)
+        embed5.add_field(name='**encode**', value='[string] encodes a string to base64.', inline=False)
+        embed5.add_field(name='**decode**', value='[base64 string] decodes a base64 string.', inline=False)
+        embed5.add_field(name='**setname**', value='[name] sets your username to whatever is specified.', inline=False)
+        embed5.add_field(name='**allservers**', value='displays every server you\'re in inside of the console.', inline=False)
+        embed5.add_field(name='**restart**', value='restarts the selfbot.', inline=False)
+        embed5.add_field(name='**channel**', value='[channel name] creates a channel with user specified name.', inline=False)
+        embed5.add_field(name='**bold**', value='[message] sends your message, but bold.', inline=False)
+        embed5.add_field(name='**italics**', value='[message] sends your message, but italicized.', inline=False)
+        embed5.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
+        await ctx.send(embed=embed5, delete_after=val)
+    else:
+        pass
 
-@client.command()
-async def util(ctx):
-    await ctx.message.delete()
-    embed = discord.Embed(title='**Utility Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
-    embed.add_field(name="**ping**", value="[ip/host] pings a ip or host.", inline=False)
-    embed.add_field(name='**hidden**', value='[message] sends your message, but hidden.', inline=False)
-    embed.add_field(name='**strike**', value='[message] sends your message, but striked through.', inline=False)
-    embed.add_field(name="**tokengen**", value="generates a user token.", inline=False)
-    embed.add_field(name="**setprefix**", value="[prefix] allows you to change the command prefix.", inline=False)
-    embed.add_field(name="**nmap**", value="[ip/host] portscans an IP address or host if you have nmap installed on your pc.", inline=False)
-    embed.add_field(name='**hspam**', value='spams the chat with a huge blank message.', inline=False)
-    embed.add_field(name='**underline**', value='[message] sends your message, but underlined.', inline=False)
-    embed.add_field(name="**id**", value='[mentioned user] sends the ID of the mentioned user.', inline=False)
-    embed.add_field(name="**nitro**", value="sends a random nitro code.", inline=False)
-    embed.add_field(name="**latency**", value="sends client latency.", inline=False)
-    embed.add_field(name="**settings**", value="sends selfbot settings.", inline=False)
-    embed.add_field(name="**bump**", value="bumps server that it is ran in automatically every 7200 seconds.", inline=False)
-    embed.add_field(name="**purge**", value="[amount] purges specified messages sent by you.", inline=False)
-    embed.add_field(name="**fakelink**", value="[link1] [link2] creates a fake link using an exploit which hides links if the message consists of too many |'s.", inline=False)
-    embed.add_field(name='**userinfo**', value='[mentioned user] shows user info on a mentioned person.', inline=False)
-    embed.add_field(name="**webping**", value="[website url] pings a **website.**", inline=False)
-    embed.add_field(name="**paping**", value="[ip] [port] tcp pings an ip.", inline=False)
-    embed.add_field(name="**hookinfo**", value="[webhook] gets webhook info.", inline=False)
-    embed.add_field(name='**password**', value='sends a strong generated password.', inline=False)
-    embed.add_field(name="**download**", value="sends the nuked download link.**", inline=False)
-    embed.add_field(name="**poll**", value="[topic] sends a poll with voting reactions.")
-    embed.add_field(name="**eval**", value="[code/command etc] eval something (dangerous).", inline=False)
-    embed.add_field(name="**logout**", value='logs out of selfbot and closes window.', inline=False)
-    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
-    await ctx.send(embed=embed, delete_after=val)
-
-@client.command()
-async def util2(ctx):
-    await ctx.message.delete()
-    embed = discord.Embed(title='**Utility Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
-    embed.add_field(name="**guildname**", value="[name] sets the servers name.", inline=False)
-    embed.add_field(name="**backupfriends**", value="dumps all friends name and tag into a text file.", inline=False)
-    embed.add_field(name="**allcommands**", value="sends every command in the selfbot as a list.", inline=False)
-    embed.add_field(name="**proxy**", value="sends a random proxy with port.", inline=False)
-    embed.add_field(name="**friend**", value="[mentioned user] sends a friend request to the mentioned user.", inline=False)
-    embed.add_field(name="**unfriend**", value="[mentioned user] unfriends the mentioned user.", inline=False)
-    embed.add_field(name="**hypesquad**", value="[balance | brilliance | bravery | leave] changes your hypesquad.", inline=False)
-    embed.add_field(name="**ban**", value="[mentioned user] [reason] kicks the user for a reason.", inline=False)
-    embed.add_field(name="**kick**", value="[mentioned user] [reason] bans the user for a reason.", inline=False)
-    embed.add_field(name="**read**", value="marks every guild as read (marks all messages as read).", inline=False)
-    embed.add_field(name="**channels**", value="shows each channel in a guild, including ones not visible by you.", inline=False)
-    embed.add_field(name="**channelinfo**", value="[mentioned channel] gives info on a channel.", inline=False)
-    embed.add_field(name="**block**", value="[mentioned user] blocks the mentioned user.", inline=False)
-    embed.add_field(name="**createdm**", value="[mentioned user] creates a dm with the mentioned user.", inline=False)
-    embed.add_field(name="**send**", value="[mentioned user] [message] sends a dm to the mentioned user.", inline=False)
-    embed.add_field(name="**query**", value="[anything to query into google] queries your message into google.", inline=False)
-    embed.add_field(name="**github**", value="opens a browser to the github of this selfbot.", inline=False)
-    embed.add_field(name='**scrape**', value='scrapes proxies and dumps them into a text file.', inline=False)
-    embed.add_field(name='**getpfp**', value='[mentioned user] gets a mentioned users pfp link and displays it in console.', inline=False)
-    embed.add_field(name='**getallpfp**', value='tries to get everyones pfp link in the server and dumps in in a text file.', inline=False)
-    embed.add_field(name='**guildinfo**', value='gets information for the server and sends it.', inline=False)
-    embed.add_field(name='**oldsplash**', value='resets the selfbots splash screen to the v2 splash.', inline=False)
-    embed.add_field(name='**newsplash**', value='resets the selfbots splash screen to the v3 splash.', inline=False)
-    embed.add_field(name='**encode**', value='[string] encodes a string to base64.', inline=False)
-    embed.add_field(name='**decode**', value='[base64 string] decodes a base64 string.', inline=False)
-    embed.add_field(name='**setname**', value='[name] sets your username to whatever is specified.', inline=False)
-    embed.add_field(name='**allservers**', value='displays every server you\'re in inside of the console.', inline=False)
-    embed.add_field(name='**restart**', value='restarts the selfbot.', inline=False)
-    embed.add_field(name='**channel**', value='[channel name] creates a channel with user specified name.', inline=False)
-    embed.add_field(name='**bold**', value='[message] sends your message, but bold.', inline=False)
-    embed.add_field(name='**italics**', value='[message] sends your message, but italicized.', inline=False)
-    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
-    await ctx.send(embed=embed, delete_after=val)
-
-
-@client.command()
-async def nsfw(ctx):
-    await ctx.message.delete()
-    embed = discord.Embed(title='**NSFW Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
-    embed.add_field(name="**boobs**", value="sends a random embedded image of boobs.", inline=False)
-    embed.add_field(name="**hentai**", value="sends a random embedded image of hentai.", inline=False)
-    embed.add_field(name="**spank**", value='[mentioned user] spanks a mentioned user.', inline=False)
-    embed.add_field(name="**fuck**", value='[mentioned user] fucks a mentioned user.', inline=False)
-    embed.add_field(name="**pussy**", value="sends a random embedded pussy pic.", inline=False)
-    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
-    await ctx.send(embed=embed, delete_after=val)
-
-
-
-@client.command()
-async def malicious(ctx):
-    await ctx.message.delete()
-    embed = discord.Embed(title='**Malicious Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
-    embed.add_field(name="**tokengen**", value="generates a user token.", inline=False)
-    embed.add_field(name="**copy**", value="copies the server that it is ran in.", inline=False)
-    embed.add_field(name="**delhook**", value="[webhook] deletes a webhook.", inline=False)
-    embed.add_field(name="**setnicks**", value="[nickname] sets everyones nickname to user specified name.", inline=False)
-    embed.add_field(name="**hooksend**", value="[webhook] [message] sends something to a webhook.", inline=False)
-    embed.add_field(name="**crash**", value="sends a lot of emojis that can lag a users discord client.", inline=False)
-    embed.add_field(name="**massban**", value="attempts to ban everyone in a guild.", inline=False)
-    embed.add_field(name="**edittag**", value="[message] sends a message and glitches the edited tag.", inline=False)
-    embed.add_field(name="**masskick**", value="attempts to kick everyone in a guild.", inline=False)
-    embed.add_field(name="**revertnicks**", value="reverts everyones nickname back to their name.", inline=False)
-    embed.add_field(name="**tokenfuck**", value="[token] completely fucks a users account via their token.", inline=False)
-    embed.add_field(name="**nuke**", value="bans, mass creates channels, and completely destroys a discord server.", inline=False)
-    embed.add_field(name="**geo**", value="[ip] gets information on an IP address.", inline=False)
-    embed.add_field(name="**mtg**", value="mass generates tokens and dumps them into a text file.", inline=False)
-    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
-    await ctx.send(embed=embed, delete_after=val)
-
-@client.command()
-async def fun(ctx):
-    await ctx.message.delete()
-    embed = discord.Embed(title='**Fun Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
-    embed.add_field(name="**cat**", value="sends a random embedded image of a cat.", inline=False)
-    embed.add_field(name="**spamreport**", value="[mentioned user] spams chat with a fake reporting user message.", inline=False)
-    embed.add_field(name="**ud**", value="[query] queries urban dictionary for a term.", inline=False)
-    embed.add_field(name="**wiki**", value="[query] queries wikipedia for text and returns a summary of it.", inline=False)
-    embed.add_field(name="**websteal**", value="[http or https url] steal a websites data and dump it into an html file.", inline=False)
-    embed.add_field(name="**gayrate**", value="[mentioned user] gayrates a user.", inline=False)
-    embed.add_field(name="**expose**", value="[mentioned user] exposes a user.", inline=False)
-    embed.add_field(name="**phcomment**", value="[username] [message] sends an image of a custom pornhub comment.", inline=False)
-    embed.add_field(name="**lick**", value="[mentioned user] licks the mentioned user.", inline=False)
-    embed.add_field(name="**kill**", value="[mentioned user] kills the mentioned user.", inline=False)
-    embed.add_field(name="**cuddle**", value="[mentioned user] cuddles the mentioned user.", inline=False)
-    embed.add_field(name="**bite**", value="[mentioned user] bites the mentioned user.", inline=False)
-    embed.add_field(name="**slap**", value="[mentioned user] slaps a user.", inline=False)
-    embed.add_field(name='**joke**', value='sends a random embedded joke from an API.', inline=False)
-    embed.add_field(name='**tickle**', value='[mentioned user] tickles mentioned user.', inline=False)
-    embed.add_field(name='**clyde**', value='[message] clydifys a message.', inline=False)
-    embed.add_field(name="**rembed**", value="[message] sends a rainbow embed.", inline=False)
-    embed.add_field(name="**cuddle**", value="[mentioned user] cuddles the mentioned user.", inline=False)
-    embed.add_field(name="**invisnick**", value="sets your nickname to be invisible.", inline=False)
-    embed.add_field(name="**glitchnick**", value="sets your nickname to weird characters.", inline=False)
-    embed.add_field(name="**gif**", value="[message] queries a message into giphy and sends the gif.", inline=False)
-    embed.add_field(name='**trumptweet**', value='[message] turns a message into a tweet from trump.', inline=False)
-    embed.add_field(name='**dox**', value='[mentioned user] fake doxes a user.', inline=False)
-    embed.add_field(name="**streaming**", value="[message] sets your discord status to show that your streaming.", inline=False)
-    embed.add_field(name="**listening**", value="[message] sets your discord status to show that your listening to something.", inline=False)
-    embed.add_field(name="**playing**", value="[messasge] sets your discord status to show that your playing a game.", inline=False)
-    embed.add_field(name='**embed**', value='[message] sends a user specified embed.', inline=False)
-    embed.add_field(name="**addy**", value="sends a random address.", inline=False)
-    embed.add_field(name="**wyr**", value='sends a would you rather question.', inline=False)
-    embed.add_field(name="**ascii**", value="[text] sends text to ascii art.", inline=False)
-    embed.add_field(name="**tweet**", value="[username] [message] sends a custom tweet image.", inline=False)
-    embed.add_field(name="**clown**", value="[user] clowns someone.", inline=False)
-    embed.add_field(name="**spam**", value='[amount] spams a message for specified amount of times.', inline=False)
-    embed.add_field(name="**kiss**", value="[mentioned user] kisses someone.", inline=False)
-    embed.add_field(name="**ghostping**", value="[amount] [mentioned user] ghostpings a mentioned user an amount of times.", inline=False)
-    embed.add_field(name="**hug**", value="[mentioned user] hugs someone.", inline=False)
-    embed.set_footer(text=f"Command prefix is \"{client.command_prefix}\"")
-    await ctx.send(embed=embed, delete_after=val)
 
 @client.command(aliases=['clear'])
 async def purge(ctx, amount: int):
@@ -947,7 +950,7 @@ async def nitrosnipe(message):
 
 
 
-        if len(code) < 16 or len(code) > 20:
+        if len(code) < 16:
             print(f"{Fore.LIGHTCYAN_EX}╔══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════{Fore.RESET}")
             print(Fore.LIGHTCYAN_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Nitro Code sent by {message.author}." + Fore.RESET)
             print(Fore.LIGHTCYAN_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.CYAN + f"Message Content: {message.content}" + Fore.RESET)
@@ -994,7 +997,9 @@ async def nitrosnipe(message):
             print(f"{Fore.LIGHTCYAN_EX}╚══════════════════════════{Fore.LIGHTMAGENTA_EX}════════════════════════{Fore.RESET}")
 
         else:
-            return
+            pass 
+    else:
+        pass
 
 @client.command()
 async def kiss(ctx, member : discord.Member=None):
@@ -1353,7 +1358,7 @@ async def setprefix(ctx, arg):
     clear()
     splash()
 
-@client.command()
+@client.command(aliases=['serverinfo'])
 async def guildinfo(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title='**Guild Info**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
@@ -1363,6 +1368,7 @@ async def guildinfo(ctx):
     embed.add_field(name='**Created At**', value=guild.created_at, inline=False)
     embed.add_field(name='**Amount of Roles**', value=len(guild.roles), inline=False)
     embed.add_field(name='**Amount of Members**', value=len(guild.members), inline=False)
+    embed.set_image(url=ctx.guild.icon_url)
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command(aliases=['fbackup'])
@@ -1849,7 +1855,97 @@ async def rembed(ctx, *, message):
         await asyncio.sleep(0.2)
     await msg.delete()
 
+@client.command()
+async def dlvid(ctx, *, arg):
+    await ctx.message.delete()
+    results = YoutubeSearch(arg, max_results=1).to_dict()
+    video = 'https://youtube.com' + results[0]["url_suffix"]
+    video_info = f'Description: {results[0]["long_desc"]}\nChannel: {results[0]["channel"]}\nDuration: {results[0]["duration"]}'
+    await ctx.send(f'Downloading {results[0]["title"]} `({video})`\nAdditional Info:\n||{video_info}||')
+    ydl_opts = {'quiet': True}
+    try:
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl: 
+	        ydl.download([video])
+    except:
+        await ctx.send('Failed to download video.')
+        
 
+@client.command()
+async def youtube(ctx, *, arg):
+    await ctx.message.delete()
+    results = YoutubeSearch(arg, max_results=10).to_dict()
+    rt = ''
+    for i in range(10):
+        rt += f'{results[i]["channel"]} - {results[i]["title"]} ({results[i]["duration"]})\n'
+    embed = discord.Embed(title=f'**Top 10 results for {arg}**', description=rt, color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+    await ctx.send(embed=embed, delete_after=val)
+    
+    
+client.msgsniper = True
+client.snipe_history_dict = {}
+client.sniped_message_dict = {}
+client.sniped_edited_message_dict = {}
+
+
+@client.event
+async def on_message_delete(message):
+    if message.author.id == client.user.id:
+        return
+    if client.msgsniper:
+        # if isinstance(message.channel, discord.DMChannel) or isinstance(message.channel, discord.GroupChannel): \\ removed so people cant get you disabled
+        if isinstance(message.channel, discord.DMChannel):
+            attachments = message.attachments
+            if len(attachments) == 0:
+                message_content = "`" + str(discord.utils.escape_markdown(str(message.author))) + "`: " + str(
+                    message.content).replace("@everyone", "@\u200beveryone").replace("@here", "@\u200bhere")
+                await message.channel.send(message_content)
+            else:
+                links = ""
+                for attachment in attachments:
+                    links += attachment.proxy_url + "\n"
+                message_content = "`" + str(
+                    discord.utils.escape_markdown(str(message.author))) + "`: " + discord.utils.escape_mentions(
+                    message.content) + "\n\n**Attachments:**\n" + links
+                await message.channel.send(message_content)
+    if len(client.sniped_message_dict) > 1000:
+        client.sniped_message_dict.clear()
+    if len(client.snipe_history_dict) > 1000:
+        client.snipe_history_dict.clear()
+    attachments = message.attachments
+    if len(attachments) == 0:
+        channel_id = message.channel.id
+        message_content = "`" + str(discord.utils.escape_markdown(str(message.author))) + "`: " + str(message.content).replace("@everyone", "@\u200beveryone").replace("@here", "@\u200bhere")
+        client.sniped_message_dict.update({channel_id: message_content})
+        if channel_id in client.snipe_history_dict:
+            pre = client.snipe_history_dict[channel_id]
+            post = str(message.author) + ": " + str(message.content).replace("@everyone", "@\u200beveryone").replace("@here", "@\u200bhere")
+            client.snipe_history_dict.update({channel_id: pre[:-3] + post + "\n```"})
+        else:
+            post = str(message.author) + ": " + str(message.content).replace("@everyone", "@\u200beveryone").replace("@here", "@\u200bhere")
+            client.snipe_history_dict.update({channel_id: "```\n" + post + "\n```"})
+    else:
+        links = ""
+        for attachment in attachments:
+            links += attachment.proxy_url + "\n"
+        channel_id = message.channel.id
+        message_content = "`" + str(discord.utils.escape_markdown(str(message.author))) + "`: " + discord.utils.escape_mentions(message.content) + "\n\n**Attachments:**\n" + links
+        client.sniped_message_dict.update({channel_id: message_content})
+
+@client.command()
+async def snipe(ctx):
+    await ctx.message.delete()
+    currentChannel = ctx.channel.id
+    if currentChannel in client.sniped_message_dict:
+        await ctx.send(f'{client.sniped_message_dict[currentChannel]}')
+    else:
+        await ctx.send('There are no messages no snipe!', delete_after=3)
+
+
+@client.command()
+async def hastebin(ctx, *, message):
+    await ctx.message.delete()
+    r = requests.post('https://hastebin.com/documents', data=message).json()
+    await ctx.send(f'https://hastebin.com/{r["key"]}')
 
 
 if __name__ == '__main__':
@@ -1857,6 +1953,9 @@ if __name__ == '__main__':
         cursor.hide()
     except:
         pass
-    Nuked.init()
+    try:
+        Nuked.init()
+    except Exception as e:
+        raise NukedError('Error\n', str(e))
 else:
     exit()
