@@ -33,3 +33,4 @@ tcp_latency
 pyperclip
 youtube_search
 youtube_dl
+scprint
