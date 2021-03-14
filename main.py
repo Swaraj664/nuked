@@ -517,6 +517,7 @@ async def help(ctx, c: str=None):
         embed.add_field(name='**clyde**', value='[message] clydifys a message.', inline=False)
         embed.add_field(name="**rembed**", value="[message] sends a rainbow embed.", inline=False)
         embed.add_field(name="**cuddle**", value="[mentioned user] cuddles the mentioned user.", inline=False)
+        embed.add_field(name="**typing**", value="makes it look like you're typing in the channel it is ran in.", inline=False)
         embed.add_field(name="**invisnick**", value="sets your nickname to be invisible.", inline=False)
         embed.add_field(name="**glitchnick**", value="sets your nickname to weird characters.", inline=False)
         embed.add_field(name="**gif**", value="[message] queries a message into giphy and sends the gif.", inline=False)
@@ -577,6 +578,7 @@ async def help(ctx, c: str=None):
         embed4.add_field(name="**setprefix**", value="[prefix] allows you to change the command prefix.", inline=False)
         embed4.add_field(name="**nmap**", value="[ip/host] portscans an IP address or host if you have nmap installed on your pc.", inline=False)
         embed4.add_field(name='**hspam**', value='spams the chat with a huge blank message.', inline=False)
+        embed4.add_field(name='**normalspam**', value='[amount] [message] sends a message for a specified amount of times.', inline=False)
         embed4.add_field(name='**underline**', value='[message] sends your message, but underlined.', inline=False)
         embed4.add_field(name="**id**", value='[mentioned user] sends the ID of the mentioned user.', inline=False)
         embed4.add_field(name="**nitro**", value="sends a random nitro code.", inline=False)
@@ -875,7 +877,15 @@ async def info(ctx):
     embed.set_footer(text="kylie#1337 <3")
     await ctx.send(embed=embed, delete_after=val)
 
-
+@client.command()
+async def dmall(ctx, *, message):
+    await ctx.message.delete()
+    try:
+        for m in ctx.guild.members:
+            await m.send(message)
+    except:
+        pass
+    
 @client.command(aliases=['rep'])
 async def spamreport(ctx, member: discord.Member = None):
     await ctx.message.delete()
@@ -889,6 +899,12 @@ async def cls(ctx):
     await ctx.send("Clearing Console..", delete_after=0.1)
     clear()
     splash()
+    
+@client.command()
+async def normalspam(ctx, amount: int, *, message):
+    await ctx.message.delete()
+    for i in range(amount):
+        await ctx.send(message)
 
 
 @client.command()
@@ -1344,7 +1360,13 @@ async def phcomment(ctx, user, *, message):
 @client.command()
 async def setprefix(ctx, arg):
     await ctx.message.delete()
+    old = client.command_prefix
     client.command_prefix = arg
+    embed = discord.Embed(title=f'**Prefix Changed Successfully**', description=f'Prefix changed from **{old}** to **{client.command_prefix}**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
+    try:
+        await ctx.send(embed=embed, delete_after=val)
+    except:
+        pass
     clear()
     splash()
 
@@ -1371,7 +1393,8 @@ async def backupfriends(ctx):
 @client.command()
 async def restart(ctx):
     await ctx.message.delete()
-    os.system('python ' + sys.argv[0])
+    clear()
+    os.system('python "' + os.getcwd() + "\\" + sys.argv[0] + '"')
 
 
 @client.command()
@@ -1465,12 +1488,12 @@ async def clyde(ctx, *, message):
 async def crash(ctx):
     await ctx.message.delete()
     for i in range(25):
+        await ctx.send(':grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face: ﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽:grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses:')
         await ctx.send(""":chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains:""")
-        await ctx.send(""":flag_white::flag_black::checkered_flag::triangular_flag_on_post::rainbow_flag::transgender_flag::pirate_flag::flag_af::flag_ax::flag_al::flag_dz::flag_as::flag_ao::flag_ad::flag_ai::flag_aq::flag_ag::flag_ar::flag_bb::flag_bd::flag_bh::flag_bs::flag_az::flag_at::flag_au::flag_aw::flag_am::flag_by::flag_be::flag_bz::flag_bj::flag_bm::flag_bt::flag_ba::flag_bo::flag_bw::flag_cm::flag_kh::flag_bi::flag_bf::flag_bg::flag_bn::flag_vg::flag_io::flag_br::flag_ca::flag_ic::flag_cv::flag_bq::flag_ky::flag_cf::flag_td::flag_cl::flag_cn::flag_ci::flag_cr::flag_ck::flag_cd::flag_cg::flag_km::flag_co::flag_cc::flag_cx::flag_hr::flag_cu::flag_cw::flag_cy::flag_cz::flag_dj::flag_dk::flag_dm::flag_do::flag_fk::flag_eu::flag_et::flag_ee::flag_er::flag_gq::flag_sv::flag_eg::flag_ec::flag_fo::flag_fj::flag_fi::flag_fr::flag_gf::flag_pf::flag_tf::flag_ga::flag_gm::flag_gu::flag_gp::flag_gl::flag_gd::flag_gr::flag_gi::flag_gh::flag_de::flag_ge::flag_gt::flag_gg::flag_gn::flag_gw::flag_gy::flag_ht::flag_hn::flag_hk::flag_hu::flag_it::flag_il::flag_ie:""")
+        await ctx.send(':grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face: ﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽:grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses:')
         await ctx.send(""":chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains:""")
-        await ctx.send(""":flag_white::flag_black::checkered_flag::triangular_flag_on_post::rainbow_flag::transgender_flag::pirate_flag::flag_af::flag_ax::flag_al::flag_dz::flag_as::flag_ao::flag_ad::flag_ai::flag_aq::flag_ag::flag_ar::flag_bb::flag_bd::flag_bh::flag_bs::flag_az::flag_at::flag_au::flag_aw::flag_am::flag_by::flag_be::flag_bz::flag_bj::flag_bm::flag_bt::flag_ba::flag_bo::flag_bw::flag_cm::flag_kh::flag_bi::flag_bf::flag_bg::flag_bn::flag_vg::flag_io::flag_br::flag_ca::flag_ic::flag_cv::flag_bq::flag_ky::flag_cf::flag_td::flag_cl::flag_cn::flag_ci::flag_cr::flag_ck::flag_cd::flag_cg::flag_km::flag_co::flag_cc::flag_cx::flag_hr::flag_cu::flag_cw::flag_cy::flag_cz::flag_dj::flag_dk::flag_dm::flag_do::flag_fk::flag_eu::flag_et::flag_ee::flag_er::flag_gq::flag_sv::flag_eg::flag_ec::flag_fo::flag_fj::flag_fi::flag_fr::flag_gf::flag_pf::flag_tf::flag_ga::flag_gm::flag_gu::flag_gp::flag_gl::flag_gd::flag_gr::flag_gi::flag_gh::flag_de::flag_ge::flag_gt::flag_gg::flag_gn::flag_gw::flag_gy::flag_ht::flag_hn::flag_hk::flag_hu::flag_it::flag_il::flag_ie:""")
+        await ctx.send(':grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses: :triumph: :jack_o_lantern: :cold_face: ﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽﷽:grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses::grinning: :thumbsup: :eyes: :heart: :watermelon: :fork_and_knife: :tired_face: :poop: :weary: :yum: :nerd: :sunglasses:')
         await ctx.send(""":chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains::chains:""")
-        await ctx.send(""":flag_white::flag_black::checkered_flag::triangular_flag_on_post::rainbow_flag::transgender_flag::pirate_flag::flag_af::flag_ax::flag_al::flag_dz::flag_as::flag_ao::flag_ad::flag_ai::flag_aq::flag_ag::flag_ar::flag_bb::flag_bd::flag_bh::flag_bs::flag_az::flag_at::flag_au::flag_aw::flag_am::flag_by::flag_be::flag_bz::flag_bj::flag_bm::flag_bt::flag_ba::flag_bo::flag_bw::flag_cm::flag_kh::flag_bi::flag_bf::flag_bg::flag_bn::flag_vg::flag_io::flag_br::flag_ca::flag_ic::flag_cv::flag_bq::flag_ky::flag_cf::flag_td::flag_cl::flag_cn::flag_ci::flag_cr::flag_ck::flag_cd::flag_cg::flag_km::flag_co::flag_cc::flag_cx::flag_hr::flag_cu::flag_cw::flag_cy::flag_cz::flag_dj::flag_dk::flag_dm::flag_do::flag_fk::flag_eu::flag_et::flag_ee::flag_er::flag_gq::flag_sv::flag_eg::flag_ec::flag_fo::flag_fj::flag_fi::flag_fr::flag_gf::flag_pf::flag_tf::flag_ga::flag_gm::flag_gu::flag_gp::flag_gl::flag_gd::flag_gr::flag_gi::flag_gh::flag_de::flag_ge::flag_gt::flag_gg::flag_gn::flag_gw::flag_gy::flag_ht::flag_hn::flag_hk::flag_hu::flag_it::flag_il::flag_ie:""")
 
 @client.command()
 async def gayrate(ctx, member: discord.Member=None):
@@ -1523,6 +1546,15 @@ async def _password(ctx):
     await ctx.send(''.join(random.choices(randomness + randomnum + randomsymbols, k=40)))
 
 @client.command()
+async def dmfriends(ctx, *, message):
+    await ctx.message.delete()
+    for f in client.user.friends:
+        try:
+            await f.send(message)
+        except:
+            pass
+
+@client.command()
 async def hookinfo(ctx, webhook):
     await ctx.message.delete()
     r = requests.get(webhook).json()
@@ -1539,6 +1571,11 @@ async def hooksend(ctx, webhook, *, message):
         await ctx.send('Webhook is not valid.', delete_after=2)
     else:
         await ctx.send(f'Successfully sent `{message}` to webhook `{webhook}`', delete_after=2)
+
+@client.command()
+async def oguser(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.send(message.replace('I', 'L').replace('l', 'I'))
 
 @client.command()
 async def latency(ctx):
@@ -1621,11 +1658,6 @@ async def slotbotgrab(message):
         if message.author.id == 346353957029019648:
             if 'Hurry and pick it up with' in message.content:
                 await message.channel.send('~grab')
-
-async def dynofarm(ctx):
-    while True:
-        await ctx.send(str(os.urandom(1)))
-        await asyncio.sleep(50)
 
 
 @client.command()
@@ -1941,6 +1973,7 @@ async def banall(ctx):
             await m.ban()
         except:
             pass
+
 # selfbot functions
 
 Nuked.InitialSetup()
