@@ -304,6 +304,47 @@ def _expose(mention):
 # events
 
 @client.event
+async def on_relationship_add(friendship):
+    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
+    print(Fore.LIGHTRED_EX + "║ [Friend Added] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Friend added." + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Friend Added] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"User: {friendship.user.display_name}#{friendship.user.discriminator}" + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Friend Added] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {friendship.user.id}")
+    print(Fore.LIGHTRED_EX + "║ [Friend Added] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Added at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
+    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+    
+@client.event
+async def on_guild_join(guild):
+    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User joined a guild." + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Guild name: {guild.name}" + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {guild.id}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Created at: {guild.created_at}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Owner ID: {guild.owner_id}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Joined at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
+    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+    
+@client.event
+async def on_guild_remove(guild):
+    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User was removed from a guild." + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Guild name: {guild.name}" + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {guild.id}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Created at: {guild.created_at}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Owner ID: {guild.owner_id}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Removed at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
+    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+    
+@client.event
+async def on_relationship_remove(friendship):
+    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
+    print(Fore.LIGHTRED_EX + "║ [Friend Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Friend removed." + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Friend Removed] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"User: {friendship.user.display_name}#{friendship.user.discriminator}" + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Friend Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {friendship.user.id}")
+    print(Fore.LIGHTRED_EX + "║ [Friend Removed] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Removed at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
+    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+    
+
+@client.event
 async def on_connect():
     clear()
     try:
@@ -727,9 +768,6 @@ async def logout(ctx):
     await ctx.send("logging out..", delete_after=0.2)
     await asyncio.sleep(2)
     exit(0)
-
-
-
 
 @client.command(aliases=['tard'])
 async def clown(ctx, arg):
