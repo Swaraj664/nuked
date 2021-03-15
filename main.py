@@ -20,7 +20,6 @@ try:
     from os import system, name
     from itertools import cycle
     from bs4 import BeautifulSoup as bs4
-    from scprint import print, rainbow
     import scprint
     from faker import Faker
     from pythonping import ping as pingip
@@ -51,6 +50,7 @@ except ImportError as e:
     from os import system, name
     from itertools import cycle
     from bs4 import BeautifulSoup as bs4
+    import scprint
     from faker import Faker
     from pythonping import ping as pingip
 
@@ -126,23 +126,23 @@ class Nuked:
     def Presplash():
         clear()
         for letter in "Logging into Nuked":
-            print("                                                      " + letter, color='blue')
+            scprint.print("                                                      " + letter, color='blue')
             try:
                 ctypes.windll.kernel32.SetConsoleTitleW(letter)
             except:
                 pass
             time.sleep(0.1)
         clear()
-        rainbow('                                                 Please Wait')
+        scprint.rainbow('                                                 Please Wait')
         time.sleep(0.2)
         clear()
-        rainbow('                                                 Please Wait.')
+        scprint.rainbow('                                                 Please Wait.')
         time.sleep(0.2)
         clear()
-        rainbow('                                                 Please Wait..')
+        scprint.rainbow('                                                 Please Wait..')
         time.sleep(0.2)
         clear()
-        rainbow('                                                 Please Wait...')
+        scprint.rainbow('                                                 Please Wait...')
     
     def Init():
         if config.get('token') == "token here":
