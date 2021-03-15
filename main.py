@@ -2046,7 +2046,7 @@ if rich_presence:
     try:
         rpc = Presence(client_id='808176144959537162')
         rpc.connect()
-        rpc.update(details='Online', large_image="avatar", start=time.time())
+        rpc.update(details='Connected.', large_image='avatar', start=time.time())
     except:
         print('RPC Failed to initialize.')
         time.sleep(1)
