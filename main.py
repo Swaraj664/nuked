@@ -335,6 +335,30 @@ async def on_guild_remove(guild):
     print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
     
 @client.event
+async def on_group_join(channel, user):
+    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User was added to a group." + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User: {user.display_name}#{user.discriminator}." + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Group name: {channel.name}" + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {channel.id}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Created at: {channel.created_at}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Owner ID: {channel.owner}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Added at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
+    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+    
+@client.event
+async def on_group_remove(channel, user):
+    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User was removed from a group." + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User: {user.display_name}#{user.discriminator}." + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Group name: {channel.name}" + Fore.RESET)
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {channel.id}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Created at: {channel.created_at}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Owner: {channel.owner}")
+    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Removed at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
+    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+
+@client.event
 async def on_relationship_remove(friendship):
     print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
     print(Fore.LIGHTRED_EX + "║ [Friend Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Friend removed." + Fore.RESET)
