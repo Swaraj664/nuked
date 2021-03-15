@@ -1,17 +1,17 @@
 from typing import Literal
-
+import os, re
+from os import system, name
+import sys
 
 try:
-    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math, wikipedia, urllib, paramiko, socket
+    import discord, time, requests, asyncio, json, random, datetime, colorama, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math, wikipedia, urllib, paramiko, socket
     from urbandictionary_top import udtop
     from tcp_latency import measure_latency
     import ast
     from urllib.request import urlopen
-    from os import system, name
     from youtube_search import YoutubeSearch
     import youtube_dl 
     import pyperclip
-    import sys
     from pypresence import Presence
     from time import sleep
     from colorama import init, Fore, Style, Back
