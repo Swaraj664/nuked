@@ -158,8 +158,7 @@ class Nuked:
             except Exception as error:
                 print(f"Error logging into token: {error}")
                 input()
-        
-    
+
 # data
 
 if not os.path.exists('./config.json'):
@@ -307,7 +306,10 @@ def _expose(mention):
 @client.event
 async def on_connect():
     clear()
-    ctypes.windll.kernel32.SetConsoleTitleW(f'Welcome to Nuked, {client.user.name}#{client.user.discriminator} | Login Successful.')
+    try:
+        ctypes.windll.kernel32.SetConsoleTitleW(f'Welcome to Nuked, {client.user.name}#{client.user.discriminator} | Login Successful.')
+    except:
+        pass
     splash()
     
 @client.event
