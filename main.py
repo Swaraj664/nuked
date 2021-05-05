@@ -1,4 +1,3 @@
-from typing import Literal
 import os, re
 from os import system, name
 import sys
