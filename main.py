@@ -1,57 +1,47 @@
-import os, re
-from os import system, name
+import os
+import re
+import signal
 import sys
+from os import system
+
+sys.tracebacklimit = 0
 
 try:
-    import discord, time, requests, asyncio, json, random, datetime, colorama, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math, wikipedia, urllib, paramiko, socket
-    from urbandictionary_top import udtop
-    from tcp_latency import measure_latency
     import ast
-    from urllib.request import urlopen
-    from youtube_search import YoutubeSearch
-    import youtube_dl 
-    import pyperclip
-    from pypresence import Presence
-    from time import sleep
-    from colorama import init, Fore, Style, Back
+    import asyncio
+    import base64
+    import ctypes
+    import datetime
+    import json
+    import random
+    import time
+    import webbrowser
     from itertools import cycle
-    from discord.ext import commands, tasks
-    from os import system, name
-    from itertools import cycle
-    from bs4 import BeautifulSoup as bs4
-    import scprint
-    from faker import Faker
-    from pythonping import ping as pingip
-    from telnetlib import Telnet
+    from os import system
     from threading import Thread
+    from urllib.request import urlopen
+
+    import cursor
+    import discord
+    import numpy
+    import proxyscrape
+    import pyfiglet
+    import requests
+    import scprint
+    import wikipedia
+    import youtube_dl
+    from bs4 import BeautifulSoup as bs4
+    from colorama import Fore, Style
+    from discord.ext import commands
+    from faker import Faker
+    from pypresence import Presence
+    from pythonping import ping as pingip
+    from tcp_latency import measure_latency
+    from urbandictionary_top import udtop
+    from youtube_search import YoutubeSearch
 
 except ImportError as e:
-    print(f'There was an error importing something, more details here: {str(e)}. Retrying.')
-    installing = os.popen('python -m pip install -r requirements.txt').read()
-    if 'is not recognized as an internal or external command, operable program or batch file.' in installing:
-        print('You do not have pip installed, redirecting to python page.')
-        webbrowser.open_new('https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe')
-    import discord, time, requests, asyncio, json, random, datetime, colorama, re, os, ctypes, nmap3, numpy, webbrowser, base64, proxyscrape, pyfiglet, cursor, math, wikipedia, urllib
-    from urbandictionary_top import udtop
-    from tcp_latency import measure_latency
-    import ast
-    from urllib.request import urlopen
-    from youtube_search import YoutubeSearch
-    import youtube_dl 
-    import pyperclip
-    from os import system, name
-    import sys
-    from pypresence import Presence
-    from time import sleep
-    from colorama import init, Fore, Style, Back
-    from itertools import cycle
-    from discord.ext import commands, tasks
-    from os import system, name
-    from itertools import cycle
-    from bs4 import BeautifulSoup as bs4
-    import scprint
-    from faker import Faker
-    from pythonping import ping as pingip
+    print('You do not have the required python modules to run Nuked, install them from requirements.txt.')
 
 client = commands.Bot(command_prefix='.', self_bot=True)
 client.remove_command('help')
@@ -69,35 +59,34 @@ def splash():
     			 {Fore.LIGHTBLUE_EX}██║ ╚███║    ╚██████╔╝    ██║{Fore.LIGHTRED_EX} ╚██╗    ███████╗    ██████╔╝
     			 {Fore.LIGHTBLUE_EX}╚═╝  ╚══╝     ╚═════╝     ╚═╝{Fore.LIGHTRED_EX}  ╚═╝    ╚══════╝    ╚═════╝
 
-                                {Fore.LIGHTRED_EX}        ╔═════════{Fore.LIGHTBLUE_EX}═══════{Fore.RESET}
-                                {Fore.LIGHTRED_EX}        ║      {Fore.LIGHTBLUE_EX}Selfbot {Fore.LIGHTRED_EX}Info{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║                                     {Fore.LIGHTMAGENTA_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Prefix: {Fore.LIGHTRED_EX}{client.command_prefix}{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Creator: {Fore.LIGHTRED_EX}kyIe#1337{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Version: {Fore.LIGHTRED_EX}{Nuked.version}{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Command Count: {Fore.LIGHTRED_EX}{len(client.commands)}{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Help Command: {Fore.LIGHTRED_EX}{client.command_prefix}help{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Nitro Sniper: {Fore.LIGHTRED_EX}Active{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Mention Logger: {Fore.LIGHTRED_EX}{message_logger}{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Mention Blocker: {Fore.LIGHTRED_EX}{mentionblocker}{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║
-                                {Fore.LIGHTRED_EX}        ║      {Fore.LIGHTBLUE_EX}User {Fore.LIGHTRED_EX}Info{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Display Name: {Fore.LIGHTRED_EX}{client.user.name}#{client.user.discriminator}{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}ID: {Fore.LIGHTRED_EX}{client.user.id}{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Email Verified?: {Fore.LIGHTRED_EX}{client.user.verified}{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Server Count: {Fore.LIGHTRED_EX}{Fore.LIGHTRED_EX}{len(client.guilds)}{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ║  {Fore.LIGHTBLUE_EX}Rich Presence: {Fore.LIGHTRED_EX}{Fore.LIGHTRED_EX}{rich_presence}{Fore.RESET}{Fore.LIGHTBLUE_EX}
-                                {Fore.LIGHTRED_EX}        ╚═════════{Fore.LIGHTBLUE_EX}═══════{Fore.RESET}''' + Fore.RESET)
+
+''')
             
 class Nuked:
     version = '4.0'
+    def SignalHandler(signal, frame):
+        clear()
+        print(Style.DIM + 'Logging out of Nuked.' + Style.RESET_ALL)
+        time.sleep(1)
+        clear()
+        exit(0)
+        
+    def CheckToken(token):
+        headers = {'Content-Type': 'application/json', 'authorization': token}
+        r = requests.get('https://discordapp.com/api/v6/users/@me/library', headers=headers)
+        if r.status_code == 200:
+            return
+        else:
+            os.remove(f'{os.getcwd()}\\config.json')
+            clear()
+            print(Fore.RED + '[Error]: ' + Fore.RESET + Style.DIM + 'The token is invalid.' + Style.RESET_ALL)
+            Nuked.InitialSetup()
+            
     def Error(error: str, reason: str):
         raise Exception(f'There was an error with Nuked. Here\'s what we know:\nError: {error}\nReason: {reason}')
     
     def InitialSetup():
         if not os.path.exists('./config.json'):
-            clear()
             with open('./config.json', 'w') as fp:
                 print(Fore.LIGHTCYAN_EX + 'Welcome to the initial setup process for the Nuked selfbot.')
                 setup_token = input('Enter your Discord token: ')
@@ -132,17 +121,7 @@ class Nuked:
                 pass
             time.sleep(0.1)
         clear()
-        scprint.rainbow('                                                 Please Wait')
-        time.sleep(0.2)
-        clear()
-        scprint.rainbow('                                                 Please Wait.')
-        time.sleep(0.2)
-        clear()
-        scprint.rainbow('                                                 Please Wait..')
-        time.sleep(0.2)
-        clear()
-        scprint.rainbow('                                                 Please Wait...')
-    
+
     def Init():
         if config.get('token') == "token here":
             clear()
@@ -152,8 +131,9 @@ class Nuked:
             raise Nuked.Error(error='Login Error', reason='In config.json, password must have a value.')
         else:
             try:
+                Nuked.CheckToken(config.get('token'))
                 cursor.hide()
-                client.run(config.get('token'), bot=False, reconnect=True)
+                client.run(config.get('token'), bot=False, reconnect=True)            
             except Exception as error:
                 print(f"Error logging into token: {error}")
                 input()
@@ -304,77 +284,30 @@ def _expose(mention):
 
 @client.event
 async def on_relationship_add(friendship):
-    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-    print(Fore.LIGHTRED_EX + "║ [Friend Added] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Friend added." + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Friend Added] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"User: {friendship.user.display_name}#{friendship.user.discriminator}" + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Friend Added] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {friendship.user.id}")
-    print(Fore.LIGHTRED_EX + "║ [Friend Added] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Added at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
-    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+    print(Fore.CYAN + f"\n[{datetime.datetime.now().strftime('%m/%d/%Y, %H:%M:%S %p')}] {Fore.RESET}A friend was added: {friendship.user.display_name}#{friendship.user.discriminator}.")
     
 @client.event
 async def on_guild_join(guild):
-    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User joined a guild." + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Guild name: {guild.name}" + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {guild.id}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Created at: {guild.created_at}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Owner ID: {guild.owner_id}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Joined] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Joined at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
-    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+    print(Fore.CYAN + f"\n[{datetime.datetime.now().strftime('%m/%d/%Y, %H:%M:%S %p')}] {Fore.RESET}A guild was joined: {guild.name}.")
     
 @client.event
 async def on_guild_remove(guild):
-    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User was removed from a guild." + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Guild name: {guild.name}" + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {guild.id}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Created at: {guild.created_at}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Owner ID: {guild.owner_id}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Removed at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
-    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+    print(Fore.CYAN + f"\n[{datetime.datetime.now().strftime('%m/%d/%Y, %H:%M:%S %p')}] {Fore.RESET}A guild was removed: {guild.name}.")
     
-@client.event
-async def on_group_join(channel, user):
-    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User was added to a group." + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User: {user.display_name}#{user.discriminator}." + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Group name: {channel.name}" + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {channel.id}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Created at: {channel.created_at}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Owner ID: {channel.owner}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Added at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
-    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
-    
-@client.event
-async def on_group_remove(channel, user):
-    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User was removed from a group." + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"User: {user.display_name}#{user.discriminator}." + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Group name: {channel.name}" + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {channel.id}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Created at: {channel.created_at}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Owner: {channel.owner}")
-    print(Fore.LIGHTRED_EX + "║ [Guild Removed] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Removed at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
-    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
-
 @client.event
 async def on_relationship_remove(friendship):
-    print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-    print(Fore.LIGHTRED_EX + "║ [Friend Removed] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Friend removed." + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Friend Removed] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"User: {friendship.user.display_name}#{friendship.user.discriminator}" + Fore.RESET)
-    print(Fore.LIGHTRED_EX + "║ [Friend Removed] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"ID: {friendship.user.id}")
-    print(Fore.LIGHTRED_EX + "║ [Friend Removed] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Removed at: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
-    print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+    print(Fore.CYAN + f"\n[{datetime.datetime.now().strftime('%m/%d/%Y, %H:%M:%S %p')}] {Fore.RESET}A friend was removed: {friendship.user.display_name}#{friendship.user.discriminator}.")
     
 
 @client.event
 async def on_connect():
     clear()
     try:
-        ctypes.windll.kernel32.SetConsoleTitleW(f'Welcome to Nuked, {client.user.name}#{client.user.discriminator} | Login Successful.')
+        ctypes.windll.kernel32.SetConsoleTitleW(f'Welcome to Nuked, {client.user.name}#{client.user.discriminator}.')
     except:
         pass
     splash()
+    print(Fore.CYAN + f"[{datetime.datetime.now().strftime('%m/%d/%Y, %H:%M:%S %p')}]{Fore.RESET} {client.user.name}#{client.user.discriminator} was logged in." + Fore.RESET)
     
 @client.event
 async def on_command_error(ctx, error):
@@ -443,19 +376,15 @@ async def on_message_delete(message):
         message_content = "`" + str(discord.utils.escape_markdown(str(message.author))) + "`: " + discord.utils.escape_mentions(message.content) + "\n\n**Attachments:**\n" + links
         client.sniped_message_dict.update({channel_id: message_content})
 
+
+
 @client.listen('on_message')
 async def ifmentioned(message):
     if message_logger:
         if message.author == client.user:
             return
         if client.user.mentioned_in(message):
-            print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-            print(Fore.LIGHTRED_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"You were mentioned by {message.author}." + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Channel: {message.channel}")
-            print(Fore.LIGHTRED_EX + "║ [Mentioned] " + Fore.RESET + Fore.WHITE + f"Message Content: {message.content}".replace(f"<@{client.user.id}>" or f"<@!{client.user.id}>", f"{client.user.display_name}#{client.user.discriminator}") + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║ [Mentioned] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Date: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
-            print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+            print(Fore.CYAN + f"\n[{datetime.datetime.now().strftime('%m/%d/%Y, %H:%M:%S %p')}] {Fore.RESET}User {message.author} mentioned you in {message.guild.name}: {Fore.LIGHTGREEN_EX}{message.content.replace(f'<@{client.user.id}>', f'@{client.user.display_name}#{client.user.discriminator}').replace(f'<@!{client.user.id}>', f'@{client.user.display_name}#{client.user.discriminator}')}{Fore.RESET}")
     else:
         pass
     
@@ -476,51 +405,16 @@ async def nitrosnipe(message):
 
 
         if len(code) < 16:
-            print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Nitro Code sent by {message.author}." + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.CYAN + f"Message Content: {message.content}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.YELLOW + f"Status: Fake Code" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Date: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Elapsed: {elapsed}" + Fore.RESET)
-            print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
+            print(Fore.CYAN + f"\n[{datetime.datetime.now().strftime('%m/%d/%Y, %H:%M:%S %p')}] {Fore.RESET}A fake nitro code sent by user {message.author} was sniped: {Fore.RED}{code}{Fore.RESET}.")
 
         elif 'This gift has been redeemed already.' in r:
-            print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Nitro Code sent by {message.author}." + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.CYAN + f"Message Content: {message.content}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.YELLOW + f"Status: Already Redeemed" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Date: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.RED + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Elapsed: {elapsed}" + Fore.RESET)
-            print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════" + Fore.RESET)
-
+            print(Fore.CYAN + f"\n[{datetime.datetime.now().strftime('%m/%d/%Y, %H:%M:%S %p')}] {Fore.RESET}A redeemed nitro code sent by user {message.author} was sniped: {Fore.LIGHTRED_EX}{code}{Fore.RESET}.")
         elif 'subscription_plan' in r:
-            print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Nitro Code sent by {message.author}." + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.CYAN + f"Message Content: {message.content}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.YELLOW + f"Status: Nitro Success" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Date: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTGREEN_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Elapsed: {elapsed}" + Fore.RESET)
-            print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-
+            print(Fore.CYAN + f"\n[{datetime.datetime.now().strftime('%m/%d/%Y, %H:%M:%S %p')}] {Fore.RESET}A valid nitro code sent by {message.author} was sniped: {Fore.LIGHTGREEN_EX}{code}{Fore.RESET}.")
 
 
         elif 'Unknown Gift Code' in r:
-            print(f"{Fore.LIGHTRED_EX}╔══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTCYAN_EX + f"Nitro Code sent by {message.author}." + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.CYAN + f"Message Content: {message.content}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTMAGENTA_EX + f"Server: {message.guild}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTBLUE_EX + f"Channel: {message.channel}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.YELLOW + f"Status: Unknown Code" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTWHITE_EX + f"Date: {datetime.datetime.now().strftime('%H:%M:%S %p')}" + Fore.RESET)
-            print(Fore.LIGHTRED_EX + "║" + Fore.LIGHTRED_EX + " [Nitro Sniper] " + Fore.RESET + Fore.LIGHTGREEN_EX + f"Elapsed: {elapsed}" + Fore.RESET)
-            print(f"{Fore.LIGHTRED_EX}╚══════════════════════════{Fore.LIGHTBLUE_EX}════════════════════════{Fore.RESET}")
-
+            print(Fore.CYAN + f"\n[{datetime.datetime.now().strftime('%m/%d/%Y, %H:%M:%S %p')}] {Fore.RESET}An invalid nitro code sent by {message.author} was sniped: {Style.DIM}{code}{Style.RESET_ALL}.")
     else:
         pass
     
@@ -555,6 +449,7 @@ async def help(ctx, c: str=None):
         embed.add_field(name='**Malicious Commands**', value=f'{client.command_prefix}help malicious', inline=False)
         embed.add_field(name='**Utility Commands**', value=f'{client.command_prefix}help util\n{client.command_prefix}help util2', inline=False)
         embed.set_thumbnail(url=client.user.avatar_url)
+        embed.set_footer(text='Nuked', icon_url='https://cdn.discordapp.com/attachments/820836670857412710/820946025799745576/avatar.png')
         await ctx.send(embed=embed, delete_after=val)
     elif c.lower() == 'fun':
         await ctx.message.delete()
@@ -591,6 +486,7 @@ async def help(ctx, c: str=None):
         embed.add_field(name='**dox**', value='[mentioned user] fake doxes a user.', inline=False)
         embed.add_field(name="**streaming**", value="[message] sets your discord status to show that your streaming.", inline=False)
         embed.add_field(name="**listening**", value="[message] sets your discord status to show that your listening to something.", inline=False)
+        embed.add_field(name="**competing**", value="[message] sets your discord status to show that your competing in something.", inline=False)
         embed.add_field(name="**playing**", value="[messasge] sets your discord status to show that your playing a game.", inline=False)
         embed.add_field(name='**embed**', value='[message] sends a user specified embed.', inline=False)
         embed.add_field(name="**addy**", value="sends a random address.", inline=False)
@@ -669,7 +565,7 @@ async def help(ctx, c: str=None):
         await ctx.message.delete()
         embed5 = discord.Embed(title='**Utility Commands**', color=0xFFFAFA, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
         embed5.add_field(name="**guildname**", value="[name] sets the servers name.", inline=False)
-        embed5.add_field(name="**backupfriends**", value="dumps all friends name and tag into a text file.", inline=False)
+        embed5.add_field(name="**backup**", value="dumps all friends name, tag and ID into a text file.", inline=False)
         embed5.add_field(name="**allcommands**", value="sends every command in the selfbot as a list.", inline=False)
         embed5.add_field(name="**proxy**", value="sends a random proxy with port.", inline=False)
         embed5.add_field(name="**friend**", value="[mentioned user] sends a friend request to the mentioned user.", inline=False)
@@ -691,7 +587,7 @@ async def help(ctx, c: str=None):
         embed5.add_field(name='**getallpfp**', value='tries to get everyones pfp link in the server and dumps in in a text file.', inline=False)
         embed5.add_field(name='**guildinfo**', value='gets information for the server and sends it.', inline=False)
         embed5.add_field(name='**oldsplash**', value='resets the selfbots splash screen to the v2 splash.', inline=False)
-        embed5.add_field(name='**newsplash**', value='resets the selfbots splash screen to the v3 splash.', inline=False)
+        embed5.add_field(name='**newsplash**', value='resets the selfbots splash screen to the newest splash.', inline=False)
         embed5.add_field(name='**encode**', value='[string] encodes a string to base64.', inline=False)
         embed5.add_field(name='**decode**', value='[base64 string] decodes a base64 string.', inline=False)
         embed5.add_field(name='**setname**', value='[name] sets your username to whatever is specified.', inline=False)
@@ -791,6 +687,7 @@ async def logout(ctx):
     await ctx.send("logging out..", delete_after=0.2)
     await asyncio.sleep(2)
     exit(0)
+
 
 @client.command(aliases=['tard'])
 async def clown(ctx, arg):
@@ -893,7 +790,7 @@ async def tokeninfo(ctx, _token):
         avatar_id = res['avatar']
         language = languages.get(locale)
         creation_date = datetime.datetime.utcfromtimestamp(((int(user_id) >> 22) + 1420070400000) / 1000).strftime(
-            '%d-%m-%Y %H:%M:%S UTC')
+            '%m/%d/%Y, %H:%M:%S %p UTC')
     except KeyError:
         print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}Invalid token" + Fore.RESET)
     em = discord.Embed(
@@ -959,7 +856,6 @@ async def spamreport(ctx, member: discord.Member = None):
 @client.command()
 async def cls(ctx):
     await ctx.message.delete()
-    await ctx.send("Clearing Console..", delete_after=0.1)
     clear()
     splash()
     
@@ -1337,7 +1233,7 @@ async def settings(ctx):
     embed.add_field(name='**Mention Logger**', value=message_logger, inline=False)
     embed.add_field(name='**Mention Blocker**', value=mentionblocker, inline=False)
     embed.add_field(name='**Rich Presence**', value=rich_presence, inline=False)
-    embed.set_footer(text=f'Logged in as {client.user.display_name}#{client.user.discriminator} | Command prefix is \'{client.command_prefix}\' | Nuked v3')
+    embed.set_footer(text=f'Logged in as {client.user.display_name}#{client.user.discriminator} | Command prefix is \'{client.command_prefix}\' | Nuked')
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command()
@@ -1447,11 +1343,15 @@ async def guildinfo(ctx):
     await ctx.send(embed=embed, delete_after=val)
 
 @client.command(aliases=['fbackup'])
-async def backupfriends(ctx):
+async def backup(ctx):
     await ctx.message.delete()
-    ff = open('friends.txt', 'w', encoding='utf-8')
+    ff = open('backup.txt', 'w', encoding='utf-8')
+    ff.write(f'Backup for user {client.user.display_name}#{client.user.discriminator}\nFriend Count: {len(client.user.friends)}\nServer Count: {len(client.guilds)}\nBackup Date: {datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S %p")}\n')
     for friend in client.user.friends:
-        ff.write(f'{friend.name}#{friend.discriminator}\n')
+        ff.write(f'\nFriend:\n{friend.name}#{friend.discriminator}\nID:\n{friend.id}\n')
+    for guild in client.guilds:
+        ff.write(f'\nServer:\n{guild.name}\nID:\n{guild.id}\nOwner ID: {guild.owner_id}\n')
+    ff.close()
 
 @client.command()
 async def restart(ctx):
@@ -1997,6 +1897,11 @@ async def fact(ctx, *, f: str=None):
         await ctx.send(embed=embed, delete_after=val)
     else:
         pass
+    
+@client.command()
+async def competing(ctx, *, message):
+    await ctx.message.delete()
+    await client.change_presence(activity=discord.Activity(name=message, type=5))
         
 @client.command()
 async def report(ctx, user: discord.Member=None, mid: str=None, *, reason: str=None):
@@ -2039,15 +1944,16 @@ async def banall(ctx):
 
 # selfbot functions
 
+signal.signal(signal.SIGINT, Nuked.SignalHandler)
+clear()
 Nuked.InitialSetup()
 Nuked.Presplash()
 if rich_presence:
     try:
         rpc = Presence(client_id='808176144959537162')
         rpc.connect()
-        rpc.update(details='Connected.', large_image='avatar', start=time.time())
-    except:
-        print('RPC Failed to initialize.')
+        rpc.update(details='Connected', large_image='avatar', start=time.time())
+    except Exception as e:
+        print(f'RPC Failed to initialize, reason: {e}.')
         time.sleep(1)
 Nuked.Init()
-
