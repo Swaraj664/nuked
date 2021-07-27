@@ -2,13 +2,11 @@
 Nuked Discord Selfbot
 
 # Message
-v5 overhaul otw
+v5 overhaul is on the way
 
 
 # What do I need for this?
 you will need python version >= 3.8 and you will need it added to path, if you do not know how to do this, relaunch python setup and click add to path. if there is no option for that then uninstall python and reinstall it and click ADD PYTHON x.x TO PATH on the first screen.
-
-kylie#1337 was banned. rip :(
 
 
 # How do I use this?
@@ -23,16 +21,5 @@ second, run the RUN ME FIRST.bat, if it closes immediately, you messed up the se
 before running the main.py.
 
 finally, after everything above has went smoothly, just run the RUN ME SECOND.bat, if it closes immediately then open a command prompt and cd to the folder with nuked in it and enter 'python main.py', if there is a missing module error, run 'pip install modulename'
-
-
-
-# IMPORTANT !
-using this tool CAN and MIGHT get your account banned, since selfbots ARE AGAINST Discord's ToS.
-https://discord.com/terms
-I do not condone usage of this tool, i just made it
-lol
-
-
-
 
 
