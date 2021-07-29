@@ -2,7 +2,7 @@
 Nuked Discord Selfbot
 
 # Message
-v5 overhaul is on the way
+v5 overhaul is on the way - i wouldn't recommend using this until v5 is released, but you can if you want to.
 
 
 # What do I need for this?
