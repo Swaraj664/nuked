@@ -2,8 +2,7 @@
 Nuked Discord Selfbot
 
 # Message
-v5 overhaul is on the way - i wouldn't recommend using this until v5 is released, but you can if you want to.
-
+v5 overhaul is on the way - i wouldn't recommend using this until v5 is released, but that decision is entirely up to you. 
 
 # What do I need for this?
 you will need python version >= 3.8 and you will need it added to path, if you do not know how to do this, relaunch python setup and click add to path. if there is no option for that then uninstall python and reinstall it and click ADD PYTHON x.x TO PATH on the first screen.
