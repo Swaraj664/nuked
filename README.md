@@ -7,5 +7,5 @@ v5 overhaul is on the way - i wouldn't recommend using this until v5 is released
 ---
 
 ![GitHub Size](https://img.shields.io/github/repo-size/coital/nuked?style=flat-square)
-![GitHub Commit](https://img.shields.io/github/commit-activity/y/coital/nuked?style=flat-square)
+![GitHub Commit](https://img.shields.io/github/last-commit/coital/nuked?style=flat-square)
 
