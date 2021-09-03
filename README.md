@@ -2,7 +2,9 @@
 Nuked Discord Selfbot
 
 # Message
-I'm unsure whether or not I'm going to keep running this project as selfbotting is probably hitting a low at this point. If I do continue, the next update release time will be uncertain. With that being said, v5 could be on the way.
+I'm unsure whether or not I'm going to keep running this project as selfbotting is probably hitting a low at this point.   
+If I do continue, the next update release time will be uncertain.   
+With that being said, v5 could be on the way.
 
 ---
 
