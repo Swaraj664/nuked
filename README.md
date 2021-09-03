@@ -2,7 +2,7 @@
 Nuked Discord Selfbot
 
 # Message
-v5 overhaul is on the way - i wouldn't recommend using this until v5 is released, but that decision is entirely up to you. 
+I'm unsure whether or not I'm going to keep running this project as selfbotting is probably hitting a low at this point. If I do continue, the next update release time will be uncertain. With that being said, v5 could be on the way.
 
 ---
 
