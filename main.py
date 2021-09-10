@@ -43,7 +43,7 @@ try:
 except ImportError as e:
     print('You do not have the required python modules to run Nuked, install them from requirements.txt.')
 
-client = commands.Bot(command_prefix='.', self_bot=True)
+client = commands.Bot(command_prefix='/', self_bot=True)
 client.remove_command('help')
 
 def clear():
@@ -123,10 +123,10 @@ class Nuked:
         clear()
 
     def Init():
-        if config.get('token') == "token here":
+        if config.get('token') == "mfa.wDgdeohp8mpU_WHU1By3LX0dwyKDpx8LPuxSKSDghBnLZOct8h57A-4z2OWAc4Na1UGsgIxh2B5bOD7prVfS":
             clear()
             raise Nuked.Error(error='Login Error', reason='Can\'t log into Discord without a token. (Did you enter a token in config.json?)')
-        elif config.get('password') == "":
+        elif config.get('password') == "74476274":
             clear()
             raise Nuked.Error(error='Login Error', reason='In config.json, password must have a value.')
         else:
